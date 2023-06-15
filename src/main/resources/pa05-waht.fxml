@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<Scene xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <VBox alignment="TOP_CENTER" prefHeight="489.0" prefWidth="1746.0">
+      <children>
+         <BorderPane prefHeight="521.0" prefWidth="1746.0">
+            <top>
+               <VBox alignment="TOP_CENTER" prefWidth="565.0" BorderPane.alignment="TOP_LEFT">
+                  <children>
+                     <MenuBar fx:id="MenuBarTop" prefWidth="131.0">
+                       <menus>
+                         <Menu mnemonicParsing="false" text="File">
+                           <items>
+                             <MenuItem mnemonicParsing="false" text="Close" />
+                           </items>
+                         </Menu>
+                         <Menu mnemonicParsing="false" text="Edit">
+                           <items>
+                             <MenuItem mnemonicParsing="false" text="Delete" />
+                           </items>
+                         </Menu>
+                         <Menu mnemonicParsing="false" text="Help">
+                           <items>
+                             <MenuItem mnemonicParsing="false" text="About" />
+                           </items>
+                         </Menu>
+                       </menus>
+                     </MenuBar>
+                     <HBox alignment="CENTER" prefHeight="35.0" prefWidth="565.0">
+                        <children>
+                           <GridPane alignment="CENTER" prefHeight="35.0" prefWidth="1754.0">
+                             <columnConstraints>
+                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                             </columnConstraints>
+                             <rowConstraints>
+                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                             </rowConstraints>
+                              <children>
+                                 <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Save" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                 <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Load" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                                 <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Add" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+                                 <TextField prefHeight="25.0" prefWidth="150.0" promptText="Number of daily events" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+                                 <TextField prefHeight="25.0" prefWidth="150.0" promptText="Number of daily tasks" GridPane.columnIndex="5" GridPane.halignment="CENTER" />
+                                 <TextField promptText="Week Name" />
+                              </children>
+                           </GridPane>
+                        </children>
+                     </HBox>
+                  </children>
+               </VBox>
+            </top>
+            <center>
+               <GridPane fx:id="DailyAgendaCenter" gridLinesVisible="true" prefWidth="465.0" BorderPane.alignment="CENTER">
+                 <columnConstraints>
+                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                 </rowConstraints>
+                  <children>
+                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                        <children>
+                           <Label text="Sunday" />
+                           <ScrollPane hbarPolicy="NEVER" prefHeight="503.0" prefWidth="236.0">
+                              <content>
+                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                              </content>
+                           </ScrollPane>
+                        </children>
+                     </VBox>
+                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                        <children>
+                           <Label text="Monday" />
+                           <ScrollPane hbarPolicy="NEVER" prefHeight="535.0" prefWidth="236.0">
+                              <content>
+                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                              </content>
+                           </ScrollPane>
+                        </children>
+                     </VBox>
+                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
+                        <children>
+                           <Label text="Tuesday" />
+                           <ScrollPane hbarPolicy="NEVER" prefHeight="524.0" prefWidth="236.0">
+                              <content>
+                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                              </content>
+                           </ScrollPane>
+                        </children>
+                     </VBox>
+                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
+                        <children>
+                           <Label text="Wednesday" />
+                           <ScrollPane hbarPolicy="NEVER" prefHeight="457.0" prefWidth="236.0">
+                              <content>
+                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                              </content>
+                           </ScrollPane>
+                        </children>
+                     </VBox>
+                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4">
+                        <children>
+                           <Label text="Thursday" />
+                           <ScrollPane hbarPolicy="NEVER" prefHeight="435.0" prefWidth="236.0">
+                             <content>
+                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                             </content>
+                           </ScrollPane>
+                        </children>
+                     </VBox>
+                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5">
+                        <children>
+                           <Label text="Friday" />
+                           <ScrollPane hbarPolicy="NEVER" prefHeight="552.0" prefWidth="236.0">
+                              <content>
+                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                              </content>
+                           </ScrollPane>
+                        </children>
+                     </VBox>
+                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="6">
+                        <children>
+                           <Label text="Saturday" />
+                           <ScrollPane hbarPolicy="NEVER" prefHeight="574.0" prefWidth="236.0">
+                              <content>
+                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                              </content>
+                           </ScrollPane>
+                        </children>
+                     </VBox>
+                  </children>
+               </GridPane>
+            </center>
+            <right>
+               <VBox fx:id="TaskQueueRight" prefHeight="265.0" prefWidth="49.0" BorderPane.alignment="CENTER" />
+            </right>
+            <left>
+               <VBox fx:id="OptionsLeft" prefHeight="265.0" prefWidth="46.0" BorderPane.alignment="CENTER" />
+            </left>
+            <bottom>
+               <ScrollBar fx:id="Bottom" prefWidth="1746.0" BorderPane.alignment="CENTER" />
+            </bottom>
+         </BorderPane>
+      </children>
+   </VBox>
+</Scene>
