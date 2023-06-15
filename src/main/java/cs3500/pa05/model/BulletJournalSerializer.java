@@ -26,6 +26,7 @@ public class BulletJournalSerializer extends StdSerializer<BulletJournal> {
         throws IOException {
         ObjectMapper mapper = (ObjectMapper) gen.getCodec();
         gen.writeStartObject();
+        gen.writeStringField("name", journal.name());
         gen.writeNumberField("event-max", journal.getEventMax());
         gen.writeNumberField("task-max", journal.getTaskMax());
         gen.writeArrayFieldStart("categories");

@@ -13,8 +13,10 @@ import java.util.Map;
 
 @JsonSerialize(using = BulletJournalSerializer.class)
 @JsonDeserialize(using = BulletJournalDeserializer.class)
-@JsonPropertyOrder({"event-max", "task-max", "categories"})
+@JsonPropertyOrder({"name", "event-max", "task-max", "categories"})
 public class BulletJournal {
+    @JsonProperty(value = "name", required = true)
+    private String name;
     @JsonProperty(value = "event-max", required = true)
     private int eventMax;
     @JsonProperty(value = "task-max", required = true)
@@ -24,7 +26,8 @@ public class BulletJournal {
     @JsonIgnore
     private List<Entry> entries = new ArrayList<>();
 
-    public BulletJournal(Week week) {
+    public BulletJournal(String name, Week week) {
+        this.name = name;
         this.week = week;
         eventMax = 0;
         taskMax = 1;
@@ -34,6 +37,11 @@ public class BulletJournal {
         }
 
         // TODO: Create stats class here. Bind shit to it?
+    }
+
+    @JsonGetter("name")
+    public String name() {
+        return this.name;
     }
 
     @JsonGetter("event-max")

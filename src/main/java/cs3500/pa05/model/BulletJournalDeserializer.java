@@ -28,11 +28,11 @@ public class BulletJournalDeserializer extends StdDeserializer<BulletJournal> {
             throws IOException {
         ObjectMapper mapper = (ObjectMapper) parser.getCodec();
         JsonNode node = parser.getCodec().readTree(parser);
+        String name = node.get("name").textValue();
         Week week = mapper.convertValue(node.get("week"), Week.class);
-        BulletJournal journal = new BulletJournal(week);
+        BulletJournal journal = new BulletJournal(name, week);
         journal.setEventMax(node.get("event-max").asInt());
         journal.setTaskMax(node.get("task-max").asInt());
-        System.out.println(node.get("categories"));
         ArrayNode categories = mapper.createArrayNode();
         node.get("categories").forEach(categories::add);
         Category.load(categories, mapper);
