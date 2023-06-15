@@ -24,17 +24,35 @@ import java.util.Objects;
 })
 @JsonPropertyOrder({"name", "day", "description", "category"})
 public abstract class Entry {
-//    @JsonProperty(value = "creation-time")
-    private final Date creationTime;
+    /**
+     * Category the bullet journal entry falls under. (Optional)
+     */
     @JsonProperty(value = "category")
     private final Category category;
+    /**
+     * Description of the bullet journal entry. (Optional)
+     */
     @JsonProperty(value = "description")
     private final String description;
+    /**
+     * The day of the week the bullet journal entry falls under.
+     */
     @JsonProperty(value = "day", required = true)
     private final DayOfWeek day;
+    /**
+     * The name of the bullet journal entry.
+     */
     @JsonProperty(value = "name", required = true)
     private final String name;
 
+    /**
+     * Constructor for subclasses.
+     *
+     * @param name name of the entry
+     * @param day day of the week the entry falls under
+     * @param description description of the entry (optional)
+     * @param category category the entry falls under (optional)
+     */
     @JsonCreator
     protected Entry(
             @JsonProperty("name") String name,
@@ -45,36 +63,66 @@ public abstract class Entry {
         this.day = Objects.requireNonNull(day);
         this.description = description;
         this.category = category;
-        this.creationTime = new Date();
     }
 
+    /**
+     * Gets the name of the entry.
+     *
+     * @return name of the entry
+     */
     @JsonGetter("name")
     public String name() {
         return this.name;
     }
 
+    /**
+     * Gets the day of the week the entry falls under.
+     *
+     * @return day of the week the entry falls under
+     */
     @JsonGetter("day")
     public DayOfWeek day() {
         return this.day;
     }
 
+    /**
+     * Gets the description of the entry. Returns null if no description was provided.
+     *
+     * @return description of the entry or null if no description was provided
+     */
     @JsonGetter("description")
     public String description() {
         return this.description;
     }
 
+    /**
+     * Gets the category the entry falls under. Returns null if the entry does not fall under
+     * a category.
+     *
+     * @return category the entry falls under or null if the entry does not fall under any category
+     */
     @JsonGetter("category")
     public Category category() {
         return this.category;
     }
 
-//    @JsonGetter("creation-time")
-    public Date creationTime() {
-        return (Date) this.creationTime.clone();
-    }
-
+    /**
+     * Returns true if the entry is a task entry.
+     *
+     * @return true if the entry is a task entry
+     */
     @JsonIgnore
     public boolean isTask() {
+        return false;
+    }
+
+    /**
+     * Returns true if the entry is an event.
+     *
+     * @return true if the entry is an event
+     */
+    @JsonIgnore
+    public boolean isEvent() {
         return false;
     }
 

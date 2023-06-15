@@ -1,11 +1,13 @@
 package cs3500.pa05.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+// TODO: idk if this is necessary
+
 public class Week {
+    @JsonProperty("days-of-week")
     private final Map<DayOfWeek, Day> days = new LinkedHashMap<>();
 
     public Week() {
@@ -14,14 +16,7 @@ public class Week {
         }
     }
 
-    @JsonAnyGetter
-    public Map<DayOfWeek, Day> getDays() {
+    public Map<DayOfWeek, Day> days() {
         return new LinkedHashMap<>(days);
     }
-
-    @JsonAnySetter
-    private void add(String dayOfWeek, Day day) {
-        days.put(DayOfWeek.valueOf(dayOfWeek), day);
-    }
-
 }

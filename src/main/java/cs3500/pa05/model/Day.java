@@ -11,8 +11,14 @@ import java.util.List;
  * Represents a day in a bullet journal.
  */
 public class Day {
+    /**
+     * The bullet journal registered under this day.
+     */
     @JsonProperty("entries")
     private final List<Entry> entries;
+    /**
+     * The day of th week of this day object.
+     */
     @JsonProperty("day")
     private final DayOfWeek day;
 

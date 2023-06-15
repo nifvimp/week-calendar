@@ -28,10 +28,12 @@ public class BulletJournal {
         this.week = week;
         eventMax = 0;
         taskMax = 1;
-        Map<DayOfWeek, Day> days = week.getDays();
+        Map<DayOfWeek, Day> days = week.days();
         for (Day day : days.values()) {
             this.entries.addAll(day.entries());
         }
+
+        // TODO: Create stats class here. Bind shit to it?
     }
 
     @JsonGetter("event-max")
@@ -57,5 +59,17 @@ public class BulletJournal {
     @JsonGetter("week")
     public Week getWeek() {
         return this.week;
+    }
+
+    public void add(DayOfWeek day, Entry entry) {
+        // week.add(day, entry);
+        // TODO: implement
+    }
+
+    public boolean remove(DayOfWeek day, Entry entry) {
+        // week.remove(day, entry);
+        // TODO: implement
+        // returns true if removal successful
+        return false;
     }
 }

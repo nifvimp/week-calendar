@@ -8,12 +8,18 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 
+/**
+ * Deserializer for a bullet journal.
+ */
 public class BulletJournalDeserializer extends StdDeserializer<BulletJournal> {
+    /**
+     * Creates a standard bullet journal deserializer.
+     */
     public BulletJournalDeserializer() {
         this(null);
     }
 
-    public BulletJournalDeserializer(Class<?> vc) {
+    private BulletJournalDeserializer(Class<?> vc) {
         super(vc);
     }
 

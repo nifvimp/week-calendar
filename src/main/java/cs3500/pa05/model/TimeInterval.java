@@ -2,15 +2,25 @@ package cs3500.pa05.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 
 /**
  * An interval of time in minutes.
  */
 public class TimeInterval {
+    /**
+     * Timestamp of the start of the interval.
+     */
     @JsonProperty("start")
     private final Timestamp start;
+    /**
+     * The duration of the interval in minutes.
+     */
     @JsonProperty("duration")
-    private final int duration; // in minutes
+    private final int duration;
+    /**
+     * Timestamp of the end of the interval.
+     */
     private final Timestamp end;
 
     /**
@@ -26,7 +36,7 @@ public class TimeInterval {
         if (duration < 0) {
             throw new IllegalArgumentException("The duration of an event cannot be negative.");
         }
-        this.start = start;
+        this.start = Objects.requireNonNull(start);
         this.duration = duration;
         this.end = calculateEnd(start, duration);
     }

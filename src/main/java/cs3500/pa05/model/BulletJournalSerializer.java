@@ -6,17 +6,24 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 
+/**
+ * Serializer for a bullet journal.
+ */
 public class BulletJournalSerializer extends StdSerializer<BulletJournal> {
+    /**
+     * Creates a standard bullet journal serializer.
+     */
     public BulletJournalSerializer() {
         this(null);
     }
 
-    public BulletJournalSerializer(Class<BulletJournal> t) {
+    private BulletJournalSerializer(Class<BulletJournal> t) {
         super(t);
     }
 
     @Override
-    public void serialize(BulletJournal journal, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(BulletJournal journal, JsonGenerator gen, SerializerProvider provider)
+        throws IOException {
         ObjectMapper mapper = (ObjectMapper) gen.getCodec();
         gen.writeStartObject();
         gen.writeNumberField("event-max", journal.getEventMax());
@@ -26,7 +33,7 @@ public class BulletJournalSerializer extends StdSerializer<BulletJournal> {
             try {
                 gen.writeObject(category);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Error parsing bullet journal categories.", e);
             }
         });
         gen.writeEndArray();

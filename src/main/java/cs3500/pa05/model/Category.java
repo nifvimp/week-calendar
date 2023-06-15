@@ -9,10 +9,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Categories of the Bullet Journal.
+ * The categories of the Bullet Journal.
  */
 public class Category {
+    /**
+     * Map of all currently registered categories.
+     */
     private final static Map<String, Category> categories = new LinkedHashMap<>();
+    /**
+     * The name of the category.
+     */
     private final String name;
 
     /**
@@ -20,7 +26,7 @@ public class Category {
      *
      * @param name name of the category
      */
-    private Category(String name) {
+    public Category(String name) {
         this.name = name;
     }
 
