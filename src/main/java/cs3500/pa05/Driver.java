@@ -13,7 +13,6 @@ import cs3500.pa05.model.Week;
 import cs3500.pa05.view.JournalViewImpl;
 import java.util.HashSet;
 import javafx.application.Application;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -23,18 +22,18 @@ public class Driver extends Application {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static void main(String[] args) {
-//        Week week = new Week();
-//        week.addEntry(new Event("Hello", DayOfWeek.MONDAY,
-//            new TimeInterval(new Timestamp(DayOfWeek.MONDAY, 100), 10),
-//            "noo way", "Hello"));
-//        BulletJournal journal = new BulletJournal("Journal", week, new HashSet<>());
-//        journal.addCategory("Hello");
-//        journal.addCategory("World");
-//        JsonNode node = mapper.convertValue(journal, JsonNode.class);
-//        System.out.println(node);
-//        BulletJournal res = mapper.convertValue(node, BulletJournal.class);
-//        System.out.println(res);
-//        System.out.println(mapper.convertValue(res, JsonNode.class));
+        Week week = new Week();
+        week.addEntry(new Event("Hello", DayOfWeek.MONDAY,
+            new TimeInterval(new Timestamp(DayOfWeek.MONDAY, 100), 10),
+            "noo way", "Hello"));
+        BulletJournal journal = new BulletJournal("Journal", week, new HashSet<>());
+        journal.addCategory("Hello");
+        journal.addCategory("World");
+        JsonNode node = mapper.convertValue(journal, JsonNode.class);
+        System.out.println(node);
+        BulletJournal res = mapper.convertValue(node, BulletJournal.class);
+        System.out.println(res);
+        System.out.println(mapper.convertValue(res, JsonNode.class));
 
         new JournalViewImpl(new JournalControllerImpl());
         launch(args);

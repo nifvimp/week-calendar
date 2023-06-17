@@ -74,4 +74,14 @@ public class Day {
     public void removeEntry(Entry entry) {
         entries.remove(entry);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Day:\n");
+        for (Entry entry : entries) {
+            sb.append(entry).append("\n");
+        }
+        return sb.toString();
+    }
 }

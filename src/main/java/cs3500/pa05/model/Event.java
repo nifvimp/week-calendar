@@ -51,4 +51,9 @@ public class Event extends Entry {
     public boolean isEvent() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s\n%s", super.toString(), interval.toString());
+    }
 }

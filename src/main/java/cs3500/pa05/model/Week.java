@@ -86,4 +86,20 @@ public class Week {
         DayOfWeek day = entry.day();
         days.get(day).removeEntry(entry);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Week:\n");
+
+        for (Map.Entry<DayOfWeek, Day> entry : days.entrySet()) {
+            sb.append(entry.getKey()).append(":\n");
+            Collection<Entry> entries = entry.getValue().entries();
+            for (Entry e : entries) {
+                sb.append(e).append("\n");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }

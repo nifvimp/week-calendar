@@ -61,4 +61,9 @@ public class Task extends Entry {
     public boolean isTask() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s\n%s", super.toString(), status.toString());
+    }
 }

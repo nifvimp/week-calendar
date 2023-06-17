@@ -127,4 +127,19 @@ public abstract class Entry {
     public boolean isEvent() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Entry:\n");
+        sb.append("Name: ").append(name).append("\n");
+        sb.append("Day: ").append(day).append("\n");
+        if (description != null) {
+            sb.append("Description: ").append(description).append("\n");
+        }
+        if (category != null) {
+            sb.append("Category: ").append(category).append("\n");
+        }
+        return sb.toString();
+    }
 }
