@@ -1,5 +1,6 @@
 package cs3500.pa05.model;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,7 +44,7 @@ public class BulletJournal {
    * The categories registered in the bullet journal.
    */
   @JsonProperty(value = "categories", required = true)
-  private final Set<String> categories;
+  private Set<String> categories;
   /**
    * A collection of the entries inside the bullet journal.
    */
@@ -147,6 +148,16 @@ public class BulletJournal {
    */
   public void removeCategory(String category) {
     categories.remove(category);
+  }
+
+  /**
+   * Gets all the categories registered to the bullet journal.
+   *
+   * @return the categories registered to the bullet journal
+   */
+  @JsonGetter("categories")
+  public Set<String> getCategories() {
+    return new HashSet<>(this.categories);
   }
 
   /**

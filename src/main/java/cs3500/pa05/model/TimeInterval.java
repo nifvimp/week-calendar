@@ -3,7 +3,6 @@ package cs3500.pa05.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
-import jdk.jfr.Description;
 
 /**
  * An interval of time in a bullet journal.

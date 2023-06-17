@@ -3,11 +3,11 @@ package cs3500.pa05.view;
 import javafx.scene.Scene;
 
 /**
- * Represents a GUI view for a bullet journal.
+ * Represents a GUI view for the application.
  */
-public interface JournalView {
+public interface IApplicationView {
   /**
-   * Loads a scene from a bullet journal GUI layout.
+   * Loads a scene from GUI layout of the application.
    *
    * @return the layout
    * @throws IllegalStateException if the FXML cannot be loaded

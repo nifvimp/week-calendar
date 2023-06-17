@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.VBox?>
+
+<Scene fx:id="scene" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <VBox>
+      <children>
+         <MenuBar>
+           <menus>
+             <Menu mnemonicParsing="false" text="File">
+               <items>
+                 <MenuItem fx:id="save" mnemonicParsing="false" text="Save" />
+                     <MenuItem fx:id="load" mnemonicParsing="false" text="Load" />
+               </items>
+             </Menu>
+             <Menu mnemonicParsing="false" text="Edit">
+               <items>
+                 <MenuItem fx:id="addEntry" mnemonicParsing="false" text="Add Entry" />
+                     <MenuItem fx:id="removeEntry" mnemonicParsing="false" text="Remove Entry" />
+                     <MenuItem fx:id="editEntry" mnemonicParsing="false" text="Edit Entry" />
+                     <MenuItem fx:id="addCategory" mnemonicParsing="false" text="Add Category" />
+                     <MenuItem fx:id="removeCategory" mnemonicParsing="false" text="Remove Category" />
+               </items>
+             </Menu>
+             <Menu mnemonicParsing="false" text="Help">
+               <items>
+                 <MenuItem fx:id="about" mnemonicParsing="false" text="About" />
+               </items>
+             </Menu>
+           </menus>
+         </MenuBar>
+         <TabPane fx:id="tabs" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="1200.0" />
+      </children>
+   </VBox>
+</Scene>

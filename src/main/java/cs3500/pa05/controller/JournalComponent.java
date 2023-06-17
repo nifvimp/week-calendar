@@ -12,27 +12,29 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 /**
  * Represents a controller for a bullet journal.
  */
-public class JournalControllerImpl implements JournalController {
-    private final EntryComponentFactory factory = new EntryComponentFactory();
-    private final ObjectMapper mapper = new ObjectMapper();
+public class JournalComponent extends BorderPane {
+    // purposeful static so that specified configuration shared between all components
+    private static final EntryComponentFactory factory = new EntryComponentFactory();
+    private static final ObjectMapper mapper = new ObjectMapper();
     private BulletJournal journal;
     @FXML
-    private Stage primaryStage;
-    @FXML
-    private TextField journalName;
+    private TextField name;
     @FXML
     private Button save;
     @FXML
@@ -53,35 +55,39 @@ public class JournalControllerImpl implements JournalController {
     private ListView<String> taskQueue;
     @FXML
     private Group stats; // TODO: figure this out. prob need separate class
+    @FXML
     private Map<DayOfWeek, ScrollPane> days; // TODO: figure this shit out too.
     private List<Group> entries; // TODO: idk how to format this properly under days
 
-    public void run() {
-        journal = load();
-
-    }
-
-    private BulletJournal load() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open .bujo File");
-        File file = fileChooser.showOpenDialog(primaryStage);
-        // TODO: check if the file is .bujo
-        //  give option to make empty bujo? make a button to make new thing
-        JsonNode journalNode;
+    /**
+     * Creates a new journal component that displays the passed in bullet journal.
+     *
+     * @param journal journal to display
+     * @param parent parent of the component
+     */
+    public JournalComponent(BulletJournal journal, Node parent) {
+        this.journal = journal;
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/journal.fxml"));
+        fxmlLoader.setController(this);
+        Node loaded;
         try {
-            journalNode = mapper.readTree(file);
-        } catch (IOException e) {
-            throw new RuntimeException(
-                String.format("Could not read the chosen file '%s'.", file), e
-            );
+            loaded = fxmlLoader.load();
+            this.getChildren().add(loaded);
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
         }
-        return mapper.convertValue(journalNode, BulletJournal.class);
+        ((BorderPane) loaded).prefHeightProperty().bind(parent.getScene().heightProperty());
+        ((BorderPane) loaded).prefWidthProperty().bind(parent.getScene().widthProperty());
+//        initComponents();
     }
 
-    private void save() {
+    /**
+     * Prompts the user to choose a file location to save the bullet journal.
+     */
+    public void save() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose save location");
-        File file = fileChooser.showSaveDialog(primaryStage);
+        File file = fileChooser.showSaveDialog(this.getScene().getWindow());
         try {
             Files.write(file.toPath(), mapper.writeValueAsString(journal).getBytes());
         } catch (JsonProcessingException e) {
@@ -93,16 +99,16 @@ public class JournalControllerImpl implements JournalController {
         }
     }
 
-    private void AddEntry(Entry entry) {
+    private void AddEntry() {
         // TODO: implement
     }
 
-    private void addCategory(String category) {
-        journal.addCategory(category);
+    private void addCategory() {
+        // TODO: implement
     }
 
-    private void removeCategory(String category) {
-        journal.removeCategory(category);
+    private void removeCategory() {
+        // TODO: implement
     }
 
     private void onUpdate() {
@@ -124,8 +130,5 @@ public class JournalControllerImpl implements JournalController {
         //  Section 2 - Task Queue
     }
 
-    private void initMenuBar() {
-        // TODO: implement
-        //  Section 2 - Menu Bar & Shortcuts
-    }
+
 }

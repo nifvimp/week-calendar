@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<DialogPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <expandableContent>
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="320.0" />
+    </expandableContent>
+   <header>
+      <ScrollPane hbarPolicy="NEVER" prefHeight="300.0" prefWidth="500.0">
+         <content>
+            <VBox alignment="TOP_CENTER" prefHeight="0.0" prefWidth="500.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Edit Name:" textAlignment="CENTER" />
+                        <TextField fx:id="nameField" promptText="Enter Name Here" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Edit Category:">
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="categoryField" promptText="Enter Category Here" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="entrySpecificInfoType" text="Task or Event">
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="entrySpecificInfo" promptText="Enter Duration Here" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Edit Description:">
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="descriptionField" promptText="Enter Description Here" />
+                     </children>
+                  </VBox>
+                  <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ButtonBar prefHeight="26.0" prefWidth="170.0">
+                           <buttons>
+                              <Button mnemonicParsing="false" text="Save" translateX="-25.0" />
+                              <Button alignment="CENTER" mnemonicParsing="false" text="Delete" />
+                           </buttons>
+                           <padding>
+                              <Insets top="15.0" />
+                           </padding>
+                        </ButtonBar>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </header>
+</DialogPane>
