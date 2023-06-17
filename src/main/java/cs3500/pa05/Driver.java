@@ -33,7 +33,16 @@ public class Driver extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        // TODO: implement
+    public void start(Stage primaryStage) {
+        ApplicationController controller = new ApplicationController();
+        IApplicationView view = new ApplicationView(controller);
+        try {
+            primaryStage.setScene(view.load());
+            controller.run();
+            primaryStage.show();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            System.err.println("Unable to load GUI.");
+        }
     }
 }
