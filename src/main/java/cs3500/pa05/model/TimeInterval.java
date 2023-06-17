@@ -50,9 +50,12 @@ public class TimeInterval {
      * @return end of the interval
      */
     private Timestamp calculateEnd(Timestamp start, int duration) {
-        // TODO: calculate end based on duration
-        //  there are 1440 minutes in a day
-        return null;
+        int endTime = start.numRepresentation() + duration;
+        DayOfWeek[] daysOfWeek = DayOfWeek.values();
+        int last = daysOfWeek.length - 1;
+        DayOfWeek day = daysOfWeek[Math.min(last, endTime / 1440)];
+        int time = (day.ordinal() == last) ? endTime - (last * 1440) : endTime % 1440;
+        return new Timestamp(day, time);
     }
 
     /**
@@ -82,8 +85,12 @@ public class TimeInterval {
         return this.duration;
     }
 
-    @Override
-    public String toString() {
-        return start + " " + duration;
+    /**
+     * Gets the formatted duration of the time interval
+     *
+     * @return formatted duration
+     */
+    public String formatDuration() {
+        return String.format("%dh %02dm", duration / 60, duration % 60);
     }
 }

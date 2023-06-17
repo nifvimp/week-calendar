@@ -3,6 +3,7 @@ package cs3500.pa05.controller;
 import cs3500.pa05.model.BulletJournal;
 import cs3500.pa05.model.DayOfWeek;
 import cs3500.pa05.model.Entry;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import javafx.fxml.FXML;
@@ -13,6 +14,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * Represents a controller for a bullet journal.
@@ -20,6 +23,8 @@ import javafx.scene.layout.GridPane;
 public class JournalControllerImpl implements JournalController {
     private final EntryComponentFactory factory = new EntryComponentFactory();
     private BulletJournal journal;
+    @FXML
+    private Stage primaryStage;
     @FXML
     private TextField journalName;
     @FXML
@@ -49,13 +54,21 @@ public class JournalControllerImpl implements JournalController {
 
     }
 
-    private BulletJournal load(String file) {
-        // TODO: loads .bujo file
+    private BulletJournal load() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open .bujo File");
+        File file = fileChooser.showOpenDialog(primaryStage);
+        // TODO: check if the file is .bujo and open it using the jackson library
+        //  do a null check too.
         return null;
     }
 
-    private void save(String file) {
-        // TODO: saves current bullet journal to file
+    private void save() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose save location");
+        File path = fileChooser.showSaveDialog(primaryStage);
+        // TODO: saves current bullet journal to path above
+        //  do a null check too.
     }
 
     private void AddEntry(Entry entry) {
@@ -67,8 +80,12 @@ public class JournalControllerImpl implements JournalController {
     }
 
     private void removeCategory(String category) {
-        // TODO: decide if we actually need this and an associated button
         journal.removeCategory(category);
+    }
+
+    private void onUpdate() {
+        // TODO: implement
+        //  VERY IMPORTANT
     }
 
     private void initDays() {

@@ -4,6 +4,7 @@ package cs3500.pa05.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -22,6 +23,7 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = Event.class, name = "event"),
         @JsonSubTypes.Type(value = Task.class, name = "task")
 })
+@JsonIncludeProperties({"name", "day", "description", "category"})
 @JsonPropertyOrder({"name", "day", "description", "category"})
 public abstract class Entry {
     /**

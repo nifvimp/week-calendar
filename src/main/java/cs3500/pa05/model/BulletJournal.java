@@ -135,20 +135,18 @@ public class BulletJournal {
    * Adds a category to the categories set.
    *
    * @param category category to add
-   * @return true if the addition was successful
    */
-  public boolean addCategory(String category) {
-    return categories.add(category);
+  public void addCategory(String category) {
+    categories.add(category);
   }
 
   /**
    * Removes a category from the categories set.
    *
    * @param category category to remove
-   * @return true if the removal was successful
    */
-  public boolean removeCategory(String category) {
-    return categories.remove(category);
+  public void removeCategory(String category) {
+    categories.remove(category);
   }
 
   /**
@@ -209,9 +207,8 @@ public class BulletJournal {
    * Removes an entry from the bullet journal.
    *
    * @param entry entry to remove
-   * @return true if removal was successful
    */
-  public boolean removeEntry(Entry entry) {
-    return week.removeEntry(entry);
+  public void removeEntry(Entry entry) {
+    week.removeEntry(entry);
   }
 }

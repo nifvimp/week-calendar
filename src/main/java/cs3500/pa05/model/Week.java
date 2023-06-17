@@ -81,10 +81,9 @@ public class Week {
      * Removes the specified entry from the week.
      *
      * @param entry entry to remove
-     * @return true if removal was successful
      */
-    public boolean removeEntry(Entry entry) {
+    public void removeEntry(Entry entry) {
         DayOfWeek day = entry.day();
-        return days.get(day).removeEntry(entry);
+        days.get(day).removeEntry(entry);
     }
 }

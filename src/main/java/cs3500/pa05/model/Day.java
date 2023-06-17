@@ -1,13 +1,10 @@
 package cs3500.pa05.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Represents a day in a bullet journal.
@@ -73,9 +70,8 @@ public class Day {
      * Removes the specified entry from the day's entries.
      *
      * @param entry entry to remove
-     * @return true if removal was successful
      */
-    public boolean removeEntry(Entry entry) {
-        return entries.remove(entry);
+    public void removeEntry(Entry entry) {
+        entries.remove(entry);
     }
 }
