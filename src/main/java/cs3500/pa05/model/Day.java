@@ -2,68 +2,66 @@ package cs3500.pa05.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * Represents a day in a bullet journal.
  */
+@JsonIncludeProperties("entries")
 public class Day {
     /**
      * The bullet journal registered under this day.
      */
     @JsonProperty("entries")
-    private final List<Entry> entries;
-    /**
-     * The day of th week of this day object.
-     */
-    @JsonProperty("day")
-    private final DayOfWeek day;
-
+    private final Collection<Entry> entries;
 
     /**
-     * Creates a new day object.
+     * Creates a day with the given entries.
      *
-     * @param day day of the week
+     * @param entries entries registered under the day
      */
     @JsonCreator
-    public Day(@JsonProperty ("day") DayOfWeek day) {
-        this.entries = new ArrayList<>();
-        this.day = day;
+    public Day(@JsonProperty("entries") Collection<Entry> entries) {
+        this.entries = entries;
     }
 
     /**
-     * Gets the entries of this day.
-     *
-     * @return entries of this day
+     * Creates a new day.
      */
-    @JsonGetter("entries")
-    public List<Entry> entries() {
+    public Day() {
+        this(new ArrayList<>());
+    }
+
+    /**
+     * Gets the entries of the day.
+     *
+     * @return entries of the day
+     */
+    public Collection<Entry> entries() {
         return new ArrayList<>(this.entries);
     }
 
-//    public int getTaskAmount() {
-//        return 0;
-//    }
-//
-//    public int getEventAmount() {
-//        return 0;
-//    }
-
     /**
-     * Adds the specified entries to this day's entries.
+     * Gets the entries of the day organized by the passed in organizers.
      *
-     * @param entries entries to add
+     * @param organizers organizers to organize the entries by
+     * @return entries of the day organized by the passed in organizers
      */
-    @JsonSetter("entries")
-    public void addEntries(List<Entry> entries) {
-        this.entries.addAll(entries);
+    public Collection<Entry> entries(Collection<EntryOrganizer> organizers) {
+        Collection<Entry> organized = new ArrayList<>(this.entries);
+        for (EntryOrganizer organizer : organizers) {
+            organized = organizer.organize(organized);
+        }
+        return organized;
     }
 
     /**
-     * Adds the specified entry to this day's entries.
+     * Adds the specified entry to the day's entries.
      *
      * @param entry entry to add
      */
@@ -72,7 +70,7 @@ public class Day {
     }
 
     /**
-     * Removes the specified entry from this day's entries.
+     * Removes the specified entry from the day's entries.
      *
      * @param entry entry to remove
      * @return true if removal was successful

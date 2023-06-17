@@ -1,7 +1,6 @@
 package cs3500.pa05.controller;
 
 import cs3500.pa05.model.BulletJournal;
-import cs3500.pa05.model.Category;
 import cs3500.pa05.model.DayOfWeek;
 import cs3500.pa05.model.Entry;
 import java.util.List;
@@ -64,12 +63,12 @@ public class JournalControllerImpl implements JournalController {
     }
 
     private void addCategory(String category) {
-        Category.add(category);
+        journal.addCategory(category);
     }
 
     private void removeCategory(String category) {
         // TODO: decide if we actually need this and an associated button
-        Category.remove(category);
+        journal.removeCategory(category);
     }
 
     private void initDays() {

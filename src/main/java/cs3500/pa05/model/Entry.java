@@ -28,7 +28,7 @@ public abstract class Entry {
      * Category the bullet journal entry falls under. (Optional)
      */
     @JsonProperty(value = "category")
-    private final Category category;
+    private final String category;
     /**
      * Description of the bullet journal entry. (Optional)
      */
@@ -58,7 +58,7 @@ public abstract class Entry {
             @JsonProperty("name") String name,
             @JsonProperty("day") DayOfWeek day,
             @JsonProperty("description") String description,
-            @JsonProperty("category") Category category) {
+            @JsonProperty("category") String category) {
         this.name = Objects.requireNonNull(name);
         this.day = Objects.requireNonNull(day);
         this.description = description;
@@ -102,7 +102,7 @@ public abstract class Entry {
      * @return category the entry falls under or null if the entry does not fall under any category
      */
     @JsonGetter("category")
-    public Category category() {
+    public String category() {
         return this.category;
     }
 
@@ -124,10 +124,5 @@ public abstract class Entry {
     @JsonIgnore
     public boolean isEvent() {
         return false;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s %s %s %s", name, day, description, category);
     }
 }

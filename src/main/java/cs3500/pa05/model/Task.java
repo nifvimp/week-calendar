@@ -2,6 +2,7 @@ package cs3500.pa05.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 /**
  * A task entry in a bullet journal.
  */
+@JsonIncludeProperties({"name", "day", "status", "description", "category"})
 @JsonPropertyOrder({"name", "day", "status", "description", "category"})
 public class Task extends Entry {
     /**
@@ -30,7 +32,7 @@ public class Task extends Entry {
             @JsonProperty("name") String name,
             @JsonProperty("day") DayOfWeek day,
             @JsonProperty("description") String description,
-            @JsonProperty("category") Category category) {
+            @JsonProperty("category") String category) {
         super(name, day, description, category);
         this.status = TaskStatus.INCOMPLETE;
     }

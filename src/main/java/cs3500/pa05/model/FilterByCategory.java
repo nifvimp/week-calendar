@@ -4,16 +4,17 @@ import java.util.Collection;
 
 /**
  * Filters entries for a specific category.
+ * @implNote is case-sensitive
  */
 public class FilterByCategory implements EntryOrganizer {
-  private final Category category;
+  private final String category;
 
   /**
    * Creates an entry organizer that filters for entries with the specified category.
    *
    * @param category category to filter for
    */
-  public FilterByCategory(Category category) {
+  public FilterByCategory(String category) {
     this.category = category;
   }
 
@@ -21,6 +22,7 @@ public class FilterByCategory implements EntryOrganizer {
    * Filters a collection of entries for a specific category.
    *
    * @param entries entries to filter
+   * @implNote is case-sensitive
    */
   @Override
   public Collection<Entry> organize(Collection<Entry> entries) {

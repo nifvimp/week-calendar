@@ -1,6 +1,7 @@
 package cs3500.pa05.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Objects;
@@ -8,6 +9,7 @@ import java.util.Objects;
 /**
  * An event entry in a bullet journal.
  */
+@JsonIncludeProperties({"name", "day", "interval", "description", "category"})
 @JsonPropertyOrder({"name", "day", "interval", "description", "category"})
 public class Event extends Entry {
     /**
@@ -31,7 +33,7 @@ public class Event extends Entry {
             @JsonProperty("day") DayOfWeek day,
             @JsonProperty("interval") TimeInterval interval,
             @JsonProperty("description") String description,
-            @JsonProperty("category") Category category) {
+            @JsonProperty("category") String category) {
         super(name, day, description, category);
         this.interval = Objects.requireNonNull(interval);
     }
