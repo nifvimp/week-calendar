@@ -3,9 +3,10 @@ package cs3500.pa05.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
+import jdk.jfr.Description;
 
 /**
- * An interval of time in minutes.
+ * An interval of time in a bullet journal.
  */
 public class TimeInterval {
     /**
@@ -27,7 +28,7 @@ public class TimeInterval {
      * Makes a new time interval object.
      *
      * @param start start of the interval
-     * @param duration duration of the interval
+     * @param duration duration of the interval (minutes)
      * @throws IllegalArgumentException if duration is negative
      */
     @JsonCreator
@@ -52,6 +53,33 @@ public class TimeInterval {
         // TODO: calculate end based on duration
         //  there are 1440 minutes in a day
         return null;
+    }
+
+    /**
+     * Gets teh timestamp of the start of the time interval.
+     *
+     * @return timestamp of the start of the time interval
+     */
+    public Timestamp start() {
+        return this.start;
+    }
+
+    /**
+     * Gets the timestamp of the end of the time interval.
+     *
+     * @return timestamp of the end of the time interval
+     */
+    public Timestamp end() {
+        return this.end;
+    }
+
+    /**
+     * Gets the duration in minutes of the time interval.
+     *
+     * @return duration in minutes
+     */
+    public int duration() {
+        return this.duration;
     }
 
     @Override

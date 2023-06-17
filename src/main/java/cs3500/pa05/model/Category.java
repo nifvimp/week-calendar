@@ -26,7 +26,7 @@ public class Category {
      *
      * @param name name of the category
      */
-    public Category(String name) {
+    private Category(String name) {
         this.name = name;
     }
 

@@ -36,6 +36,15 @@ public class Event extends Entry {
         this.interval = Objects.requireNonNull(interval);
     }
 
+    /**
+     * Gets the time interval of the event.
+     *
+     * @return time interval of the event
+     */
+    public TimeInterval interval() {
+        return this.interval;
+    }
+
     @Override
     public boolean isEvent() {
         return true;

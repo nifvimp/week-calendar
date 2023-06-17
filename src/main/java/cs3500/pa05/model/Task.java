@@ -46,7 +46,7 @@ public class Task extends Entry {
     }
 
     /**
-     * Updates the current completion status of the task
+     * Updates the current completion status of the task.
      *
      * @param status completion status to set the task to
      */
