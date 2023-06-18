@@ -42,9 +42,7 @@ public class EntryViewerComponent extends Dialog<Void> {
   @FXML
   private Button delete;
   private Entry oldEntry;
-  private JournalComponent journalComponent;
-  private Rectangle background;
-
+  private EntryComponent entryComponent;
 
   /**
    * Opens an entry viewer component with the information of an existing entry.
@@ -68,8 +66,13 @@ public class EntryViewerComponent extends Dialog<Void> {
     this.show();
   }
 
-  public EntryViewerComponent(JournalComponent journalComponent) {
-    this(null, journalComponent);
+  /**
+   * Opens a empty entry viewer component.
+   *
+   * @param entryComponent parent journal
+   */
+  public EntryViewerComponent(EntryComponent entryComponent) {
+    this(null, entryComponent);
   }
 
   /**
@@ -136,7 +139,7 @@ public class EntryViewerComponent extends Dialog<Void> {
   }
 
   public Entry updatedEntry() {
-    // TODO: change this to compile an new entry based on the FXML fields
+    // TODO: change this to compile an new entry based on the FXML fields (After making the event able to switch type)
     return new Task("No", DayOfWeek.MONDAY, null, null);
   }
 }
