@@ -34,13 +34,15 @@ public class EntryViewerComponent {
   @FXML
   private Button delete;
 
-  private Entry entry;
+  private Entry oldEntry;
+
+  private JournalComponent journalComponent;
 
   private Rectangle background;
 
 
 
-  public EntryViewerComponent(Entry entry) {
+  public EntryViewerComponent(Entry oldEntry, JournalComponent journalComponent) {
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("wahtDayDataEditor.fxml"));
     fxmlLoader.setRoot(this);
     fxmlLoader.setController(EntryViewerComponent.this);
@@ -49,30 +51,37 @@ public class EntryViewerComponent {
     } catch (IOException exception) {
       throw new RuntimeException(exception);
     }
-    initElements(entry);
+    initElements(oldEntry, journalComponent);
   }
 
-  private void initElements(Entry entry){
-    this.entry = entry;
-    nameField = new TextField(entry.name());
-    categoryField = new TextField(entry.category());
-    descriptionField = new TextField(entry.description());
-    if (entry.isEvent()) {
-      entrySpecificInfo = new TextField(((Event) entry).interval().toString());
-    } else if (entry.isTask()) {
+  private void initElements(Entry oldEntry, JournalComponent journalComponent){
+    this.journalComponent = journalComponent;
+    this.oldEntry = oldEntry;
+    nameField.setText(oldEntry.name());
+    categoryField.setText(oldEntry.category()); // TODO: change to dropdown menu (comboBox)
+    descriptionField.setText(oldEntry.description());
+    if (oldEntry.isEvent()) {
+      entrySpecificInfo = new TextField(((Event) oldEntry).interval().toString());
+    } else if (oldEntry.isTask()) {
       entrySpecificInfo = new CheckBox();
       boolean status = ((Task) oldEntry).getStatus().equals(TaskStatus.COMPLETE);
       ((CheckBox) entrySpecificInfo).setSelected(status);
     } else {
-      //TODO: What are you even doing??? Not an event or a task???
+      throw new RuntimeException("Entry was not an event nor a task.");
     }
-    JournalEventHandler journalEventHandler = new JournalEventHandler();
+
     save.setOnMouseClicked((event -> {
-      journalEventHandler.handle(new JournalEvent(JournalEvent.ADD_ENTRY));
-      journalEventHandler.handle(new JournalEvent(JournalEvent.REMOVE_ENTRY)); // TODO: somehow specify
+      journalComponent.fireEvent(
+          new EntryModificationEvent(EntryModificationEvent.ADD_ENTRY, updatedEntry()));
+      journalComponent.fireEvent(
+          new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, oldEntry));
     }));
+    delete.setOnMouseClicked((event -> journalComponent.fireEvent(
+        new JournalEvent(EntryModificationEvent.REMOVE_ENTRY))));
+  }
 
-    delete.setOnMouseClicked((event -> journalEventHandler.handle(new JournalEvent(JournalEvent.REMOVE_ENTRY))));
-
+  public Entry updatedEntry() {
+    // TODO: change this to compile an new entry based on the FXML fields
+    return new Task("No", DayOfWeek.MONDAY, null, null);
   }
 }

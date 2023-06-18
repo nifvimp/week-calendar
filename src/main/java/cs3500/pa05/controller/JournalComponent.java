@@ -74,7 +74,7 @@ public class JournalComponent extends BorderPane {
      * Creates a new journal component that displays the passed in bullet journal.
      *
      * @param journal journal to display
-     * @param parent parent of the component
+     * @param parent  parent of the component
      */
     public JournalComponent(BulletJournal journal, Node parent) {
         this.content = new HashMap<>();

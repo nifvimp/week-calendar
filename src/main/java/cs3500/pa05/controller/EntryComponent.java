@@ -41,7 +41,7 @@ public class EntryComponent extends VBox {
     } catch (IOException exception) {
       throw new RuntimeException(exception);
     }
-    initElements();
+    initElements(journalComponent);
   }
 
   private void initElements(JournalComponent component) {
