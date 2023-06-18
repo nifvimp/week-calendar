@@ -265,7 +265,8 @@ public class JournalComponent extends BorderPane {
             EntryModificationEvent e = (EntryModificationEvent) event;
             Entry entry = e.entry();
             journal.addEntry(entry);
-            content.get(entry.day()).getChildren().add(new EntryComponent(this.component, entry));
+            content.get(entry.day()).getChildren()
+                .add(new EntryComponent(this.component, entry));
         }
 
         /**
@@ -275,32 +276,6 @@ public class JournalComponent extends BorderPane {
             Entry temp = new Task("", DayOfWeek.SUNDAY, null, null);
             EntryComponent entryComponent = new EntryComponent(component, temp);
             new EntryViewerComponent(temp, entryComponent);
-        }
-
-        /**
-         * Checks if
-         */
-        private boolean checkBounds() {
-            int eventCount = journal.getAllEntries(new FilterEvent()).size();
-            int taskCount = journal.getAllEntries(new FilterTask()).size();
-            //if (eventCount > getMaxEvent) {
-            // return false;
-            //}
-
-            //if (taskCount > getMaxTask) {
-            // return false;
-            //}
-
-            //if (eventCount < 0) {
-            // return false;
-            //}
-
-            //if (taskCount < 0) {
-            // return false;
-            //}
-
-            // return true;
-            return false;
         }
 
         /**
