@@ -103,6 +103,6 @@
       <VBox prefHeight="19.0" prefWidth="1750.0" BorderPane.alignment="CENTER" />
    </bottom>
    <right>
-      <ListView fx:id="taskQueue" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <ListView fx:id="taskQueue" prefHeight="467.0" prefWidth="150.0" BorderPane.alignment="CENTER" />
    </right>
 </BorderPane>

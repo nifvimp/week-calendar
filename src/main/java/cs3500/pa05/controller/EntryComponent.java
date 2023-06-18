@@ -6,15 +6,11 @@ import cs3500.pa05.model.Task;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 
 /**
  * A controller for an entry
@@ -52,7 +48,7 @@ public class EntryComponent extends VBox {
     description.setText(entry.description());
     initEntrySpecificInfo(entry);
     container.onMouseClickedProperty().set(
-        event -> new EntryViewerComponent(entry, component)
+        event -> new EntryViewerComponent(entry, this)
     );
   }
 

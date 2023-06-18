@@ -91,10 +91,8 @@ public class JournalComponent extends BorderPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        this.addEventHandler(JournalEvent.ANY, new JournalEventHandler(this));
+        this.addEventFilter(JournalEvent.ANY, new JournalEventHandler(this));
         initComponents();
-
-
         // TODO: fix height and width alignment with box
         ((BorderPane) loaded).prefHeightProperty().bind(parent.getScene().heightProperty());
         ((BorderPane) loaded).prefWidthProperty().bind(parent.getScene().widthProperty());
@@ -242,7 +240,9 @@ public class JournalComponent extends BorderPane {
          * Opens a EntryViewerComponent to create an entry.
          */
         private void handleCreateEntry() {
-            EntryViewerComponent entryViewerComponent = new EntryViewerComponent(this.component);
+            Entry temp = new Task("", DayOfWeek.SUNDAY, null, null);
+            EntryComponent entryComponent = new EntryComponent(component, temp);
+            new EntryViewerComponent(temp, entryComponent);
         }
 
         /**
@@ -276,9 +276,10 @@ public class JournalComponent extends BorderPane {
          */
         private void handleRemoveEntry(Event event) {
             EntryModificationEvent e = (EntryModificationEvent) event;
+            EntryComponent target = (EntryComponent) e.getTarget();
             Entry entry = e.entry();
             journal.removeEntry(entry);
-            content.get(entry.day()).getChildren().remove(component);
+            content.get(entry.day()).getChildren().remove(target);
         }
 
         /**

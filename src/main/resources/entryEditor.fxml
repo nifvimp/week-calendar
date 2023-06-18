@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -28,6 +30,12 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Day:" textAlignment="CENTER" />
+                        <ChoiceBox fx:id="dayChoice" prefWidth="150.0" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
                         <Label text="Edit Category:">
                            <padding>
                               <Insets top="5.0" />
@@ -38,12 +46,12 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label fx:id="entrySpecificInfoType" text="Task or Event">
+                        <Label text="Entry Type:">
                            <padding>
                               <Insets top="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="entrySpecificInfo" promptText="Enter Duration Here" />
+                        <ChoiceBox fx:id="entryType" prefWidth="150.0" />
                      </children>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
@@ -54,6 +62,16 @@
                            </padding>
                         </Label>
                         <TextField fx:id="descriptionField" promptText="Enter Description Here" />
+                     </children>
+                  </VBox>
+                  <VBox fx:id="EntrySpecificContainer" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Placeholder:">
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </Label>
+                        <TextField promptText="Enter Description Here" />
                      </children>
                   </VBox>
                   <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -74,4 +92,7 @@
          </content>
       </ScrollPane>
    </header>
+   <buttonTypes>
+      <ButtonType fx:constant="CLOSE" />
+   </buttonTypes>
 </DialogPane>

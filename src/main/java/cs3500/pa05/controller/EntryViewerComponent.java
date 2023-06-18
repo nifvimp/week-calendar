@@ -9,27 +9,26 @@ import cs3500.pa05.model.TimeInterval;
 import cs3500.pa05.model.Timestamp;
 import java.io.IOException;
 import java.util.Objects;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 /**
  * A controller for an entry
  */
-public class EntryViewerComponent extends Dialog<Entry> {
+public class EntryViewerComponent extends Dialog<Void> {
   @FXML
   private TextField nameField;
+  @FXML
+  private ChoiceBox<DayOfWeek> dayChoice;
   @FXML
   private TextField categoryField;
   @FXML
@@ -42,27 +41,30 @@ public class EntryViewerComponent extends Dialog<Entry> {
   private Button save;
   @FXML
   private Button delete;
-
-  private BorderPane root;
-
   private Entry oldEntry;
   private JournalComponent journalComponent;
   private Rectangle background;
 
 
-
-  public EntryViewerComponent(Entry oldEntry, JournalComponent journalComponent) {
-    Objects.requireNonNull(journalComponent);
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/wahtDayDataEditor.fxml"));
+  /**
+   * Opens an entry viewer component with the information of an existing entry.
+   * @param oldEntry the existing entry
+   * @param entryComponent parent journal
+   */
+  public EntryViewerComponent(Entry oldEntry, EntryComponent entryComponent) {
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/entryEditor.fxml"));
+    this.entryComponent = Objects.requireNonNull(entryComponent);
+    this.initModality(Modality.NONE);
+    this.oldEntry = oldEntry;
     fxmlLoader.setController(EntryViewerComponent.this);
     try {
-      this.setDialogPane(fxmlLoader.load());
+      DialogPane loaded = fxmlLoader.load();
+      this.setDialogPane(loaded);
+      loaded.getScene().getWindow().setOnCloseRequest(e -> this.close());
     } catch (IOException exception) {
       throw new RuntimeException(exception);
     }
-    this.oldEntry = oldEntry;
-    initElements(journalComponent);
-    this.initModality(Modality.NONE);
+    initElements(entryComponent);
     this.show();
   }
 
@@ -70,15 +72,34 @@ public class EntryViewerComponent extends Dialog<Entry> {
     this(null, journalComponent);
   }
 
-  private void initElements(JournalComponent journalComponent){
-    this.journalComponent = journalComponent;
+  /**
+   * Sets up the view components.
+   *
+   * @param journalComponent parent journal
+   */
+  private void initElements(EntryComponent journalComponent) {
+    initEntryCommon();
+    initEntrySpecific();
+    initButtons();
+  }
+
+  /**
+   * Sets up the basic entry information.
+   */
+  private void initEntryCommon() {
     String name = (oldEntry == null) ? "" : oldEntry.name();
     String category = (oldEntry == null) ? "" : oldEntry.category();
     String description = (oldEntry == null) ? "" : oldEntry.description();
+    dayChoice.getItems().addAll(DayOfWeek.values());
     nameField.setText(name);
     categoryField.setText(category); // TODO: change to dropdown menu (comboBox)
     descriptionField.setText(description);
+  }
 
+  /**
+   * Sets up the entry specific information.
+   */
+  private void initEntrySpecific() {
     if (oldEntry.isEvent()) { // This feels scuffed. Will probably redo when swapped out for  dropdown menu
       if (oldEntry != null) {
         entrySpecificInfo = new TextField(((Event) oldEntry).interval().toString());
@@ -94,15 +115,24 @@ public class EntryViewerComponent extends Dialog<Entry> {
     } else {
       throw new RuntimeException("Entry was not an event nor a task.");
     }
+  }
 
+  /**
+   * Sets up the buttons event listeners.
+   */
+  private void initButtons() {
     save.setOnMouseClicked((event -> {
-      journalComponent.fireEvent(
+      entryComponent.fireEvent(
           new EntryModificationEvent(EntryModificationEvent.ADD_ENTRY, updatedEntry()));
-      journalComponent.fireEvent(
+      entryComponent.fireEvent(
           new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, oldEntry));
+      this.close();
     }));
-    delete.setOnMouseClicked((event -> journalComponent.fireEvent(
-        new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, oldEntry))));
+    delete.setOnMouseClicked((event -> {
+      entryComponent.fireEvent(
+          new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, oldEntry));
+      this.close(); // TODO: make event firing conditional if invalid.
+    }));
   }
 
   public Entry updatedEntry() {
