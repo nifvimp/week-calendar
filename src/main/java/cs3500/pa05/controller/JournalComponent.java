@@ -275,7 +275,16 @@ public class JournalComponent extends BorderPane {
         private void handleCreateEntry() {
             Entry temp = new Task("", DayOfWeek.SUNDAY, null, null);
             EntryComponent entryComponent = new EntryComponent(component, temp);
-            new EntryViewerComponent(temp, entryComponent);
+            EntryViewerComponent viewer = new EntryViewerComponent(temp, entryComponent);
+            viewer.setOnHidden(e -> {
+                Entry entry = viewer.getResult();
+                if (entry != null && "create".equals(viewer.getTitle())) {
+                    journal.addEntry(entry);
+                    content.get(entry.day()).getChildren()
+                        .add(new EntryComponent(this.component, entry));
+                    update();
+                }
+            });
         }
 
         /**
