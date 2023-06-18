@@ -5,11 +5,11 @@ import javafx.event.Event;
 import javafx.event.EventType;
 
 public class EntryModificationEvent extends JournalEvent {
-  public static final EventType<JournalEvent> ADD_ENTRY =
+  public static final EventType<EntryModificationEvent> ADD_ENTRY =
       new EventType<>(ANY, "ADD_ENTRY");
-  public static final EventType<JournalEvent> REMOVE_ENTRY =
+  public static final EventType<EntryModificationEvent> REMOVE_ENTRY =
       new EventType<>(ANY, "REMOVE_ENTRY");
-  public static final EventType<JournalEvent> EDIT_ENTRY =
+  public static final EventType<EntryModificationEvent> EDIT_ENTRY = // TODO: can remove
       new EventType<>(ANY, "EDIT_ENTRY");
   private final Entry entry;
 

@@ -8,6 +8,7 @@
 <?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -24,35 +25,61 @@
                <children>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="Edit Name:" textAlignment="CENTER" />
-                        <TextField fx:id="nameField" promptText="Enter Name Here" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="Day:" textAlignment="CENTER" />
-                        <ChoiceBox fx:id="dayChoice" prefWidth="150.0" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Label text="Edit Category:">
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" translateX="-25.0">
+                                       <children>
+                                          <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="50.0" text="Name:" textAlignment="CENTER" />
+                                          <TextField fx:id="nameField" prefWidth="150.0" promptText="Enter Name Here" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="50.0" text="Day:" textAlignment="CENTER" />
+                                          <ChoiceBox fx:id="dayChoice" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
                            <padding>
-                              <Insets top="5.0" />
+                              <Insets bottom="10.0" top="10.0" />
                            </padding>
-                        </Label>
-                        <TextField fx:id="categoryField" promptText="Enter Category Here" />
+                        </VBox>
                      </children>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label text="Entry Type:">
-                           <padding>
-                              <Insets top="5.0" />
-                           </padding>
-                        </Label>
-                        <ChoiceBox fx:id="entryType" prefWidth="150.0" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="210.0" translateX="-30.0">
+                                 <children>
+                                    <Label alignment="CENTER" prefWidth="100.0" text="Category:">
+                                       <padding>
+                                          <Insets top="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <ChoiceBox fx:id="categoryChoice" prefWidth="144.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="195.0">
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="22.0" prefWidth="100.0" text="Entry Type:">
+                                       <padding>
+                                          <Insets top="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <ChoiceBox fx:id="entryTypeChoice" prefWidth="150.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
                      </children>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
@@ -61,18 +88,16 @@
                               <Insets top="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="descriptionField" promptText="Enter Description Here" />
+                        <TextArea fx:id="descriptionField" prefHeight="200.0" prefWidth="500.0" promptText="Enter Description Here" />
                      </children>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
                   </VBox>
-                  <VBox fx:id="EntrySpecificContainer" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Label text="Placeholder:">
-                           <padding>
-                              <Insets top="5.0" />
-                           </padding>
-                        </Label>
-                        <TextField promptText="Enter Description Here" />
-                     </children>
+                  <VBox fx:id="entrySpecificContainer" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
                   </VBox>
                   <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
@@ -86,6 +111,12 @@
                            </padding>
                         </ButtonBar>
                      </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
                   </HBox>
                </children>
             </VBox>

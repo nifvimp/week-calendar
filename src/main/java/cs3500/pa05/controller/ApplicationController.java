@@ -85,6 +85,14 @@ public class ApplicationController implements IApplicationController {
   }
 
   /**
+   * Creates a new week tab.
+   */
+  private void newWeek() {
+    int last = tabs.getTabs().size() - 1;
+    tabs.getSelectionModel().select(tabs.getTabs().get(last));
+  }
+
+  /**
    * Prompts the user to selected .bujo files to load into the application.
    */
   private void load() {

@@ -221,6 +221,7 @@ public class BulletJournal {
    * @param entry entry to add
    */
   public void addEntry(Entry entry) {
+    entries.add(entry);
     week.addEntry(entry);
   }
 
@@ -230,6 +231,7 @@ public class BulletJournal {
    * @param entry entry to remove
    */
   public void removeEntry(Entry entry) {
+    entries.remove(entry);
     week.removeEntry(entry);
   }
 }

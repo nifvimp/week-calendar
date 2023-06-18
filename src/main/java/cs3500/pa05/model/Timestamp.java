@@ -26,18 +26,10 @@ public record Timestamp(@JsonProperty("day") DayOfWeek day,
     return (day.ordinal() * 1440 + time);
   }
 
-  // TODO: decide if you want to use Military Time or normal time
   @Override
   public String toString() {
-    // military
-    return String.format("%02d:%02d", time / 60, time % 60);
-
-    /*
-      // normal time
-
       int hour = time / 60;
-      String meridiem = (hour < 12) ? AM : PM;
+      String meridiem = (hour < 12) ? "AM" : "PM";
       return String.format("%d:%02d %s", hour % 12, time % 60, meridiem);
-     */
   }
 }

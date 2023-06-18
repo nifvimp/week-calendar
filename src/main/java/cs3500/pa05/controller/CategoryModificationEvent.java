@@ -4,10 +4,7 @@ import javafx.event.Event;
 import javafx.event.EventType;
 
 public class CategoryModificationEvent extends JournalEvent {
-  public static final EventType<CategoryModificationEvent> ADD_CATEGORY =
-      new EventType<>(ANY, "ADD_CATEGORY");
-  public static final EventType<CategoryModificationEvent> REMOVE_CATEGORY =
-      new EventType<>(ANY, "REMOVE_CATEGORY");
+
   private final String category;
 
   /**

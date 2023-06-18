@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cs3500.pa05.model.BulletJournal;
 import cs3500.pa05.model.DayOfWeek;
 import cs3500.pa05.model.Entry;
+import cs3500.pa05.model.FilterByCompletion;
 import cs3500.pa05.model.FilterEvent;
 import cs3500.pa05.model.FilterTask;
 import cs3500.pa05.model.SortByDay;
 import cs3500.pa05.model.Task;
+import cs3500.pa05.model.TaskStatus;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,6 +19,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -35,6 +39,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -60,6 +65,8 @@ public class JournalComponent extends BorderPane {
     @FXML
     private Button addCategory;
     @FXML
+    private Button removeCategory;
+    @FXML
     private TextField maxEvents;
     @FXML
     private TextField maxTasks;
@@ -68,7 +75,9 @@ public class JournalComponent extends BorderPane {
     @FXML
     private ListView<String> taskQueue;
     @FXML
-    private Group stats; // TODO: figure this out. prob need separate class
+    private VBox options; // TODO: figure this out. prob need separate class
+    @FXML
+    private ListView<String> stats;
     @FXML
     private GridPane days;
     private Map<DayOfWeek, VBox> content;
@@ -107,6 +116,7 @@ public class JournalComponent extends BorderPane {
         initTaskMax();
         initButtons();
         initTaskQueue();
+        initStats();
         initDays();
     }
 
@@ -125,10 +135,10 @@ public class JournalComponent extends BorderPane {
      */
     private void initEventMax() {
         this.maxEvents.textProperty().set(String.valueOf(this.journal.getEventMax()));
-        this.name.textProperty().addListener((observable, oldValue, newValue) -> {
+        this.maxEvents.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 this.maxEvents.setText(newValue.replaceAll("[^\\d]", ""));
-            } else {
+            } else if (!newValue.equals("")) {
                 journal.setEventMax(Integer.parseInt(newValue));
             }
         });
@@ -139,10 +149,10 @@ public class JournalComponent extends BorderPane {
      */
     private void initTaskMax() {
         this.maxTasks.textProperty().set(String.valueOf(this.journal.getTaskMax()));
-        this.name.textProperty().addListener((observable, oldValue, newValue) -> {
+        this.maxTasks.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 this.maxTasks.setText(newValue.replaceAll("[^\\d]", ""));
-            } else {
+            } else if (!newValue.equals("")) {
                 journal.setTaskMax(Integer.parseInt(newValue));
             }
         });
@@ -152,8 +162,11 @@ public class JournalComponent extends BorderPane {
         this.save.setOnAction(e -> this.fireEvent(new JournalEvent(JournalEvent.SAVE)));
         this.load.setOnAction(e -> this.fireEvent(new JournalEvent(JournalEvent.LOAD)));
         this.createEntry.setOnAction(
-            e -> this.fireEvent(new JournalEvent(JournalEvent.CREATE_ENTRY))
-        );
+            e -> this.fireEvent(new JournalEvent(JournalEvent.CREATE_ENTRY)));
+        this.addCategory.setOnAction(
+            e -> this.fireEvent(new JournalEvent(JournalEvent.ADD_CATEGORY)));
+        this.removeCategory.setOnAction(
+            e -> this.fireEvent(new JournalEvent(JournalEvent.REMOVE_CATEGORY)));
     }
 
     private void initTaskQueue() {
@@ -164,6 +177,19 @@ public class JournalComponent extends BorderPane {
             items.add(String.format("%s - %s", task.name(), task.getStatus()));
         }
         taskQueue.setItems(items);
+    }
+
+    private void initStats() {
+        ObservableList<String> items = FXCollections.observableArrayList();
+        int taskCount = journal.getAllEntries(new FilterTask()).size();
+        int eventCount = journal.getAllEntries(new FilterEvent()).size();
+        int taskCompleted = journal.getAllEntries(
+            new FilterByCompletion(TaskStatus.COMPLETE)).size();
+        double percentComplete = (double) taskCompleted / taskCount;
+        items.add(String.format("Total Tasks: %d", taskCount));
+        items.add(String.format("Total Events: %d", eventCount));
+        items.add(String.format("Tasks Complete: %2.2f%%", percentComplete * 100));
+        stats.setItems(items);
     }
 
     /**
@@ -192,7 +218,7 @@ public class JournalComponent extends BorderPane {
         // TODO: replace initial directory. Currently like this for convince
         fileChooser.setInitialDirectory(new File("src/main/resources"));
         File file = fileChooser.showSaveDialog(null);
-        file = new File(file.toString() + ".bujo");
+        file = new File(file.toString() + ".bujo"); // TODO: fix .bujo.bujo
         try {
             Files.write(file.toPath(), mapper.writeValueAsString(journal).getBytes());
         } catch (JsonProcessingException e) {
@@ -202,6 +228,11 @@ public class JournalComponent extends BorderPane {
                 String.format("Error writing journal to choose file location '%s'", file), e
             );
         }
+    }
+
+    private void update() {
+        initTaskQueue();
+        initStats();
     }
 
     private class JournalEventHandler implements EventHandler<JournalEvent> {
@@ -220,10 +251,11 @@ public class JournalComponent extends BorderPane {
                 case "ADD_ENTRY" -> handleAddEntry(event);
                 case "REMOVE_ENTRY" -> handleRemoveEntry(event);
                 case "EDIT_ENTRY" -> handleEditEntry(event);
-                case "ADD_CATEGORY" -> handleAddCategory(event);
-                case "REMOVE_CATEGORY" -> handleRemoveCategory(event);
+                case "ADD_CATEGORY" -> handleAddCategory();
+                case "REMOVE_CATEGORY" -> handleRemoveCategory();
                 default -> throw new IllegalArgumentException("Not an event");
             }
+            update();
         }
 
         /**
@@ -297,19 +329,23 @@ public class JournalComponent extends BorderPane {
         /**
          * Adds category to the journal.
          */
-        private void handleAddCategory(Event event) {
-            CategoryModificationEvent e = (CategoryModificationEvent) event;
-            String category = e.category();
-            journal.addCategory(category);
+        private void handleAddCategory() {
+            StringProperty category = new SimpleStringProperty();
+            new TextInputDialog().showAndWait().ifPresent(category::set);
+            if (!category.get().equals("")) {
+                journal.addCategory(category.get());
+            }
         }
 
         /**
          * Removes the category from the journal.
          */
-        private void handleRemoveCategory(Event event) {
-            CategoryModificationEvent e = (CategoryModificationEvent) event;
-            String category = e.category();
-            journal.removeCategory(category);
+        private void handleRemoveCategory() {
+            StringProperty category = new SimpleStringProperty(); // TODO: change to combo box or something.
+            new TextInputDialog().showAndWait().ifPresent(category::set);
+            if (!category.get().equals("")) {
+                journal.removeCategory(category.get());
+            }
         }
     }
 }
