@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -31,7 +32,7 @@
                      <children>
                         <Button fx:id="save" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Save" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                         <Button fx:id="load" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Load" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                        <Button fx:id="addEntry" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text=" Add Entry" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+                        <Button fx:id="createEntry" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text=" Create Entry" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
                         <TextField fx:id="maxEvents" prefHeight="25.0" prefWidth="150.0" promptText="Number of daily events" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
                         <TextField fx:id="maxTasks" prefHeight="25.0" prefWidth="150.0" promptText="Number of daily tasks" GridPane.columnIndex="5" GridPane.halignment="CENTER" />
                         <TextField fx:id="name" promptText="Week Name" />
@@ -95,13 +96,13 @@
          </children>
       </GridPane>
    </center>
-   <right>
-      <VBox fx:id="TaskQueue" prefHeight="265.0" prefWidth="49.0" BorderPane.alignment="CENTER" />
-   </right>
    <left>
       <VBox fx:id="OptionsLeft" prefHeight="265.0" prefWidth="46.0" BorderPane.alignment="CENTER" />
    </left>
    <bottom>
       <VBox prefHeight="19.0" prefWidth="1750.0" BorderPane.alignment="CENTER" />
    </bottom>
+   <right>
+      <ListView fx:id="taskQueue" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </right>
 </BorderPane>

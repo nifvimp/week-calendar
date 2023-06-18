@@ -88,8 +88,18 @@ public class BulletJournal {
    * @return name of the bullet journal
    */
   @JsonGetter("name")
-  public String name() {
+  public String getName() {
     return this.name;
+  }
+
+  /**
+   * Sets the name of the bullet journal.
+   *
+   * @param name new name
+   */
+  @JsonSetter
+  public void setName(String name) {
+    this.name = name;
   }
 
   /**

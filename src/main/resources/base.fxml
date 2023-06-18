@@ -20,9 +20,7 @@
              </Menu>
              <Menu mnemonicParsing="false" text="Edit">
                <items>
-                 <MenuItem fx:id="addEntry" mnemonicParsing="false" text="Add Entry" />
-                     <MenuItem fx:id="removeEntry" mnemonicParsing="false" text="Remove Entry" />
-                     <MenuItem fx:id="editEntry" mnemonicParsing="false" text="Edit Entry" />
+                 <MenuItem fx:id="createEntry" mnemonicParsing="false" text="Add Entry" />
                      <MenuItem fx:id="addCategory" mnemonicParsing="false" text="Add Category" />
                      <MenuItem fx:id="removeCategory" mnemonicParsing="false" text="Remove Category" />
                </items>

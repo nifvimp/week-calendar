@@ -5,11 +5,11 @@ import cs3500.pa05.model.Event;
 import cs3500.pa05.model.Task;
 import javafx.scene.Node;
 
-public class EntryComponentFactory {
+public class EntryComponentBuilder implements EntryVisitor {
   // TODO: decide what will make up a entry
   /* parameters for creating a new group of UI elements for an entry */
 
-  public EntryComponentFactory() {
+  public EntryComponentBuilder() {
     configure();
   }
 
@@ -40,5 +40,15 @@ public class EntryComponentFactory {
   public Node create(Task task) {
     // TODO: implement
     return null;
+  }
+
+  @Override
+  public void visit(Event event) {
+
+  }
+
+  @Override
+  public void visit(Task task) {
+
   }
 }

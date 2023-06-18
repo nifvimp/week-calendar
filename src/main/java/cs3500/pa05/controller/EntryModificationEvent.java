@@ -24,6 +24,11 @@ public class EntryModificationEvent extends JournalEvent {
     this.entry = entry;
   }
 
+  /**
+   * Gets the entry being modified.
+   *
+   * @return entry being modified
+   */
   public Entry entry() {
     return this.entry;
   }

@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 /**
  * A controller for an entry
@@ -50,7 +51,9 @@ public class EntryComponent extends VBox {
     category.setText(entry.category());
     description.setText(entry.description());
     initEntrySpecificInfo(entry);
-    container.onMouseClickedProperty().set(event -> new EntryViewerComponent(entry, component));
+    container.onMouseClickedProperty().set(
+        event -> new EntryViewerComponent(entry, component)
+    );
   }
 
   private void initEntrySpecificInfo(Entry entry) {

@@ -28,7 +28,7 @@ public class EntryViewerComponent {
   @FXML
   private Node entrySpecificInfo;
   @FXML
-  private Label entrySpecificInfoType;
+  private Label entrySpecificInfoType; // TODO: sus
   @FXML
   private Button save;
   @FXML
@@ -43,11 +43,11 @@ public class EntryViewerComponent {
 
 
   public EntryViewerComponent(Entry oldEntry, JournalComponent journalComponent) {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("wahtDayDataEditor.fxml"));
-    fxmlLoader.setRoot(this);
+    Objects.requireNonNull(journalComponent);
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/wahtDayDataEditor.fxml"));
     fxmlLoader.setController(EntryViewerComponent.this);
     try {
-      fxmlLoader.load();
+      this.setDialogPane(fxmlLoader.load());
     } catch (IOException exception) {
       throw new RuntimeException(exception);
     }
@@ -77,7 +77,7 @@ public class EntryViewerComponent {
           new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, oldEntry));
     }));
     delete.setOnMouseClicked((event -> journalComponent.fireEvent(
-        new JournalEvent(EntryModificationEvent.REMOVE_ENTRY))));
+        new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, oldEntry))));
   }
 
   public Entry updatedEntry() {

@@ -7,15 +7,20 @@ import cs3500.pa05.model.DayOfWeek;
 import cs3500.pa05.model.Entry;
 import cs3500.pa05.model.FilterEvent;
 import cs3500.pa05.model.FilterTask;
+import cs3500.pa05.model.SortByDay;
+import cs3500.pa05.model.Task;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -35,13 +40,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * Represents a controller for a bullet journal.
  */
 public class JournalComponent extends BorderPane {
     // purposeful static so that specified configuration shared between all components
-    private static final EntryComponentFactory factory = new EntryComponentFactory();
     private static final ObjectMapper mapper = new ObjectMapper();
     private BulletJournal journal;
     @FXML
@@ -51,15 +56,13 @@ public class JournalComponent extends BorderPane {
     @FXML
     private Button load;
     @FXML
-    private Button addEntry;
+    private Button createEntry;
     @FXML
     private Button addCategory;
     @FXML
     private TextField maxEvents;
     @FXML
     private TextField maxTasks;
-    @FXML
-    private MenuBar menuBar;
     @FXML
     private GridPane week;
     @FXML
@@ -77,10 +80,10 @@ public class JournalComponent extends BorderPane {
      * @param parent  parent of the component
      */
     public JournalComponent(BulletJournal journal, Node parent) {
-        this.content = new HashMap<>();
-        this.journal = journal;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/journal.fxml"));
         fxmlLoader.setController(this);
+        this.content = new HashMap<>();
+        this.journal = journal;
         Node loaded;
         try {
             loaded = fxmlLoader.load();
@@ -88,26 +91,81 @@ public class JournalComponent extends BorderPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        this.addEventHandler(JournalEvent.ANY, new JournalEventHandler(this));
         initComponents();
-        // TODO: fix
+
+
+        // TODO: fix height and width alignment with box
         ((BorderPane) loaded).prefHeightProperty().bind(parent.getScene().heightProperty());
         ((BorderPane) loaded).prefWidthProperty().bind(parent.getScene().widthProperty());
-        this.addEventHandler(JournalEvent.ANY, new JournalEventHandler(this));
     }
 
+    /**
+     * Initializes the view components of the journal display.
+     */
     private void initComponents() {
-        this.name.textProperty().set(this.journal.name());
+        initName();
+        initEventMax();
+        initTaskMax();
+        initButtons();
+        initTaskQueue();
+        initDays();
+    }
+
+    /**
+     * Initializes the name text field.
+     */
+    private void initName() {
+        this.name.textProperty().set(this.journal.getName());
+        this.name.textProperty().addListener((observable, oldValue, newValue) -> {
+            journal.setName(newValue);
+        });
+    }
+
+    /**
+     * Initializes the event max text field.
+     */
+    private void initEventMax() {
         this.maxEvents.textProperty().set(String.valueOf(this.journal.getEventMax()));
-        restrictToInteger(this.maxEvents);
+        this.name.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                this.maxEvents.setText(newValue.replaceAll("[^\\d]", ""));
+            } else {
+                journal.setEventMax(Integer.parseInt(newValue));
+            }
+        });
+    }
+
+    /**
+     * Initializes the task max text field.
+     */
+    private void initTaskMax() {
         this.maxTasks.textProperty().set(String.valueOf(this.journal.getTaskMax()));
-        restrictToInteger(this.maxTasks);
+        this.name.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                this.maxTasks.setText(newValue.replaceAll("[^\\d]", ""));
+            } else {
+                journal.setTaskMax(Integer.parseInt(newValue));
+            }
+        });
+    }
+
+    private void initButtons() {
         this.save.setOnAction(e -> this.fireEvent(new JournalEvent(JournalEvent.SAVE)));
         this.load.setOnAction(e -> this.fireEvent(new JournalEvent(JournalEvent.LOAD)));
-        this.addEntry.setOnAction(e -> {
-            Entry entry = null; // TODO: make this open up a new dialog box that makes a new entry
-            this.fireEvent(new EntryModificationEvent(EntryModificationEvent.ADD_ENTRY, entry));
-        });
-        initDays();
+        this.createEntry.setOnAction(
+            e -> this.fireEvent(new JournalEvent(JournalEvent.CREATE_ENTRY))
+        );
+    }
+
+    private void initTaskQueue() {
+        Collection<Entry> tasks = journal.getAllEntries(new FilterTask(), new SortByDay());
+        ObservableList<String> items = FXCollections.observableArrayList();
+        for (Entry entry : tasks) {
+            Task task = (Task) entry;
+            items.add(String.format("%s - %s", task.name(), task.getStatus()));
+        }
+        taskQueue.setItems(items);
     }
 
     /**
@@ -127,18 +185,25 @@ public class JournalComponent extends BorderPane {
         }
     }
 
-    // TODO: might want to separate and make a Utils class that adds modifiers to components
     /**
-     * Restricts the text field to only receive integer inputs.
-     *
-     * @param textField text field to restrict
+     * Prompts the user to choose a file location to save the bullet journal.
      */
-    private void restrictToInteger(TextField textField) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                textField.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
+    private void save() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose save location");
+        // TODO: replace initial directory. Currently like this for convince
+        fileChooser.setInitialDirectory(new File("src/main/resources"));
+        File file = fileChooser.showSaveDialog(null);
+        file = new File(file.toString() + ".bujo");
+        try {
+            Files.write(file.toPath(), mapper.writeValueAsString(journal).getBytes());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error converting journal to json", e);
+        } catch (IOException e) {
+            throw new RuntimeException(
+                String.format("Error writing journal to choose file location '%s'", file), e
+            );
+        }
     }
 
     private class JournalEventHandler implements EventHandler<JournalEvent> {
@@ -147,37 +212,19 @@ public class JournalComponent extends BorderPane {
         public JournalEventHandler(JournalComponent component) {
             this.component = component;
         }
+
+        // TODO: move delegated methods into the main class.
         @Override
         public void handle(JournalEvent event) {
             switch (event.getEventType().getName()) {
-                case "SAVE" -> handleSave();
+                case "SAVE" -> save();
+                case "CREATE_ENTRY" -> handleCreateEntry();
                 case "ADD_ENTRY" -> handleAddEntry(event);
                 case "REMOVE_ENTRY" -> handleRemoveEntry(event);
                 case "EDIT_ENTRY" -> handleEditEntry(event);
-                case "ADD_CATEGORY" -> handleAddCategory();
-                case "REMOVE_CATEGORY" -> handleRemoveCategory();
+                case "ADD_CATEGORY" -> handleAddCategory(event);
+                case "REMOVE_CATEGORY" -> handleRemoveCategory(event);
                 default -> throw new IllegalArgumentException("Not an event");
-            }
-        }
-
-        /**
-         * Prompts the user to choose a file location to save the bullet journal.
-         */
-        private void handleSave() {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Choose save location");
-            // TODO: replace initial directory. Currently like this for convince
-            fileChooser.setInitialDirectory(new File("src/main/resources"));
-            File file = fileChooser.showSaveDialog(null);
-            file = new File(file.toString() + ".bujo");
-            try {
-                Files.write(file.toPath(), mapper.writeValueAsString(journal).getBytes());
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException("Error converting journal to json", e);
-            } catch (IOException e) {
-                throw new RuntimeException(
-                    String.format("Error writing journal to choose file location '%s'", file), e
-                );
             }
         }
 
@@ -189,6 +236,13 @@ public class JournalComponent extends BorderPane {
             Entry entry = e.entry();
             journal.addEntry(entry);
             content.get(entry.day()).getChildren().add(new EntryComponent(this.component, entry));
+        }
+
+        /**
+         * Opens a EntryViewerComponent to create an entry.
+         */
+        private void handleCreateEntry() {
+            EntryViewerComponent entryViewerComponent = new EntryViewerComponent(this.component);
         }
 
         /**
@@ -240,19 +294,21 @@ public class JournalComponent extends BorderPane {
         }
 
         /**
-         * Adds category to the day
+         * Adds category to the journal.
          */
-        private void handleAddCategory() {
-            //checkBounds
-            // TODO: Complete
+        private void handleAddCategory(Event event) {
+            CategoryModificationEvent e = (CategoryModificationEvent) event;
+            String category = e.category();
+            journal.addCategory(category);
         }
 
         /**
-         * Removes the category from the day
+         * Removes the category from the journal.
          */
-        private void handleRemoveCategory() {
-            //checkbounds
-            // TODO: Complete
+        private void handleRemoveCategory(Event event) {
+            CategoryModificationEvent e = (CategoryModificationEvent) event;
+            String category = e.category();
+            journal.removeCategory(category);
         }
     }
 }

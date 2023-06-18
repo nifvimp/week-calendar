@@ -25,7 +25,7 @@ import java.util.Objects;
 })
 @JsonIncludeProperties({"name", "day", "description", "category"})
 @JsonPropertyOrder({"name", "day", "description", "category"})
-public abstract class Entry {
+public abstract class Entry implements VisitableEntry {
     /**
      * Category the bullet journal entry falls under. (Optional)
      */

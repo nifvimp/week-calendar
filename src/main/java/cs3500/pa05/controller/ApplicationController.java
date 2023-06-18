@@ -29,11 +29,7 @@ public class ApplicationController implements IApplicationController {
   @FXML
   private MenuItem save;
   @FXML
-  private MenuItem addEntry;
-  @FXML
-  private MenuItem removeEntry;
-  @FXML
-  private MenuItem editEntry;
+  private MenuItem createEntry;
   @FXML
   private MenuItem addCategory;
   @FXML
@@ -52,22 +48,14 @@ public class ApplicationController implements IApplicationController {
    */
   private void initMenuBar() {
     Node curr = tabs.getSelectionModel().getSelectedItem().getContent();
-    load.setOnAction(e -> tabs.fireEvent(
-        new JournalEvent(JournalEvent.LOAD)));
-    save.setOnAction(e -> curr.fireEvent(
-        new JournalEvent(JournalEvent.SAVE)));
-    addEntry.setOnAction(e -> curr.fireEvent(
-        new JournalEvent(EntryModificationEvent.ADD_ENTRY)));
-    removeEntry.setOnAction(e -> curr.fireEvent(
-        new JournalEvent(EntryModificationEvent.REMOVE_ENTRY)));
-    editEntry.setOnAction(e -> curr.fireEvent(
-        new JournalEvent(EntryModificationEvent.EDIT_ENTRY)));
-    addCategory.setOnAction(e -> curr.fireEvent(
-        new JournalEvent(JournalEvent.ADD_CATEGORY)));
-    removeCategory.setOnAction(e -> curr.fireEvent(
-        new JournalEvent(JournalEvent.REMOVE_CATEGORY)));
-    about.setOnAction(e -> tabs.fireEvent(
-        new JournalEvent(JournalEvent.HELP)));
+    load.setOnAction(e -> tabs.fireEvent(new JournalEvent(JournalEvent.LOAD)));
+    save.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.SAVE)));
+//    createEntry.setOnAction(e -> curr.fireEvent( // TODO: probably should only have create entry b/c difficulty of implementation
+//    addCategory.setOnAction(e -> {curr.fireEvent(
+//        new CategoryModificationEvent(CategoryModificationEvent.ADD_CATEGORY)));
+//    removeCategory.setOnAction(e -> curr.fireEvent(
+//        new CategoryModificationEvent(CategoryModificationEvent.REMOVE_CATEGORY)));
+    about.setOnAction(e -> tabs.fireEvent(new JournalEvent(JournalEvent.HELP)));
     tabs.addEventFilter(JournalEvent.LOAD, e -> load());
     tabs.addEventFilter(JournalEvent.HELP, e -> about());
     tabs.getTabs().add(newTabButton(tabs));
@@ -85,7 +73,7 @@ public class ApplicationController implements IApplicationController {
     BulletJournal journal = new BulletJournal("new journal");
     Tab newJournal = new Tab();
     newJournal.setContent(new JournalComponent(journal, tabs));
-    newJournal.setText(journal.name());
+    newJournal.setText(journal.getName());
     addTab.setClosable(false);
     tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
       if(newTab == addTab) {
@@ -118,7 +106,7 @@ public class ApplicationController implements IApplicationController {
         BulletJournal journal = mapper.convertValue(journalNode, BulletJournal.class);
         Tab tab = new Tab();
         tab.setContent(new JournalComponent(journal, tabs));
-        tab.setText(journal.name());
+        tab.setText(journal.getName());
         // TODO: set close action to make popup 'you didn't save!' thing
 //        tab.setOnCloseRequest(e.bujo -> {
 //
