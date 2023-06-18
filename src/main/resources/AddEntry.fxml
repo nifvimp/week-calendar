@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Scene xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="290.0">
+      <children>
+         <Label alignment="CENTER" prefHeight="42.0" prefWidth="96.0" text="Add Entry:">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Label>
+         <HBox alignment="TOP_CENTER" prefHeight="140.0" prefWidth="290.0">
+            <children>
+               <TextField prefWidth="290.0" promptText="Add entry here" />
+               <ScrollBar orientation="VERTICAL" />
+            </children>
+         </HBox>
+         <ButtonBar prefHeight="40.0" prefWidth="200.0">
+           <buttons>
+               <Button mnemonicParsing="false" text="Add" translateX="-75.0" />
+             <Button mnemonicParsing="false" text="Cancel" translateX="-50.0" />
+           </buttons>
+         </ButtonBar>
+      </children>
+   </VBox>
+</Scene>

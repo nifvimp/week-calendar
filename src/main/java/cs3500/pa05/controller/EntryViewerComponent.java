@@ -1,11 +1,11 @@
 package cs3500.pa05.controller;
 
+import cs3500.pa05.model.DayOfWeek;
 import cs3500.pa05.model.Entry;
 import cs3500.pa05.model.Event;
 import cs3500.pa05.model.Task;
 import cs3500.pa05.model.TaskStatus;
 import java.io.IOException;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -62,7 +61,7 @@ public class EntryViewerComponent {
       entrySpecificInfo = new TextField(((Event) entry).interval().toString());
     } else if (entry.isTask()) {
       entrySpecificInfo = new CheckBox();
-      boolean status = ((Task) entry).getStatus().equals(TaskStatus.COMPLETE);
+      boolean status = ((Task) oldEntry).getStatus().equals(TaskStatus.COMPLETE);
       ((CheckBox) entrySpecificInfo).setSelected(status);
     } else {
       //TODO: What are you even doing??? Not an event or a task???

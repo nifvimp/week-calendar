@@ -49,7 +49,7 @@ public class Day {
      * @param organizers organizers to organize the entries by
      * @return entries of the day organized by the passed in organizers
      */
-    public Collection<Entry> entries(Collection<EntryOrganizer> organizers) {
+    public Collection<Entry> entries(EntryOrganizer... organizers) {
         Collection<Entry> organized = new ArrayList<>(this.entries);
         for (EntryOrganizer organizer : organizers) {
             organized = organizer.organize(organized);

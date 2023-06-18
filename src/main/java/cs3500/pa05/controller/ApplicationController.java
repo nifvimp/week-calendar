@@ -52,17 +52,25 @@ public class ApplicationController implements IApplicationController {
    */
   private void initMenuBar() {
     Node curr = tabs.getSelectionModel().getSelectedItem().getContent();
-    load.setOnAction(e -> tabs.fireEvent(new JournalEvent(JournalEvent.LOAD)));
-    save.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.SAVE)));
-    addEntry.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.ADD_ENTRY)));
-    removeEntry.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.REMOVE_ENTRY)));
-    editEntry.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.EDIT_ENTRY)));
-    addCategory.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.ADD_CATEGORY)));
-    removeCategory.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.REMOVE_CATEGORY)));
-    about.setOnAction(e -> tabs.fireEvent(new JournalEvent(JournalEvent.HELP)));
-    tabs.addEventHandler(JournalEvent.LOAD, e -> load());
-    tabs.addEventHandler(JournalEvent.HELP, e -> about());
-//    tabs.getTabs().add(newTabButton(tabs));
+    load.setOnAction(e -> tabs.fireEvent(
+        new JournalEvent(JournalEvent.LOAD)));
+    save.setOnAction(e -> curr.fireEvent(
+        new JournalEvent(JournalEvent.SAVE)));
+    addEntry.setOnAction(e -> curr.fireEvent(
+        new JournalEvent(EntryModificationEvent.ADD_ENTRY)));
+    removeEntry.setOnAction(e -> curr.fireEvent(
+        new JournalEvent(EntryModificationEvent.REMOVE_ENTRY)));
+    editEntry.setOnAction(e -> curr.fireEvent(
+        new JournalEvent(EntryModificationEvent.EDIT_ENTRY)));
+    addCategory.setOnAction(e -> curr.fireEvent(
+        new JournalEvent(JournalEvent.ADD_CATEGORY)));
+    removeCategory.setOnAction(e -> curr.fireEvent(
+        new JournalEvent(JournalEvent.REMOVE_CATEGORY)));
+    about.setOnAction(e -> tabs.fireEvent(
+        new JournalEvent(JournalEvent.HELP)));
+    tabs.addEventFilter(JournalEvent.LOAD, e -> load());
+    tabs.addEventFilter(JournalEvent.HELP, e -> about());
+    tabs.getTabs().add(newTabButton(tabs));
   }
 
   /**
@@ -93,24 +101,28 @@ public class ApplicationController implements IApplicationController {
    */
   private void load() {
     FileChooser fileChooser = new FileChooser();
-//        fileChooser.setSelectedExtensionFilter(); TODO: configure this line
+    fileChooser.setSelectedExtensionFilter(
+        new FileChooser.ExtensionFilter("BUJO File", "*.bujo")
+    );
+    // TODO: replace intial directory. Currently like this for convince
     fileChooser.setInitialDirectory(
 //        new File(System.getProperty("user.home") + System.getProperty("file.separator"))
         new File("src/main/resources")
     );
     fileChooser.setTitle("Open .bujo File");
     Collection<File> files = fileChooser.showOpenMultipleDialog(null);
-    // TODO: check if the file is .bujo
-    //  give option to make empty bujo? make a button to make new thing
+    //  TODO: give option to make empty bujo? make a button to make new thing
     for (File file : files) {
       try {
         JsonNode journalNode = mapper.readTree(file);
         BulletJournal journal = mapper.convertValue(journalNode, BulletJournal.class);
-        Tab tab = new Tab();  // TODO: repalce with journal tab class or do
+        Tab tab = new Tab();
         tab.setContent(new JournalComponent(journal, tabs));
         tab.setText(journal.name());
-//        tab.setOnCloseRequest();
         // TODO: set close action to make popup 'you didn't save!' thing
+//        tab.setOnCloseRequest(e.bujo -> {
+//
+//        });
         tabs.getTabs().add(tab);
       } catch (IOException e) {
         throw new RuntimeException(

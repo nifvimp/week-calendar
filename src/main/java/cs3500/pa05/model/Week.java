@@ -59,7 +59,7 @@ public class Week {
      * @return map of the days of the week to the entries registered under them
      * organized by the organizers
      */
-    public Map<DayOfWeek, Collection<Entry>> getEntries(Collection<EntryOrganizer> organizers) {
+    public Map<DayOfWeek, Collection<Entry>> getEntries(EntryOrganizer... organizers) {
         Map<DayOfWeek, Collection<Entry>> organized = new LinkedHashMap<>();
         for (DayOfWeek day : DayOfWeek.values()) {
             organized.put(day, days.get(day).entries(organizers));

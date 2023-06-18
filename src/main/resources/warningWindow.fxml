@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Scene xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <VBox alignment="CENTER">
+      <children>
+         <HBox alignment="CENTER" prefHeight="143.0" prefWidth="404.0">
+            <children>
+               <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@warning.png" />
+                  </image>
+               </ImageView>
+               <VBox alignment="CENTER_LEFT" prefHeight="143.0" prefWidth="358.0">
+                  <children>
+                     <Label prefHeight="34.0" prefWidth="278.0" text="Looks like you forgot to save, would you like to?" wrapText="true">
+                        <font>
+                           <Font name="System Bold" size="12.0" />
+                        </font>
+                     </Label>
+                     <Label text="Your changes will be lost if you don't save them." wrapText="true" />
+                  </children>
+               </VBox>
+            </children>
+         </HBox>
+         <HBox alignment="TOP_CENTER" prefHeight="46.0" prefWidth="404.0">
+            <children>
+               <ButtonBar prefHeight="80.0" prefWidth="404.0">
+                 <buttons>
+                   <Button mnemonicParsing="false" text="Save" translateX="-100.0" />
+                     <Button layoutX="135.0" layoutY="26.0" mnemonicParsing="false" text="Do Not Save" translateX="-75.0" />
+                     <Button layoutX="135.0" layoutY="26.0" mnemonicParsing="false" text="Cancel" translateX="-50.0" />
+                 </buttons>
+               </ButtonBar>
+            </children>
+         </HBox>
+      </children>
+   </VBox>
+</Scene>

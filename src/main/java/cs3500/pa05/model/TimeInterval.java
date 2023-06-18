@@ -92,4 +92,9 @@ public class TimeInterval {
     public String formatDuration() {
         return String.format("%dh %02dm", duration / 60, duration % 60);
     }
+
+    @Override
+    public String toString() {
+       return String.format("%s - %s", start, end);
+    }
 }

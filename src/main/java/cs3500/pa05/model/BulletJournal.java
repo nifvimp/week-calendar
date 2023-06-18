@@ -176,7 +176,7 @@ public class BulletJournal {
    * @param organizers to organize the entries by
    * @return sorted collection of entries in the journal organized by the organizers passed in.
    */
-  public Collection<Entry> getAllEntries(Collection<EntryOrganizer> organizers) {
+  public Collection<Entry> getAllEntries(EntryOrganizer... organizers) {
     Collection<Entry> entries = new ArrayList<>(this.entries);
     for (EntryOrganizer organizer : organizers) {
       entries = organizer.organize(entries);
@@ -201,7 +201,7 @@ public class BulletJournal {
    * @return map of the days of the week to the entries registered under them organized by
    *         the organizers passed in
    */
-  public Map<DayOfWeek, Collection<Entry>> getEntryMap(Collection<EntryOrganizer> organizers) {
+  public Map<DayOfWeek, Collection<Entry>> getEntryMap(EntryOrganizer... organizers) {
     return this.week.getEntries(organizers);
   }
 
