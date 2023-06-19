@@ -58,7 +58,7 @@ public class TimeInterval {
     }
 
     /**
-     * Gets teh timestamp of the start of the time interval.
+     * Gets the timestamp of the start of the time interval.
      *
      * @return timestamp of the start of the time interval
      */

@@ -6,13 +6,18 @@ import cs3500.pa05.model.BulletJournal;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.FileChooser;
 
 /**
@@ -30,6 +35,12 @@ public class ApplicationController implements IApplicationController {
   private MenuItem save;
   @FXML
   private MenuItem createEntry;
+  @FXML
+  private MenuItem newWeek;
+  @FXML
+  private MenuItem createTask;
+  @FXML
+  private MenuItem createEvent;
   @FXML
   private MenuItem addCategory;
   @FXML
@@ -50,6 +61,7 @@ public class ApplicationController implements IApplicationController {
     Node curr = tabs.getSelectionModel().getSelectedItem().getContent();
     load.setOnAction(e -> tabs.fireEvent(new JournalEvent(JournalEvent.LOAD)));
     save.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.SAVE)));
+    newWeek.setOnAction(e -> );
 //    createEntry.setOnAction(e -> curr.fireEvent( // TODO: probably should only have create entry b/c difficulty of implementation
 //    addCategory.setOnAction(e -> {curr.fireEvent(
 //        new CategoryModificationEvent(CategoryModificationEvent.ADD_CATEGORY)));
@@ -59,6 +71,26 @@ public class ApplicationController implements IApplicationController {
     tabs.addEventFilter(JournalEvent.LOAD, e -> load());
     tabs.addEventFilter(JournalEvent.HELP, e -> about());
     tabs.getTabs().add(newTabButton(tabs));
+    initShortcuts();
+  }
+
+
+  private void initShortcuts() {
+    load.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
+    save.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+    newWeek.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
+    createEvent.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN));
+    createTask.setAccelerator(new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN));
+    addCategory.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
+    removeCategory.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
+
+    load.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.META_DOWN));
+    save.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN));
+    newWeek.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.META_DOWN));
+    createEvent.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.META_DOWN));
+    createTask.setAccelerator(new KeyCodeCombination(KeyCode.T, KeyCombination.META_DOWN));
+    addCategory.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.META_DOWN));
+    removeCategory.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.META_DOWN));
   }
 
   /**
