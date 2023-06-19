@@ -95,6 +95,10 @@ public class TimeInterval {
 
     @Override
     public String toString() {
-       return String.format("%s - %s", start, end);
+        if (start.day() == end.day()) {
+            return String.format("%s - %s", start, end);
+        } else {
+            return String.format("%s - %s %s", start, end.day(), end);
+        }
     }
 }

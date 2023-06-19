@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 /**
@@ -33,10 +36,10 @@ public class EntryComponent extends VBox {
    * @param journalComponent
    * @param entry
    */
-  public EntryComponent(JournalComponent journalComponent, Entry entry) {
+  public EntryComponent(JournalComponent journalComponent, Entry entry) { // TODO: setup text wrap
     this.EntrySpecificInfo = new ArrayList<>();
     this.entry = entry;
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/wahtDayData.fxml"));
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/entry.fxml"));
     fxmlLoader.setController(EntryComponent.this);
     try {
       this.getChildren().add(fxmlLoader.load());
@@ -60,12 +63,20 @@ public class EntryComponent extends VBox {
   private void initEntrySpecificInfo(Entry entry) {
     VBox info = new VBox();
     info.setAlignment(Pos.TOP_CENTER);
+    HBox box = new HBox();
+    box.setAlignment(Pos.CENTER_LEFT);
+    box.setPadding(new Insets(10, 0 , 0, 10));
+    info.getChildren().add(box);
+    Label name = new Label();
+    Label val = new Label();
+    box.getChildren().add(name);
+    box.getChildren().add(val);
     if (entry.isEvent()) {
-      info.getChildren().add(new Label("Interval"));
-      info.getChildren().add(new Label(((Event) entry).interval().toString()));
+      name.setText("Interval: ");
+      val.setText((((Event) entry).interval().toString()));
     } else if (entry.isTask()) {
-      info.getChildren().add(new Label("Progress"));
-      info.getChildren().add(new Label(((Task) entry).getStatus().toString()));
+      name.setText("Progress: ");
+      val.setText(((Task) entry).getStatus().toString());
     } else {
       throw new RuntimeException("Passed entry is neither an event nor task.");
     }

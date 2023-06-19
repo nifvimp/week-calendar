@@ -16,8 +16,7 @@
 
 
 ## Section 4: Quality of Life
-- Week Start                         TODO
-- Auto #tags                         TODO
+- Auto #tags
 - Week Tabs
   - added new week button on tab
   - added confirmation pop up when closing tabs

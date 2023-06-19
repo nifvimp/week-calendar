@@ -30,6 +30,7 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -43,6 +44,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -54,6 +56,7 @@ public class JournalComponent extends BorderPane {
     // purposeful static so that specified configuration shared between all components
     private static final ObjectMapper mapper = new ObjectMapper();
     private BulletJournal journal;
+    // TODO: add dropdown and text field for filtering by category and organizing by implemented organizers
     @FXML
     private TextField name;
     @FXML
@@ -199,12 +202,18 @@ public class JournalComponent extends BorderPane {
         Map<DayOfWeek, Collection<Entry>> entryMap = journal.getEntryMap();
         for (DayOfWeek day : entryMap.keySet()) {
             ScrollPane scrollPane = new ScrollPane();
-            VBox content = new VBox(new Label(day.name()));
+            scrollPane.setVmin(Double.MAX_VALUE);
+            VBox content = new VBox();
+            content.setAlignment(Pos.TOP_CENTER);
             scrollPane.setContent(content);
+            scrollPane.setFitToHeight(true);
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             for (Entry entry : entryMap.get(day)) {
                 content.getChildren().add(new EntryComponent(this, entry));
             }
-            this.days.add(scrollPane, day.ordinal(), 0);
+            VBox vbox = (VBox) this.days.getChildren().get(day.ordinal());
+            vbox.getChildren().add((scrollPane));
+            VBox.setVgrow(scrollPane, Priority.ALWAYS);
             this.content.put(day, content);
         }
     }
