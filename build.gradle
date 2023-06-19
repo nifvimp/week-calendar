@@ -17,12 +17,15 @@ application {
     mainClass = 'cs3500.pa05.Driver'
 }
 
-// JaCoCo for code coverage
-test {
-    finalizedBy jacocoTestReport // generate report after code coverage test
-}
-jacocoTestReport {
-    dependsOn test // make sure that test task run before reports are run.
+jar {
+    manifest {
+        attributes 'Main-Class': 'cs3500.pa05.Driver'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
 }
 
 group 'cs3500.pa05'
