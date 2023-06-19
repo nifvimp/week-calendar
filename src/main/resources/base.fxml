@@ -20,9 +20,11 @@
              </Menu>
              <Menu mnemonicParsing="false" text="Edit">
                <items>
-                 <MenuItem fx:id="createEntry" mnemonicParsing="false" text="Add Entry" />
                      <MenuItem fx:id="addCategory" mnemonicParsing="false" text="Add Category" />
                      <MenuItem fx:id="removeCategory" mnemonicParsing="false" text="Remove Category" />
+                     <MenuItem fx:id="createTask" mnemonicParsing="false" text="Remove Category" />
+                     <MenuItem fx:id="createEvent" mnemonicParsing="false" text="Remove Category" />
+                     <MenuItem fx:id="newWeek" mnemonicParsing="false" text="Remove Category" />
                </items>
              </Menu>
              <Menu mnemonicParsing="false" text="Help">

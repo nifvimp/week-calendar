@@ -3,18 +3,23 @@ package cs3500.pa05.controller;
 import cs3500.pa05.model.DayOfWeek;
 import cs3500.pa05.model.Entry;
 import cs3500.pa05.model.Event;
+import cs3500.pa05.model.FilterEvent;
+import cs3500.pa05.model.FilterTask;
 import cs3500.pa05.model.Task;
 import cs3500.pa05.model.TaskStatus;
 import cs3500.pa05.model.TimeInterval;
 import cs3500.pa05.model.Timestamp;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -28,6 +33,7 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 
@@ -35,8 +41,6 @@ import javafx.stage.Modality;
  * A controller for an entry
  */
 public class EntryViewerComponent extends Dialog<Entry> {
-  private IntegerProperty eventMax;
-  private IntegerProperty taskMax;
   @FXML
   private TextField nameField;
   @FXML
@@ -77,19 +81,13 @@ public class EntryViewerComponent extends Dialog<Entry> {
       throw new RuntimeException(exception);
     }
     initElements(entryComponent);
-    this.setResultConverter(button -> updatedEntry());
+    this.setResultConverter(buttonType -> {
+        if (buttonType == ButtonType.APPLY) { // TODO: should not use own buttons but inbuilt dialog pane buttons
+          return updatedEntry();
+        }
+        return null;
+    });
     this.show();
-  }
-
-  /**
-   * Binds the Integer Properties
-   *
-   * @param tasks max tasks
-   * @param events max events
-   */
-  public void bindEntryMaximum(IntegerProperty tasks, IntegerProperty events) {
-    this.taskMax.bind(tasks);
-    this.eventMax.bind(events);
   }
 
   /**
@@ -107,9 +105,10 @@ public class EntryViewerComponent extends Dialog<Entry> {
    * @param journalComponent parent journal
    */
   private void initElements(EntryComponent journalComponent) {
+    initButtons();
+    initEntryDelegation();
     initEntryCommon();
     initEntrySpecific();
-    initButtons();
   }
 
   /**
@@ -121,6 +120,7 @@ public class EntryViewerComponent extends Dialog<Entry> {
     String category = (oldEntry == null) ? "" : oldEntry.category();
     String description = (oldEntry == null) ? "" : oldEntry.description();
     String entryType = (oldEntry == null) ? "Task" : (oldEntry.isTask()) ? "Task" : "Event";
+    categoryChoice.getItems().addAll(entryComponent.parent().journal().getCategories());
     dayChoice.getItems().addAll(DayOfWeek.values());
     nameField.setText(name);
     dayChoice.getSelectionModel().select(day);
@@ -130,18 +130,17 @@ public class EntryViewerComponent extends Dialog<Entry> {
   }
 
   /**
-   * Sets up the entry specific information.
+   * Initializes the handlers that handles making the fields for different type of entries.
    */
-  private void initEntrySpecific() {
+  private void initEntryDelegation() {
     entryTypeChoice.setItems(FXCollections.observableArrayList("Task", "Event"));
     entryTypeChoice.setOnAction(e -> {
       entrySpecificContainer.getChildren().clear();
       entrySpecificValues.clear();
       String selection = entryTypeChoice.getValue();
-      // TODO: add based on current value of entryTypeChoice.
       switch(selection) {
         case "Task" -> {
-          entrySpecificContainer.getChildren().add(new Label("Task completed."));
+          entrySpecificContainer.getChildren().add(new Label("Task Completed"));
           CheckBox checkBox = new CheckBox();
           entrySpecificValues.add(0, checkBox);
           entrySpecificContainer.getChildren().add(checkBox);
@@ -171,7 +170,6 @@ public class EntryViewerComponent extends Dialog<Entry> {
           entrySpecificValues.add(2, halfOfDay);
           entrySpecificContainer.getChildren().add(halfOfDay);
 
-
           entrySpecificContainer.getChildren().add(new Label("Duration"));
           ComboBox<Integer> durationHour = new ComboBox<>();
           durationHour.setPromptText("Hour");
@@ -191,9 +189,29 @@ public class EntryViewerComponent extends Dialog<Entry> {
         }
       }
     });
-    switch(entryTypeChoice.getValue()) {
-      case "Task" -> {} // TODO: init the view stuff
-      case "Event" -> {}
+  }
+
+  /**
+   * Sets up the entry specific information.
+   */
+  private void initEntrySpecific() {
+    ObservableList<Node> children = entrySpecificContainer.getChildren();
+     switch(entryTypeChoice.getValue()) {
+      case "Task" -> {
+        boolean checked = ((Task) oldEntry).getStatus() == TaskStatus.COMPLETE;
+        ((CheckBox) entrySpecificValues.get(0)).setSelected(checked);
+      }
+      case "Event" -> {
+        Event event = (Event) oldEntry;
+        int time = event.interval().start().time();
+        int duration = event.interval().duration();
+        int timeOfDay = time / 720;
+        ((ComboBox<?>) children.get(1)).getSelectionModel().select((time / 60) % 12);
+        ((ComboBox<?>) children.get(2)).getSelectionModel().select((time % 60) / 10);
+        ((ComboBox<?>) children.get(3)).getSelectionModel().select(timeOfDay);
+        ((ComboBox<?>) children.get(5)).getSelectionModel().select((duration / 60) % 12);
+        ((ComboBox<?>) children.get(6)).getSelectionModel().select((duration % 60) / 10);
+      }
     }
 //    if (oldEntry.isEvent()) { // This feels scuffed. Will probably redo when swapped out for  dropdown menu
 //      if (oldEntry != null) {
@@ -217,12 +235,31 @@ public class EntryViewerComponent extends Dialog<Entry> {
    */
   private void initButtons() {
     save.setOnMouseClicked((event -> {
-      entryComponent.fireEvent(
-          new EntryModificationEvent(EntryModificationEvent.ADD_ENTRY, updatedEntry()));
-      entryComponent.fireEvent(
-          new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, oldEntry));
-      this.setTitle("create"); // TODO: Extraordinarily sus
-      this.close();
+      Collection<Entry> entries = entryComponent.parent().journal()
+          .getEntryMap().get(dayChoice.getValue());
+      int currTasks = new FilterTask().organize(entries).size();
+      int currEvents = new FilterEvent().organize(entries).size();
+      int maxTasks = entryComponent.parent().journal().getTaskMax();
+      int maxEvents = entryComponent.parent().journal().getEventMax();
+      if ((entryTypeChoice.getValue().equals("Task") && maxTasks > currTasks)
+          || (entryTypeChoice.getValue().equals("Event") && maxEvents > currEvents)) {
+        entryComponent.fireEvent(
+            new EntryModificationEvent(EntryModificationEvent.ADD_ENTRY, updatedEntry()));
+        entryComponent.fireEvent(
+            new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, oldEntry));
+        this.setTitle("create"); // TODO: Extraordinarily sus
+        this.getDialogPane().lookupButton(ButtonType.APPLY).fireEvent(new ActionEvent());
+      } else {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error!");
+        alert.setHeaderText("Limit Exceeded");
+        if (entryTypeChoice.getValue().equals("Task")) {
+          alert.setContentText("Cannot add more tasks. Maximum limit reached.");
+        } else if (entryTypeChoice.getValue().equals("Event")) {
+          alert.setContentText("Cannot add more events. Maximum limit reached.");
+        }
+        alert.showAndWait();
+      }
     }));
     delete.setOnMouseClicked((event -> {
       entryComponent.fireEvent(
@@ -238,17 +275,25 @@ public class EntryViewerComponent extends Dialog<Entry> {
     String description = descriptionField.getText();
     DayOfWeek day = dayChoice.getValue();
     Entry entry = null;
-    switch(entryTypeChoice.getValue()) {
+    switch (entryTypeChoice.getValue()) {
       case "Task" -> {
-//        TaskStatus status = children.get(1) TODO: do something with this
+        TaskStatus status = (((CheckBox) children.get(1)).selectedProperty().get())
+            ? TaskStatus.COMPLETE : TaskStatus.INCOMPLETE;
         Task task = new Task(name, day, description, category);
-        task.setStatus(TaskStatus.COMPLETE);
+        task.setStatus(status);
         entry = task;
       }
       case "Event" -> {
-//        int time = Integer.parseInt(((TextField) children.get(1)).getText()); // TODO: make the text field programmatically
-//        int duration = Integer.parseInt(((TextField) children.get(2)).getText());
-        TimeInterval interval = new TimeInterval(new Timestamp(day, 100), 100);
+        int startHour = (Integer) (((ComboBox<?>) children.get(1)).getValue());
+        int startMin = (Integer) (((ComboBox<?>) children.get(2)).getValue());
+        String startMeridiem = ((String) ((ComboBox<?>) children.get(3)).getValue());
+        int durationHour = (Integer) (((ComboBox<?>) children.get(5)).getValue());
+        int durationMin = (Integer) (((ComboBox<?>) children.get(6)).getValue());
+        TimeInterval interval = new TimeInterval(
+            new Timestamp(day,
+                (((startMeridiem.equals("PM")) ? 12 : 0) + startHour) * 60 + startMin),
+            durationHour * 60 + durationMin
+        );
         entry = new Event(name, day, interval, description, category);
       }
     }

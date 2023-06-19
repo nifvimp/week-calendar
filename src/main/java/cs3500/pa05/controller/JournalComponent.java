@@ -230,6 +230,10 @@ public class JournalComponent extends BorderPane {
         }
     }
 
+    public BulletJournal journal() {
+        return this.journal;
+    }
+
     private void update() {
         initTaskQueue();
         initStats();

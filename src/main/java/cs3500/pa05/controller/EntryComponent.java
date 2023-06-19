@@ -67,4 +67,13 @@ public class EntryComponent extends VBox {
     EntrySpecificInfo.add(info);
     container.getChildren().add(2, info);
   }
+
+  /**
+   * Gets the journal parent of the entry.
+   *
+   * @return journal parent.
+   */
+  public JournalComponent parent() {
+    return this.journalComponent;
+  }
 }

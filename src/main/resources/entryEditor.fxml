@@ -125,5 +125,6 @@
    </header>
    <buttonTypes>
       <ButtonType fx:constant="CLOSE" />
+      <ButtonType fx:constant="APPLY" />
    </buttonTypes>
 </DialogPane>
