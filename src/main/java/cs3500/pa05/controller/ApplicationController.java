@@ -3,6 +3,7 @@ package cs3500.pa05.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cs3500.pa05.model.BulletJournal;
+import cs3500.pa05.view.SplashView;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
