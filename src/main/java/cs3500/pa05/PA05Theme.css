@@ -1,0 +1,7 @@
+.root {
+    -fx-background-color: #383838;
+}
+.label {
+    -fx-font-family: "Comic Sans MS";
+    -fx-text-fill: "white";
+}
