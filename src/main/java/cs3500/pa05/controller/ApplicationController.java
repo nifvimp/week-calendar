@@ -55,21 +55,19 @@ public class ApplicationController implements IApplicationController {
   }
 
   private void showSplash() {
-//    FXMLLoader loader = new FXMLLoader(getClass().getResource("Splash.fxml"));
-//    try {
-//      Scene scene = new Scene(loader.load());
-//      Stage stage = new Stage();
-//      stage.setScene(scene);
-//      stage.sizeToScene();
-//      stage.setResizable(false);
-//      stage.show();
-//      Thread.sleep(1000);
-//      stage.close();
-//    } catch (IOException e) {
-//      throw new RuntimeException("Failed to load splash screen." + e);
-//    } catch (InterruptedException e) {
-//      //Cannot happen (only happens if sleep time is negative which it isn't)
-//    }
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(getClass().getClassLoader().getResource("Splash.fxml"));
+    try {
+      Stage stage = new Stage();
+      Scene scene = loader.load();
+      stage.setScene(scene);
+      stage.setTitle("Bullet Journal");
+      stage.show();
+    } catch (IOException e) {
+      throw new RuntimeException("Failed to load splash screen." + e);
+    //} catch (InterruptedException e) {
+      //Cannot happen since we aren't multi threading
+    }
   }
 
   /**
@@ -141,6 +139,8 @@ public class ApplicationController implements IApplicationController {
    * Prompts the user to selected .bujo files to load into the application.
    */
   private void load() {
+    
+
     FileChooser fileChooser = new FileChooser();
     fileChooser.setSelectedExtensionFilter(
         new FileChooser.ExtensionFilter("BUJO File", "*.bujo")
