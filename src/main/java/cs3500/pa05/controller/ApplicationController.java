@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -18,6 +19,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * Represents a controller for the application.
@@ -47,8 +49,27 @@ public class ApplicationController implements IApplicationController {
 
   @Override
   public void run() {
+    showSplash();
     load();
     initMenuBar();
+  }
+
+  private void showSplash() {
+//    FXMLLoader loader = new FXMLLoader(getClass().getResource("Splash.fxml"));
+//    try {
+//      Scene scene = new Scene(loader.load());
+//      Stage stage = new Stage();
+//      stage.setScene(scene);
+//      stage.sizeToScene();
+//      stage.setResizable(false);
+//      stage.show();
+//      Thread.sleep(1000);
+//      stage.close();
+//    } catch (IOException e) {
+//      throw new RuntimeException("Failed to load splash screen." + e);
+//    } catch (InterruptedException e) {
+//      //Cannot happen (only happens if sleep time is negative which it isn't)
+//    }
   }
 
   /**
@@ -124,7 +145,7 @@ public class ApplicationController implements IApplicationController {
     fileChooser.setSelectedExtensionFilter(
         new FileChooser.ExtensionFilter("BUJO File", "*.bujo")
     );
-    // TODO: replace intial directory. Currently like this for convince
+    // TODO: replace initial directory. Currently like this for convince
     fileChooser.setInitialDirectory(
 //        new File(System.getProperty("user.home") + System.getProperty("file.separator"))
         new File("src/main/resources")
