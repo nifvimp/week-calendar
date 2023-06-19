@@ -6,12 +6,11 @@ import cs3500.pa05.model.BulletJournal;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -33,8 +32,6 @@ public class ApplicationController implements IApplicationController {
   private MenuItem load;
   @FXML
   private MenuItem save;
-  @FXML
-  private MenuItem createEntry;
   @FXML
   private MenuItem newWeek;
   @FXML
@@ -61,35 +58,30 @@ public class ApplicationController implements IApplicationController {
     Node curr = tabs.getSelectionModel().getSelectedItem().getContent();
     load.setOnAction(e -> tabs.fireEvent(new JournalEvent(JournalEvent.LOAD)));
     save.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.SAVE)));
-//    createEntry.setOnAction(e -> curr.fireEvent( // TODO: probably should only have create entry b/c difficulty of implementation
-//    addCategory.setOnAction(e -> {curr.fireEvent(
-//        new CategoryModificationEvent(CategoryModificationEvent.ADD_CATEGORY)));
-//    removeCategory.setOnAction(e -> curr.fireEvent(
-//        new CategoryModificationEvent(CategoryModificationEvent.REMOVE_CATEGORY)));
+    // TODO: change create_entry event back to entryModificationEvent
+    createEvent.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.CREATE_ENTRY)));
+    createTask.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.CREATE_ENTRY)));
+    addCategory.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.ADD_CATEGORY)));
+    removeCategory.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.REMOVE_CATEGORY)));
     about.setOnAction(e -> tabs.fireEvent(new JournalEvent(JournalEvent.HELP)));
+    newWeek.setOnAction(e -> newWeek());
     tabs.addEventFilter(JournalEvent.LOAD, e -> load());
     tabs.addEventFilter(JournalEvent.HELP, e -> about());
     tabs.getTabs().add(newTabButton(tabs));
     initShortcuts();
   }
 
-
+  /**
+   * Initializes shortcuts.
+   */
   private void initShortcuts() {
-    load.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
-    save.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
-    newWeek.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
-    createEvent.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN));
-    createTask.setAccelerator(new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN));
-    addCategory.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
-    removeCategory.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
-
-    load.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.META_DOWN));
-    save.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN));
-    newWeek.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.META_DOWN));
-    createEvent.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.META_DOWN));
-    createTask.setAccelerator(new KeyCodeCombination(KeyCode.T, KeyCombination.META_DOWN));
-    addCategory.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.META_DOWN));
-    removeCategory.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.META_DOWN));
+    load.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN));
+    save.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN));
+    newWeek.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN));
+    createEvent.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN));
+    createTask.setAccelerator(new KeyCodeCombination(KeyCode.T, KeyCombination.SHORTCUT_DOWN));
+    addCategory.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN));
+    removeCategory.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.SHORTCUT_DOWN));
   }
 
   /**
@@ -105,6 +97,7 @@ public class ApplicationController implements IApplicationController {
     Tab newJournal = new Tab();
     newJournal.setContent(new JournalComponent(journal, tabs));
     newJournal.setText(journal.getName());
+    applyWarning(newJournal);
     addTab.setClosable(false);
     tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
       if(newTab == addTab) {
@@ -146,10 +139,7 @@ public class ApplicationController implements IApplicationController {
         Tab tab = new Tab();
         tab.setContent(new JournalComponent(journal, tabs));
         tab.setText(journal.getName());
-        // TODO: set close action to make popup 'you didn't save!' thing
-//        tab.setOnCloseRequest(e.bujo -> {
-//
-//        });
+        applyWarning(tab);
         tabs.getTabs().add(tab);
       } catch (IOException e) {
         throw new RuntimeException(
@@ -157,6 +147,25 @@ public class ApplicationController implements IApplicationController {
         );
       }
     }
+  }
+
+  /**
+   * Sets the close on request action handler of the tab to make a warning pop up.
+   *
+   * @param tab tab to apply handler to
+   */
+  private void applyWarning(Tab tab) {
+    tab.setOnCloseRequest(e -> {
+      Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+      alert.setTitle("Warning");
+      alert.setHeaderText("The bullet journal tab being closed might not have been saved.");
+      alert.setContentText("Do you want to continue");
+      alert.showAndWait().ifPresent( buttonType -> {
+        if (buttonType != ButtonType.OK) {
+          e.consume();
+        }
+      });
+    });
   }
 
   private void about() {

@@ -3,6 +3,9 @@ package cs3500.pa05.controller;
 import javafx.event.Event;
 import javafx.event.EventType;
 
+/**
+ * Event that signals to a bullet journal to do something related to modifying a category.
+ */
 public class CategoryModificationEvent extends JournalEvent {
 
   private final String category;

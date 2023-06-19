@@ -28,6 +28,11 @@ public class EntryComponent extends VBox {
   private JournalComponent journalComponent;
   private Collection<VBox> EntrySpecificInfo;
 
+  /**
+   * Constructs an entry component.
+   * @param journalComponent
+   * @param entry
+   */
   public EntryComponent(JournalComponent journalComponent, Entry entry) {
     this.EntrySpecificInfo = new ArrayList<>();
     this.entry = entry;

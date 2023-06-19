@@ -22,9 +22,9 @@
                <items>
                      <MenuItem fx:id="addCategory" mnemonicParsing="false" text="Add Category" />
                      <MenuItem fx:id="removeCategory" mnemonicParsing="false" text="Remove Category" />
-                     <MenuItem fx:id="createTask" mnemonicParsing="false" text="Remove Category" />
-                     <MenuItem fx:id="createEvent" mnemonicParsing="false" text="Remove Category" />
-                     <MenuItem fx:id="newWeek" mnemonicParsing="false" text="Remove Category" />
+                     <MenuItem fx:id="createTask" mnemonicParsing="false" text="Create Task" />
+                     <MenuItem fx:id="createEvent" mnemonicParsing="false" text="Create Event" />
+                     <MenuItem fx:id="newWeek" mnemonicParsing="false" text="New Week" />
                </items>
              </Menu>
              <Menu mnemonicParsing="false" text="Help">

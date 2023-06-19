@@ -19,5 +19,7 @@
 - Week Start                         TODO
 - Auto #tags                         TODO
 - Week Tabs
+  - added new week button on tab
+  - added confirmation pop up when closing tabs
 
 ## Section 5: Extra Credit
