@@ -37,6 +37,7 @@ public class Driver extends Application {
         ApplicationController controller = new ApplicationController();
         IApplicationView view = new ApplicationView(controller);
         try {
+            //primaryStage.getStylesheets().add("css.css");
             primaryStage.setScene(view.load());
             controller.run();
             primaryStage.show();
