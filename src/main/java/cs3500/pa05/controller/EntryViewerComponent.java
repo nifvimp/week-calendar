@@ -1,5 +1,6 @@
 package cs3500.pa05.controller;
 
+import cs3500.pa05.model.Day;
 import cs3500.pa05.model.DayOfWeek;
 import cs3500.pa05.model.Entry;
 import cs3500.pa05.model.Event;
@@ -23,6 +24,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
@@ -36,6 +38,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 
 /**
  * A controller for an entry
