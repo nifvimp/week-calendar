@@ -61,7 +61,6 @@ public class ApplicationController implements IApplicationController {
     Node curr = tabs.getSelectionModel().getSelectedItem().getContent();
     load.setOnAction(e -> tabs.fireEvent(new JournalEvent(JournalEvent.LOAD)));
     save.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.SAVE)));
-    newWeek.setOnAction(e -> );
 //    createEntry.setOnAction(e -> curr.fireEvent( // TODO: probably should only have create entry b/c difficulty of implementation
 //    addCategory.setOnAction(e -> {curr.fireEvent(
 //        new CategoryModificationEvent(CategoryModificationEvent.ADD_CATEGORY)));
