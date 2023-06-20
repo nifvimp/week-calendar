@@ -4,10 +4,13 @@ import cs3500.pa05.controller.ApplicationController;
 import cs3500.pa05.view.ApplicationView;
 import cs3500.pa05.view.IApplicationView;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * Entry point of the GUI.
+ * (Work around found from <a href="https://rb.gy/kpfxs">...</a>)
  */
 public class GuiDriver extends Application {
   @Override
@@ -15,8 +18,9 @@ public class GuiDriver extends Application {
     ApplicationController controller = new ApplicationController();
     IApplicationView view = new ApplicationView(controller);
     try {
-      //primaryStage.getStylesheets().add("css.css");
-      primaryStage.setScene(view.load());
+      Scene scene = view.load();
+      scene.getStylesheets().add("src/main/resources/css.css");
+      primaryStage.setScene(scene);
       controller.run();
       primaryStage.show();
     } catch (IllegalStateException e) {

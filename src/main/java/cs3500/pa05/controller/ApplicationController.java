@@ -3,6 +3,12 @@ package cs3500.pa05.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cs3500.pa05.model.BulletJournal;
+import cs3500.pa05.model.DayOfWeek;
+import cs3500.pa05.model.Entry;
+import cs3500.pa05.model.Event;
+import cs3500.pa05.model.Task;
+import cs3500.pa05.model.TimeInterval;
+import cs3500.pa05.model.Timestamp;
 import cs3500.pa05.view.SplashView;
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +33,9 @@ import javafx.stage.Stage;
  */
 public class ApplicationController implements IApplicationController {
   private final ObjectMapper mapper = new ObjectMapper();
+  private Event defaultEvent = new Event("", DayOfWeek.SUNDAY, new TimeInterval(
+      new Timestamp(DayOfWeek.SUNDAY, 0), 60), null, null);
+  private Task defaultTask = new Task("", DayOfWeek.SUNDAY, null, null);
   @FXML
   private Scene scene;
   @FXML
@@ -45,8 +54,6 @@ public class ApplicationController implements IApplicationController {
   private MenuItem addCategory;
   @FXML
   private MenuItem removeCategory;
-  @FXML
-  private MenuItem about;
 
   @Override
   public void run() {
@@ -78,15 +85,16 @@ public class ApplicationController implements IApplicationController {
     Node curr = tabs.getSelectionModel().getSelectedItem().getContent();
     load.setOnAction(e -> tabs.fireEvent(new JournalEvent(JournalEvent.LOAD)));
     save.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.SAVE)));
-    // TODO: change create_entry event back to entryModificationEvent
-    createEvent.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.CREATE_ENTRY)));
-    createTask.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.CREATE_ENTRY)));
+    createEvent.setOnAction(e -> curr.fireEvent(
+      new EntryModificationEvent(EntryModificationEvent.CREATE_ENTRY, defaultEvent))
+    );
+    createTask.setOnAction(e -> curr.fireEvent(
+        new EntryModificationEvent(EntryModificationEvent.CREATE_ENTRY, defaultTask))
+    );
     addCategory.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.ADD_CATEGORY)));
     removeCategory.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.REMOVE_CATEGORY)));
-    about.setOnAction(e -> tabs.fireEvent(new JournalEvent(JournalEvent.HELP)));
     newWeek.setOnAction(e -> newWeek());
     tabs.addEventFilter(JournalEvent.LOAD, e -> load());
-    tabs.addEventFilter(JournalEvent.HELP, e -> about());
     tabs.getTabs().add(newTabButton(tabs));
     initShortcuts();
   }
@@ -188,9 +196,5 @@ public class ApplicationController implements IApplicationController {
         }
       });
     });
-  }
-
-  private void about() {
-    // TODO: do some helpful stuff. IDK if necessary.
   }
 }

@@ -230,21 +230,6 @@ public class EntryViewerComponent extends Dialog<Entry> {
             .getSelectionModel().select((duration % 60) / 10);
       }
     }
-//    if (oldEntry.isEvent()) { // This feels scuffed. Will probably redo when swapped out for  dropdown menu
-//      if (oldEntry != null) {
-//        entrySpecificInfo = new TextField(((Event) oldEntry).interval().toString());
-//      } else {
-//        Timestamp startTime = new Timestamp(DayOfWeek.TUESDAY, 0);
-//        TimeInterval interval = new TimeInterval(startTime,15);
-//        entrySpecificInfo = new TextField(interval.toString());
-//      }
-//    } else if (oldEntry.isTask()) {
-//      entrySpecificInfo = new CheckBox();
-//      boolean status = ((Task) oldEntry).getStatus().equals(TaskStatus.COMPLETE);
-//      ((CheckBox) entrySpecificInfo).setSelected(status);
-//    } else {
-//      throw new RuntimeException("Entry was not an event nor a task.");
-//    }
   }
 
   /**

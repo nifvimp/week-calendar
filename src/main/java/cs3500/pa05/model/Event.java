@@ -53,6 +53,11 @@ public class Event extends Entry {
     }
 
     @Override
+    public void accept(EntryVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
     public String toString() {
         return String.format("%s\n%s", super.toString(), interval.toString());
     }

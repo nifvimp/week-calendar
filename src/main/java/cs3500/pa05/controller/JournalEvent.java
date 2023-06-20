@@ -13,14 +13,10 @@ public class JournalEvent extends Event {
       new EventType<>(ANY, "SAVE");
   public static final EventType<JournalEvent> LOAD =
       new EventType<>(ANY,"LOAD");
-  public static final EventType<JournalEvent> CREATE_ENTRY =
-      new EventType<>(ANY, "CREATE_ENTRY");
   public static final EventType<JournalEvent> ADD_CATEGORY =
       new EventType<>(ANY, "ADD_CATEGORY");
   public static final EventType<JournalEvent> REMOVE_CATEGORY =
       new EventType<>(ANY, "REMOVE_CATEGORY");
-  public static final EventType<JournalEvent> HELP =
-      new EventType<>("HELP");
 
   /**
    * Creates a new journal event.

@@ -1,54 +1,47 @@
 package cs3500.pa05.controller;
 
 
+import cs3500.pa05.model.Entry;
+import cs3500.pa05.model.EntryVisitor;
 import cs3500.pa05.model.Event;
 import cs3500.pa05.model.Task;
-import javafx.scene.Node;
+import java.util.Objects;
 
+/**
+ * Builds entry components that match the given entries.
+ */
 public class EntryComponentBuilder implements EntryVisitor {
-  // TODO: decide what will make up a entry
-  /* parameters for creating a new group of UI elements for an entry */
-
-  public EntryComponentBuilder() {
-    configure();
-  }
+  private final JournalComponent parent;
+  private EntryComponent component;
 
   /**
-   * Sets the default parameters used to make entry components for the view.
-   */
-  private void configure() {
-    // TODO: implement
-  }
-
-  /**
-   * Creates a UI element representing the given event.
+   * Creates a entry component builder for the passed in journal component.
    *
-   * @param event event entry
+   * @param parent journal parent
+   */
+  public EntryComponentBuilder(JournalComponent parent) {
+    this.parent = Objects.requireNonNull(parent);
+  }
+
+  /**
+   * builds a UI element representing the given entry.
+   *
+   * @param entry entry
    * @return UI element
    */
-  public Node create(Event event) {
-    // TODO: implement
-    return null;
-  }
-
-  /**
-   * Creates a UI element represents the given task.
-   *
-   * @param task task entry
-   * @return UI element
-   */
-  public Node create(Task task) {
-    // TODO: implement
-    return null;
+  public EntryComponent build(Entry entry) {
+    component = new EntryComponent(parent, entry);
+    this.visit(entry);
+    return component;
   }
 
   @Override
   public void visit(Event event) {
-
+    component.addParameter("Interval", event.interval().toString());
   }
 
   @Override
   public void visit(Task task) {
-
+    component.addParameter("Status", task.getStatus().toString());
   }
 }

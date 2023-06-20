@@ -28,60 +28,51 @@ public class EntryComponent extends VBox {
   @FXML
   private VBox container;
   private Entry entry;
-  private JournalComponent journalComponent;
+  private JournalComponent parent;
   private Collection<VBox> EntrySpecificInfo;
 
   /**
-   * Constructs an entry component.
-   * @param journalComponent
-   * @param entry
+   * Constructs an visual entry component that displays the given entry.
+   * @param parent journal parent
+   * @param entry entry to display
    */
-  public EntryComponent(JournalComponent journalComponent, Entry entry) { // TODO: setup text wrap
+  public EntryComponent(JournalComponent parent, Entry entry) { // TODO: setup text wrap
     this.EntrySpecificInfo = new ArrayList<>();
+    this.parent = parent;
     this.entry = entry;
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/entry.fxml"));
     fxmlLoader.setController(EntryComponent.this);
     try {
       this.getChildren().add(fxmlLoader.load());
-    } catch (IOException exception) {
-      throw new RuntimeException(exception);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
-    initElements(journalComponent);
+    initElements();
   }
 
-  private void initElements(JournalComponent component) {
-    this.journalComponent = component;
+  private void initElements() {
     name.setText(entry.name());
     category.setText(entry.category());
     description.setText(entry.description());
-    initEntrySpecificInfo(entry);
     container.onMouseClickedProperty().set(
         event -> new EntryViewerComponent(entry, this)
     );
   }
 
-  private void initEntrySpecificInfo(Entry entry) {
-    VBox info = new VBox();
-    info.setAlignment(Pos.TOP_CENTER);
+  /**
+   * Adds a parameter to the entries displayed info.
+   *
+   * @param name name of the parameter
+   * @param value string representation of the parameter
+   */
+  public void addParameter(String name, String value) {
     HBox box = new HBox();
     box.setAlignment(Pos.CENTER_LEFT);
     box.setPadding(new Insets(10, 0 , 0, 10));
-    info.getChildren().add(box);
-    Label name = new Label();
-    Label val = new Label();
-    box.getChildren().add(name);
-    box.getChildren().add(val);
-    if (entry.isEvent()) {
-      name.setText("Interval: ");
-      val.setText((((Event) entry).interval().toString()));
-    } else if (entry.isTask()) {
-      name.setText("Progress: ");
-      val.setText(((Task) entry).getStatus().toString());
-    } else {
-      throw new RuntimeException("Passed entry is neither an event nor task.");
-    }
-    EntrySpecificInfo.add(info);
-    container.getChildren().add(2, info);
+    Label paramName = new Label(name + ": ");
+    Label paramValue = new Label(value);
+    box.getChildren().addAll(paramName, paramValue);
+    container.getChildren().add(box);
   }
 
   /**
@@ -90,6 +81,6 @@ public class EntryComponent extends VBox {
    * @return journal parent.
    */
   public JournalComponent parent() {
-    return this.journalComponent;
+    return this.parent;
   }
 }

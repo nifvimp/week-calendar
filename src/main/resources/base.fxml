@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.VBox?>
 
-<Scene fx:id="scene" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Scene fx:id="scene" stylesheets="@css.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <VBox>
       <children>
          <MenuBar>
@@ -25,11 +25,6 @@
                      <MenuItem fx:id="createTask" mnemonicParsing="false" text="Create Task" />
                      <MenuItem fx:id="createEvent" mnemonicParsing="false" text="Create Event" />
                      <MenuItem fx:id="newWeek" mnemonicParsing="false" text="New Week" />
-               </items>
-             </Menu>
-             <Menu mnemonicParsing="false" text="Help">
-               <items>
-                 <MenuItem fx:id="about" mnemonicParsing="false" text="About" />
                </items>
              </Menu>
            </menus>

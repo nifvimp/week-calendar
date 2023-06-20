@@ -35,6 +35,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
@@ -55,6 +57,8 @@ import javafx.stage.Stage;
 public class JournalComponent extends BorderPane {
     // purposeful static so that specified configuration shared between all components
     private static final ObjectMapper mapper = new ObjectMapper();
+    private final EntryComponentBuilder builder = new EntryComponentBuilder(this);
+    private Entry defaultEntry = new Task("", DayOfWeek.SUNDAY, null, null);
     private BulletJournal journal;
     // TODO: add dropdown and text field for filtering by category and organizing by implemented organizers
     @FXML
@@ -105,6 +109,8 @@ public class JournalComponent extends BorderPane {
         }
         this.addEventFilter(JournalEvent.ANY, new JournalEventHandler(this));
         initComponents();
+
+
         // TODO: fix height and width alignment with box
         ((BorderPane) loaded).prefHeightProperty().bind(parent.getScene().heightProperty());
         ((BorderPane) loaded).prefWidthProperty().bind(parent.getScene().widthProperty());
@@ -128,9 +134,9 @@ public class JournalComponent extends BorderPane {
      */
     private void initName() {
         this.name.textProperty().set(this.journal.getName());
-        this.name.textProperty().addListener((observable, oldValue, newValue) -> {
-            journal.setName(newValue);
-        });
+        this.name.textProperty().addListener(
+            (observable, oldValue, newValue) -> journal.setName(newValue)
+        );
     }
 
     /**
@@ -164,8 +170,9 @@ public class JournalComponent extends BorderPane {
     private void initButtons() {
         this.save.setOnAction(e -> this.fireEvent(new JournalEvent(JournalEvent.SAVE)));
         this.load.setOnAction(e -> this.fireEvent(new JournalEvent(JournalEvent.LOAD)));
-        this.createEntry.setOnAction(
-            e -> this.fireEvent(new JournalEvent(JournalEvent.CREATE_ENTRY)));
+        this.createEntry.setOnAction(e -> this.fireEvent(
+            new EntryModificationEvent(EntryModificationEvent.CREATE_ENTRY, defaultEntry))
+        );
         this.addCategory.setOnAction(
             e -> this.fireEvent(new JournalEvent(JournalEvent.ADD_CATEGORY)));
         this.removeCategory.setOnAction(
@@ -209,7 +216,7 @@ public class JournalComponent extends BorderPane {
             scrollPane.setFitToHeight(true);
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             for (Entry entry : entryMap.get(day)) {
-                content.getChildren().add(new EntryComponent(this, entry));
+                content.getChildren().add(builder.build(entry));
             }
             VBox vbox = (VBox) this.days.getChildren().get(day.ordinal());
             vbox.getChildren().add((scrollPane));
@@ -226,8 +233,9 @@ public class JournalComponent extends BorderPane {
         fileChooser.setTitle("Choose save location");
         // TODO: replace initial directory. Currently like this for convince
         fileChooser.setInitialDirectory(new File("src/main/resources"));
-        File file = fileChooser.showSaveDialog(null);
-        file = new File(file.toString() + ".bujo"); // TODO: fix .bujo.bujo
+        String filePath = fileChooser.showSaveDialog(null).toString();
+        String filename = (filePath.endsWith(".bujo")) ? filePath : filePath + ".bujo";
+        File file = new File(filename);
         try {
             Files.write(file.toPath(), mapper.writeValueAsString(journal).getBytes());
         } catch (JsonProcessingException e) {
@@ -260,10 +268,10 @@ public class JournalComponent extends BorderPane {
         public void handle(JournalEvent event) {
             switch (event.getEventType().getName()) {
                 case "SAVE" -> save();
-                case "CREATE_ENTRY" -> handleCreateEntry();
+                case "CREATE_ENTRY" -> handleCreateEntry(event);
                 case "ADD_ENTRY" -> handleAddEntry(event);
                 case "REMOVE_ENTRY" -> handleRemoveEntry(event);
-                case "EDIT_ENTRY" -> handleEditEntry(event);
+                case "EDIT_ENTRY" -> handleEditEntry();
                 case "ADD_CATEGORY" -> handleAddCategory();
                 case "REMOVE_CATEGORY" -> handleRemoveCategory();
                 default -> throw new IllegalArgumentException("Not an event");
@@ -278,23 +286,23 @@ public class JournalComponent extends BorderPane {
             EntryModificationEvent e = (EntryModificationEvent) event;
             Entry entry = e.entry();
             journal.addEntry(entry);
-            content.get(entry.day()).getChildren()
-                .add(new EntryComponent(this.component, entry));
+            EntryComponent component = builder.build(entry);
+            content.get(entry.day()).getChildren().add(component);
         }
 
         /**
          * Opens a EntryViewerComponent to create an entry.
          */
-        private void handleCreateEntry() {
-            Entry temp = new Task("", DayOfWeek.SUNDAY, null, null);
-            EntryComponent entryComponent = new EntryComponent(component, temp);
-            EntryViewerComponent viewer = new EntryViewerComponent(temp, entryComponent);
-            viewer.setOnHidden(e -> {
+        private void handleCreateEntry(Event event) {
+            EntryModificationEvent e = (EntryModificationEvent) event;
+            Entry defaultEntry = e.entry();
+            EntryComponent entryComponent = new EntryComponent(component, defaultEntry);
+            EntryViewerComponent viewer = new EntryViewerComponent(defaultEntry, entryComponent);
+            viewer.setOnHidden(result -> {
                 Entry entry = viewer.getResult();
                 if (entry != null && "create".equals(viewer.getTitle())) {
                     journal.addEntry(entry);
-                    content.get(entry.day()).getChildren()
-                        .add(new EntryComponent(this.component, entry));
+                    content.get(entry.day()).getChildren().add(builder.build(entry));
                     update();
                 }
             });
@@ -314,35 +322,28 @@ public class JournalComponent extends BorderPane {
         /**
          * Lets the user edit the entry if they would like to make changes to it
          */
-        private void handleEditEntry(Event event) {
-//            EntryComponent component = (EntryComponent) event.getSource();
-//            Entry toRemove = component.entry(); TODO: some differentiate thing
-//            Entry toAdd = component.entry();
-//            journal.removeEntry(toRemove)
-//            journal.addEntry(toAdd);
-            // TODO: update GUI
+        private void handleEditEntry() {
+            // Do nothing
         }
 
         /**
          * Adds category to the journal.
          */
         private void handleAddCategory() {
-            StringProperty category = new SimpleStringProperty();
-            new TextInputDialog().showAndWait().ifPresent(category::set);
-            if (!category.get().equals("")) {
-                journal.addCategory(category.get());
-            }
+            new TextInputDialog().showAndWait().ifPresent(category -> {
+                if (!category.equals("")) {
+                    journal.addCategory(category);
+                }
+            });
         }
 
         /**
          * Removes the category from the journal.
          */
         private void handleRemoveCategory() {
-            StringProperty category = new SimpleStringProperty(); // TODO: change to combo box or something.
-            new TextInputDialog().showAndWait().ifPresent(category::set);
-            if (!category.get().equals("")) {
-                journal.removeCategory(category.get());
-            }
+            ChoiceDialog<String> inputDialog = new ChoiceDialog<>();
+            inputDialog.getItems().addAll(journal.getCategories());
+            inputDialog.showAndWait().ifPresent(category -> journal.removeCategory(category));
         }
     }
 }

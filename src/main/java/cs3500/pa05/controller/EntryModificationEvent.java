@@ -9,8 +9,8 @@ public class EntryModificationEvent extends JournalEvent {
       new EventType<>(ANY, "ADD_ENTRY");
   public static final EventType<EntryModificationEvent> REMOVE_ENTRY =
       new EventType<>(ANY, "REMOVE_ENTRY");
-  public static final EventType<EntryModificationEvent> EDIT_ENTRY = // TODO: can remove
-      new EventType<>(ANY, "EDIT_ENTRY");
+  public static final EventType<EntryModificationEvent> CREATE_ENTRY =
+      new EventType<>(ANY, "CREATE_ENTRY");
   private final Entry entry;
 
   /**
