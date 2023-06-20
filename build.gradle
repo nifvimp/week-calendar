@@ -5,7 +5,6 @@ plugins {
     id 'org.javamodularity.moduleplugin' version '1.8.12'
     id 'org.openjfx.javafxplugin' version '0.0.13'
     id 'org.beryx.jlink' version '2.25.0'
-    id("com.github.johnrengelman.shadow") version "7.1.0"
 }
 
 checkstyle {
@@ -74,15 +73,11 @@ jar {
     manifest {
         attributes('Main-Class': 'cs3500.pa05.Driver')
     }
-}
-
-java {
-    modularity.inferModulePath.set(false)
-}
-
-tasks {
-    shadowJar {
-        exclude("module-info.class")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude "module-info.class"
     }
 }
 
