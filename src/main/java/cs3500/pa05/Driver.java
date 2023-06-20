@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 /**
  * The entry point of the program.
  */
-public class Driver extends Application {
+public class Driver {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static void main(String[] args) {
@@ -29,21 +29,6 @@ public class Driver extends Application {
 //        System.out.println(mapper.convertValue(res, JsonNode.class));
 
 //        new JournalViewImpl(new JournalControllerImpl());
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-        ApplicationController controller = new ApplicationController();
-        IApplicationView view = new ApplicationView(controller);
-        try {
-            //primaryStage.getStylesheets().add("css.css");
-            primaryStage.setScene(view.load());
-            controller.run();
-            primaryStage.show();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            System.err.println("Unable to load GUI.");
-        }
+        GuiDriver.launch(GuiDriver.class, args);
     }
 }

@@ -1,4 +1,4 @@
-module pa05.template.main {
+module pa05.waht.main {
   requires javafx.controls;
   requires javafx.fxml;
 

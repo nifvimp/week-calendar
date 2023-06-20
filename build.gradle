@@ -5,6 +5,7 @@ plugins {
     id 'org.javamodularity.moduleplugin' version '1.8.12'
     id 'org.openjfx.javafxplugin' version '0.0.13'
     id 'org.beryx.jlink' version '2.25.0'
+    id("com.github.johnrengelman.shadow") version "7.1.0"
 }
 
 checkstyle {
@@ -26,7 +27,6 @@ jacocoTestReport {
 }
 
 group 'cs3500.pa05'
-version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -66,16 +66,24 @@ dependencies {
     testImplementation group: 'uk.org.webcompere', name: 'system-stubs-jupiter', version: '2.0.2'
 }
 
-jar {
-    manifest {
-        attributes 'Main-Class': 'cs3500.pa05.Driver'
-    }
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-}
-
 test {
     useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': 'cs3500.pa05.Driver')
+    }
+}
+
+java {
+    modularity.inferModulePath.set(false)
+}
+
+tasks {
+    shadowJar {
+        exclude("module-info.class")
+    }
 }
 
 jlink {
