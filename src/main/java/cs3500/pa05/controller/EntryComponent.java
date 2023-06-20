@@ -58,19 +58,9 @@ public class EntryComponent extends VBox {
   }
 
   private void initAction() {
-    container.onMouseClickedProperty().set(event -> {
-      EntryViewerComponent viewer = new EntryViewerComponent(entry, this);
-      Button save = (Button) viewer.getDialogPane().lookupButton(ButtonType.OK);
-      Button delete = (Button) viewer.getDialogPane().lookupButton(ButtonType.CANCEL);
-      AtomicReference<Entry> response = new AtomicReference<>();
-      viewer.showAndWait().ifPresent(response::set);
-      save.setOnAction(action -> this.fireEvent(
-          new EntryModificationEvent(EntryModificationEvent.ADD_ENTRY, response.get()))
-      );
-      delete.setOnAction(action -> this.fireEvent(
-          new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, entry))
-      );
-    });
+    container.onMouseClickedProperty().set(
+        event -> new EntryViewerComponent(entry, this)
+    );
   }
 
   /**
