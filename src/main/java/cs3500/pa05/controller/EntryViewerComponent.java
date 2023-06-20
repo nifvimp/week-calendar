@@ -72,11 +72,12 @@ public class EntryViewerComponent extends Dialog<Entry> {
   public EntryViewerComponent(Entry oldEntry, EntryComponent entryComponent) {
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/entryEditor.fxml"));
     this.entryComponent = Objects.requireNonNull(entryComponent);
-    this.initModality(Modality.NONE);
-    this.entrySpecificValues = new ArrayList<>();
-    this.oldEntry = oldEntry;
-    this.setTitle("Entry view");
+    this.setResultConverter(buttonType -> updatedEntry());
     fxmlLoader.setController(EntryViewerComponent.this);
+    this.oldEntry = Objects.requireNonNull(oldEntry);
+    this.entrySpecificValues = new ArrayList<>();
+    this.initModality(Modality.NONE);
+    this.setTitle("Entry view");
     try {
       DialogPane loaded = fxmlLoader.load();
       this.setDialogPane(loaded);
@@ -84,31 +85,14 @@ public class EntryViewerComponent extends Dialog<Entry> {
     } catch (IOException exception) {
       throw new RuntimeException(exception);
     }
-    initElements(entryComponent);
-    this.setResultConverter(buttonType -> {
-        if (buttonType == ButtonType.APPLY) { // TODO: should not use own buttons but inbuilt dialog pane buttons
-          return updatedEntry();
-        }
-        return null;
-    });
+    initElements();
     this.show();
   }
 
   /**
-   * Opens a empty entry viewer component.
-   *
-   * @param entryComponent parent journal
-   */
-  public EntryViewerComponent(EntryComponent entryComponent) {
-    this(null, entryComponent);
-  }
-
-  /**
    * Sets up the view components.
-   *
-   * @param journalComponent parent journal
    */
-  private void initElements(EntryComponent journalComponent) {
+  private void initElements() {
     initButtons();
     initEntryDelegation();
     initEntryCommon();

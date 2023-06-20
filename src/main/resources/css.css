@@ -1,5 +1,5 @@
 .root {
-    -fx-background-color: Grey;
+    -fx-background-color: #f4f4f4;
 }
 .text-field {
     -fx-background-color: dimGrey;

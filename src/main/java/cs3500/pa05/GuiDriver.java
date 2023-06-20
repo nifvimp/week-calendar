@@ -19,7 +19,7 @@ public class GuiDriver extends Application {
     IApplicationView view = new ApplicationView(controller);
     try {
       Scene scene = view.load();
-      scene.getStylesheets().add("src/main/resources/css.css");
+//      scene.getStylesheets().add("src/main/resources/css.css");
       primaryStage.setScene(scene);
       controller.run();
       primaryStage.show();

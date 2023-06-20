@@ -1,18 +1,18 @@
 package cs3500.pa05.controller;
 
 import cs3500.pa05.model.Entry;
-import cs3500.pa05.model.Event;
-import cs3500.pa05.model.Task;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 /**
@@ -48,15 +48,29 @@ public class EntryComponent extends VBox {
       throw new RuntimeException(e);
     }
     initElements();
+    initAction();
   }
 
   private void initElements() {
     name.setText(entry.name());
     category.setText(entry.category());
     description.setText(entry.description());
-    container.onMouseClickedProperty().set(
-        event -> new EntryViewerComponent(entry, this)
-    );
+  }
+
+  private void initAction() {
+    container.onMouseClickedProperty().set(event -> {
+      EntryViewerComponent viewer = new EntryViewerComponent(entry, this);
+      Button save = (Button) viewer.getDialogPane().lookupButton(ButtonType.OK);
+      Button delete = (Button) viewer.getDialogPane().lookupButton(ButtonType.CANCEL);
+      AtomicReference<Entry> response = new AtomicReference<>();
+      viewer.showAndWait().ifPresent(response::set);
+      save.setOnAction(action -> this.fireEvent(
+          new EntryModificationEvent(EntryModificationEvent.ADD_ENTRY, response.get()))
+      );
+      delete.setOnAction(action -> this.fireEvent(
+          new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, entry))
+      );
+    });
   }
 
   /**
