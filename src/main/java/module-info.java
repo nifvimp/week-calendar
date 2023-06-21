@@ -2,7 +2,7 @@ module pa05.waht.main {
   requires javafx.controls;
   requires javafx.fxml;
 
-  requires org.controlsfx.controls;
+//  requires org.controlsfx.controls;
   requires com.fasterxml.jackson.databind;
   requires com.fasterxml.jackson.annotation;
   requires com.fasterxml.jackson.core;
