@@ -41,6 +41,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
@@ -60,6 +62,8 @@ public class JournalComponent extends BorderPane {
     private final EntryComponentBuilder builder = new EntryComponentBuilder(this);
     private Entry defaultEntry = new Task("", DayOfWeek.SUNDAY, null, null);
     private BulletJournal journal;
+    private Node parent;
+    private Tab tab;
     // TODO: add dropdown and text field for filtering by category and organizing by implemented organizers
     @FXML
     private TextField name;
@@ -92,12 +96,15 @@ public class JournalComponent extends BorderPane {
      *
      * @param journal journal to display
      * @param parent  parent of the component
+     * @param tab tab component is in
      */
-    public JournalComponent(BulletJournal journal, Node parent) {
+    public JournalComponent(BulletJournal journal, Node parent, Tab tab) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/journal.fxml"));
         fxmlLoader.setController(this);
         this.content = new HashMap<>();
         this.journal = journal;
+        this.parent = parent;
+        this.tab = tab;
         Group loaded;
         try {
             loaded = fxmlLoader.load();
@@ -130,9 +137,10 @@ public class JournalComponent extends BorderPane {
      */
     private void initName() {
         this.name.textProperty().set(this.journal.getName());
-        this.name.textProperty().addListener(
-            (observable, oldValue, newValue) -> journal.setName(newValue)
-        );
+        this.name.textProperty().addListener((observable, oldVal, newVal) -> {
+            journal.setName(newVal);
+            tab.setText(newVal);
+        });
     }
 
     /**
@@ -258,6 +266,7 @@ public class JournalComponent extends BorderPane {
                 case "EDIT_ENTRY" -> handleEditEntry();
                 case "ADD_CATEGORY" -> handleAddCategory();
                 case "REMOVE_CATEGORY" -> handleRemoveCategory();
+                case "LOAD" -> {} // ignore
                 default -> throw new IllegalArgumentException("Not an event");
             }
             update();

@@ -80,7 +80,6 @@ public class ApplicationController implements IApplicationController {
       Stage stage = new Stage();
       Scene scene = loader.load();
       stage.setScene(scene);
-      stage.setTitle("Bullet Journal");
       stage.initStyle(StageStyle.UNDECORATED);
       stage.setOnShowing(e -> {
         PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
@@ -103,7 +102,7 @@ public class ApplicationController implements IApplicationController {
     ButtonType load = new ButtonType("load");
     ButtonType newWeek = new ButtonType("new");
     ButtonType template = new ButtonType("template");
-    Alert alert = new Alert(Alert.AlertType.NONE, "select: ");
+    Alert alert = new Alert(Alert.AlertType.NONE);
     alert.getButtonTypes().addAll(load, newWeek, template);
     alert.showAndWait().ifPresent(response -> {
       if (response == load) {
@@ -113,7 +112,7 @@ public class ApplicationController implements IApplicationController {
       }
       else if (response == newWeek) {
         Tab tab = new Tab();
-        tab.setContent(new JournalComponent(new BulletJournal(""), tabs));
+        tab.setContent(new JournalComponent(new BulletJournal("new journal"), tabs, tab));
         applyWarning(tab);
         tabs.getTabs().add(tab);
       }
@@ -150,7 +149,7 @@ public class ApplicationController implements IApplicationController {
       }
       journal.setName(name);
       Tab tab = new Tab();
-      tab.setContent(new JournalComponent(journal, tabs));
+      tab.setContent(new JournalComponent(journal, tabs, tab));
       tab.setText(dialog.getResult());
       applyWarning(tab);
       tabs.getTabs().add(tab);
@@ -206,14 +205,14 @@ public class ApplicationController implements IApplicationController {
     Tab addTab = new Tab("+");
     BulletJournal journal = new BulletJournal("new journal");
     Tab newJournal = new Tab();
-    newJournal.setContent(new JournalComponent(journal, tabs));
+    newJournal.setContent(new JournalComponent(journal, tabs, newJournal));
     newJournal.setText(journal.getName());
     applyWarning(newJournal);
     addTab.setClosable(false);
     tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
       if(newTab == addTab) {
         tabPane.getTabs().add(tabPane.getTabs().size() - 1, newJournal);
-        tabPane.getSelectionModel().select(tabPane.getTabs().size() - 2);
+        tabPane.getSelectionModel().select(Math.max(0, tabPane.getTabs().size() - 2));
       }
     });
     return addTab;
@@ -230,7 +229,7 @@ public class ApplicationController implements IApplicationController {
   /**
    * Prompts the user to selected .bujo files to load into the application.
    */
-  private void load() {
+  private synchronized void load() {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setSelectedExtensionFilter(
         new FileChooser.ExtensionFilter("BUJO File", "*.bujo")
@@ -248,10 +247,11 @@ public class ApplicationController implements IApplicationController {
         JsonNode journalNode = mapper.readTree(file);
         BulletJournal journal = mapper.convertValue(journalNode, BulletJournal.class);
         Tab tab = new Tab();
-        tab.setContent(new JournalComponent(journal, tabs));
+        tab.setContent(new JournalComponent(journal, tabs, tab));
         tab.setText(journal.getName());
         applyWarning(tab);
-        tabs.getTabs().add(tab);
+        int last = Math.max(0, tabs.getTabs().size() - 1);
+        tabs.getTabs().add(last, tab);
       } catch (IOException e) {
         throw new RuntimeException(
             String.format("Could not read the chosen file '%s'.", file), e
