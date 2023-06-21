@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
@@ -234,33 +235,37 @@ public class EntryViewerComponent extends Dialog<Entry> {
    */
   private void initButtons() {
     save.setOnMouseClicked((event -> {
+      AtomicBoolean doAnyways = new AtomicBoolean(true);
       Collection<Entry> entries = entryComponent.parent().journal()
           .getEntryMap().get(dayChoice.getValue());
       int currTasks = new FilterTask().organize(entries).size() - ((editing) ? 1 : 0);
       int currEvents = new FilterEvent().organize(entries).size() - ((editing) ? 1 : 0);
       int maxTasks = entryComponent.parent().journal().getTaskMax();
       int maxEvents = entryComponent.parent().journal().getEventMax();
-      if ((entryTypeChoice.getValue().equals("Task") && maxTasks > currTasks)
-          || (entryTypeChoice.getValue().equals("Event") && maxEvents > currEvents)) {
-        entryComponent.fireEvent(
-            new EntryModificationEvent(EntryModificationEvent.ADD_ENTRY, updatedEntry()));
-        entryComponent.fireEvent(
-            new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, oldEntry));
-        this.setTitle("create"); // TODO: Extraordinarily sus
-        this.getDialogPane().lookupButton(ButtonType.APPLY).fireEvent(new ActionEvent());
-      } else {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error!");
+      if (!(entryTypeChoice.getValue().equals("Task") && maxTasks > currTasks)
+          && !(entryTypeChoice.getValue().equals("Event") && maxEvents > currEvents)) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Warning!");
         alert.setHeaderText("Limit Exceeded");
         if (entryTypeChoice.getValue().equals("Task")) {
           alert.setContentText("Cannot add more tasks. Maximum limit reached.");
         } else if (entryTypeChoice.getValue().equals("Event")) {
           alert.setContentText("Cannot add more events. Maximum limit reached.");
         }
-        // TODO: make alert not alert if is modifying.
         alert.showAndWait().ifPresent(buttonType -> {
-          // TODO: add apply and cancel button types to alert and decide what to do based off that
+          if (buttonType != ButtonType.OK) {
+            doAnyways.set(false);
+            this.close();
+          }
         });
+      }
+      if (doAnyways.get()) {
+        entryComponent.fireEvent(
+            new EntryModificationEvent(EntryModificationEvent.ADD_ENTRY, updatedEntry()));
+        entryComponent.fireEvent(
+            new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, oldEntry));
+        this.setTitle("create"); // TODO: Extraordinarily sus
+        this.getDialogPane().lookupButton(ButtonType.APPLY).fireEvent(new ActionEvent());
       }
     }));
     delete.setOnMouseClicked((event -> {
