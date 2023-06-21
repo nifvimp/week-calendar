@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,10 +24,13 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -92,6 +96,26 @@ public class ApplicationController implements IApplicationController {
     }
   }
 
+  private boolean loginScreen(String actualPasscode) {
+//  private void loginScreen() {
+    TextInputDialog dialog = new TextInputDialog();
+    dialog.setTitle("Login Screen");
+    dialog.setContentText("Enter Password: ");
+    dialog.setHeaderText("Enter Passcode");
+    Button ok = ((Button) dialog.getDialogPane().lookupButton(ButtonType.OK));
+    ok.setText("Log-In");
+    AtomicBoolean okPressed = new AtomicBoolean(false);
+    ok.setOnAction(event -> okPressed.set(true));
+    dialog.showAndWait().ifPresent(response -> {
+      if (okPressed.get()) {
+        if (!dialog.getResult().equals(actualPasscode)) {
+          okPressed.set(loginScreen(actualPasscode));
+        }
+      }
+    });
+    return okPressed.get();
+  }
+
   /**
    * Prompts the use to choose the method to start the application.
    *  - load: choose a .bujo to load into the application.
@@ -128,15 +152,14 @@ public class ApplicationController implements IApplicationController {
         new FileChooser.ExtensionFilter("BUJO File", "*.bujo")
     );
     fileChooser.setInitialDirectory(
-        // TODO: replace
-//        new File(System.getProperty("user.home") + System.getProperty("file.separator"))
-        new File("src/main/resources")
+        new File(System.getProperty("user.home") + System.getProperty("file.separator"))
     );
     fileChooser.setTitle("Open .bujo File");
     File file = fileChooser.showOpenDialog(null);
     try {
       JsonNode journalNode = mapper.readTree(file);
       BulletJournal journal = mapper.convertValue(journalNode, BulletJournal.class);
+      journal.setPassword(null);
       TextInputDialog dialog = new TextInputDialog("name");
       dialog.setTitle("Enter Name");
       dialog.setHeaderText("Name the new bullet journal.");
@@ -234,24 +257,23 @@ public class ApplicationController implements IApplicationController {
     fileChooser.setSelectedExtensionFilter(
         new FileChooser.ExtensionFilter("BUJO File", "*.bujo")
     );
-    // TODO: replace initial directory. Currently like this for convince
     fileChooser.setInitialDirectory(
-//        new File(System.getProperty("user.home") + System.getProperty("file.separator"))
-        new File("src/main/resources")
+        new File(System.getProperty("user.home") + System.getProperty("file.separator"))
     );
     fileChooser.setTitle("Open .bujo File");
     Collection<File> files = fileChooser.showOpenMultipleDialog(null);
-    //  TODO: give option to make empty bujo? make a button to make new thing
     for (File file : files) {
       try {
         JsonNode journalNode = mapper.readTree(file);
         BulletJournal journal = mapper.convertValue(journalNode, BulletJournal.class);
-        Tab tab = new Tab();
-        tab.setContent(new JournalComponent(journal, tabs, tab));
-        tab.setText(journal.getName());
-        applyWarning(tab);
-        int last = Math.max(0, tabs.getTabs().size() - 1);
-        tabs.getTabs().add(last, tab);
+        if (loginScreen(journal.getPassword())) {
+          Tab tab = new Tab();
+          tab.setContent(new JournalComponent(journal, tabs, tab));
+          tab.setText(journal.getName());
+          applyWarning(tab);
+          int last = Math.max(0, tabs.getTabs().size() - 1);
+          tabs.getTabs().add(last, tab);
+       }
       } catch (IOException e) {
         throw new RuntimeException(
             String.format("Could not read the chosen file '%s'.", file), e

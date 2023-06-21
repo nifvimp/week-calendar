@@ -70,7 +70,6 @@ public class JournalComponent extends BorderPane {
     private BulletJournal journal;
     private Node parent;
     private Tab tab;
-    // TODO: add dropdown and text field for filtering by category and organizing by implemented organizers
     @FXML
     private TextField name;
     @FXML
@@ -89,8 +88,6 @@ public class JournalComponent extends BorderPane {
     private TextField maxTasks;
     @FXML
     private ListView<String> taskQueue;
-    @FXML
-    private VBox options; // TODO: figure this out. prob need separate class
     @FXML
     private ComboBox<String> filterCategory;
     @FXML
@@ -382,11 +379,23 @@ public class JournalComponent extends BorderPane {
         private void handleSave() {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Choose save location");
-            // TODO: replace initial directory. Currently like this for convince
-            fileChooser.setInitialDirectory(new File("src/main/resources"));
+            fileChooser.setInitialDirectory(
+                new File(System.getProperty("user.home")
+                    + System.getProperty("file.separator"))
+            );
             String filePath = fileChooser.showSaveDialog(null).toString();
             String filename = (filePath.endsWith(".bujo")) ? filePath : filePath + ".bujo";
             File file = new File(filename);
+
+            while (journal.getPassword() == null) {
+                TextInputDialog dialog = new TextInputDialog("password");
+                dialog.setTitle("Enter Password");
+                dialog.setHeaderText("Set bullet journal password.");
+                dialog.setContentText("Password: ");
+                dialog.showAndWait();
+                journal.setPassword(dialog.getResult());
+            }
+
             try {
                 Files.write(file.toPath(), mapper.writeValueAsString(journal).getBytes());
             } catch (JsonProcessingException e) {

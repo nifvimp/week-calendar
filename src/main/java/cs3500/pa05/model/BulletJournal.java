@@ -18,8 +18,10 @@ import java.util.Set;
 /**
  * Representation of a bullet journal.
  */
-@JsonIncludeProperties({"name", "event-max", "task-max", "categories", "organizers", "week"})
-@JsonPropertyOrder({"name", "event-max", "task-max", "categories", "organizers", "week"})
+ @JsonIncludeProperties({"name", "event-max", "task-max", "categories", "organizers",
+     "password", "week"})
+ @JsonPropertyOrder({"name", "event-max", "task-max", "categories", "organizers",
+     "password", "week"})
 public class BulletJournal {
   /**
    * The name of the journal.
@@ -51,6 +53,11 @@ public class BulletJournal {
    */
   @JsonProperty(value = "organizers")
   private Collection<EntryOrganizer> organizers;
+  /**
+   * The password of the Journal
+   */
+  @JsonProperty(value = "password")
+  private String password;
   /**
    * A collection of the entries inside the bullet journal.
    */
@@ -263,6 +270,14 @@ public class BulletJournal {
     return new ArrayList<>(organizers);
   }
 
+  @JsonSetter("password")
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public String getPassword() {
+    return this.password;
+  }
 
   /**
    * Clears the bullet journal of entries.

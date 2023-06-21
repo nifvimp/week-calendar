@@ -32,7 +32,7 @@ public class EntryComponent extends VBox {
   private Collection<VBox> EntrySpecificInfo;
 
   /**
-   * Constructs an visual entry component that displays the given entry.
+   * Constructs a visual entry component that displays the given entry.
    * @param parent journal parent
    * @param entry entry to display
    */

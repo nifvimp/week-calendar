@@ -264,14 +264,14 @@ public class EntryViewerComponent extends Dialog<Entry> {
             new EntryModificationEvent(EntryModificationEvent.ADD_ENTRY, updatedEntry()));
         entryComponent.fireEvent(
             new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, oldEntry));
-        this.setTitle("create"); // TODO: Extraordinarily sus
+        this.setTitle("create");
         this.getDialogPane().lookupButton(ButtonType.APPLY).fireEvent(new ActionEvent());
       }
     }));
     delete.setOnMouseClicked((event -> {
       entryComponent.fireEvent(
           new EntryModificationEvent(EntryModificationEvent.REMOVE_ENTRY, oldEntry));
-      this.close(); // TODO: make event firing conditional if invalid.
+      this.close();
     }));
   }
 
@@ -290,7 +290,7 @@ public class EntryViewerComponent extends Dialog<Entry> {
           String category = match.trim().substring(1);
           entryComponent.parent().journal().addCategory(category);
           categoryChoice.getSelectionModel().select(category);
-          categoryChoice.getItems().add(category); // TODO: sus, should only add category after confirmation?
+          categoryChoice.getItems().add(category);
           nameField.setText(text.replace(match, ""));
         }
       }
