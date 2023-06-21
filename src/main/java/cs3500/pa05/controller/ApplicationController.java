@@ -187,7 +187,7 @@ public class ApplicationController implements InterfaceApplicationController {
     addCategory.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.ADD_CATEGORY)));
     removeCategory.setOnAction(e -> curr.fireEvent(new JournalEvent(JournalEvent.REMOVE_CATEGORY)));
     newWeek.setOnAction(e -> newWeek());
-    tabs.addEventFilter(JournalEvent.LOAD, e -> load());
+    tabs.addEventFilter(JournalEvent.LOAD, e -> startupPopup());
     tabs.getTabs().add(newTabButton(tabs));
     initShortcuts();
   }

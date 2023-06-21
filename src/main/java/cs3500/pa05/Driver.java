@@ -1,5 +1,7 @@
 package cs3500.pa05;
 
+import cs3500.pa05.view.GuiDriver;
+
 /**
  * The entry point of the program.
  */

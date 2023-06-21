@@ -2,12 +2,15 @@
 
 [PA Write Up](https://markefontenot.notion.site/PA-05-8263d28a81a7473d8372c6579abd6481)
 # 3500 PA05 Project Repo
-## Running the Executable
+
+## Elevator Pitch
+
+## Example of Solid Principle
+
+## Extensibility
+
+## Running Executable Jar
 1. run gradle build
-2. run the [built jar](build/fatJar/pa05-waht.jar)
+2. run the [built fatJar](build/fatJar/pa05-waht.jar)
 ## GUI Preview
 ![](currentGUI.png)
-
-
-
-

@@ -148,7 +148,6 @@ public class EntryViewerComponent extends Dialog<Entry> {
       } else if (selection.equals("Event")) {
         HBox start = new HBox();
         HBox duration = new HBox();
-        start.getStylesheets().add("src/main/resources/StyleSheet.css");
         start.setPadding(new Insets(10));
         duration.setPadding(new Insets(10));
         start.setAlignment(Pos.TOP_CENTER);

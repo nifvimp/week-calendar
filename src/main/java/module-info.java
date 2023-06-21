@@ -1,8 +1,10 @@
+/**
+ * Module info for main.
+ */
 module pa05.waht.main {
   requires javafx.controls;
   requires javafx.fxml;
 
-//  requires org.controlsfx.controls;
   requires com.fasterxml.jackson.databind;
   requires com.fasterxml.jackson.annotation;
   requires com.fasterxml.jackson.core;
@@ -14,4 +16,5 @@ module pa05.waht.main {
   exports cs3500.pa05.view;
   opens cs3500.pa05.controller to javafx.fxml;
   opens cs3500.pa05.model to com.fasterxml.jackson.databind, javafx.fxml;
+  opens cs3500.pa05.view to javafx.fxml;
 }

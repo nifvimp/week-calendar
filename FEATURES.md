@@ -1,24 +1,29 @@
 ## Section 1: Requirements
 - Week View
 - Event and Task Creation
-- Commitment Warnings                
+- Commitment Warnings
 - Persistence
 
 ## Section 2: Headlining Features
 - Task Queue
-- Menu Bar & Shortcuts               
-- Categories                         
+- Menu Bar & Shortcuts       
+- Categories             
 
 ## Section 3: Power Ups
 - Mini Viewer
-- Weekly Overview                    
+- Weekly Overview
 - Takesie-backsies
-
+- Filter by Category
+- Sort by Name & Duration
 
 ## Section 4: Quality of Life
-- Auto #tags
+- Mind Changes
 - Week Tabs
-  - added new week button on tab
-  - added confirmation pop up when closing tabs
+- Auto #tags
 
 ## Section 5: Extra Credit
+- Deployable Application
+- Visual Flourish
+- Splash Screen
+- Privacy Lock
+- Weekly Starters
