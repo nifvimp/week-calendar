@@ -11,14 +11,15 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Representation of a bullet journal.
  */
-@JsonIncludeProperties({"name", "event-max", "task-max", "categories", "week"})
-@JsonPropertyOrder({"name", "event-max", "task-max", "categories", "week"})
+@JsonIncludeProperties({"name", "event-max", "task-max", "categories", "organizers", "week"})
+@JsonPropertyOrder({"name", "event-max", "task-max", "categories", "organizers", "week"})
 public class BulletJournal {
   /**
    * The name of the journal.
@@ -46,6 +47,11 @@ public class BulletJournal {
   @JsonProperty(value = "categories", required = true)
   private Set<String> categories;
   /**
+   * The organizers currently applied to the bullet journal.
+   */
+  @JsonProperty(value = "organizers")
+  private Collection<EntryOrganizer> organizers;
+  /**
    * A collection of the entries inside the bullet journal.
    */
   @JsonIgnore
@@ -57,7 +63,7 @@ public class BulletJournal {
    * @param name name of the bullet journal
    */
   public BulletJournal(String name) {
-    this(name, new Week(), new HashSet<>());
+    this(name, new Week(), new LinkedHashSet<>());
   }
 
   /**
@@ -73,6 +79,7 @@ public class BulletJournal {
       @JsonProperty("week") Week week,
       @JsonProperty("categories") Set<String> categories
   ) {
+    this.organizers = new LinkedHashSet<>();
     this.entries = new ArrayList<>();
     this.categories = categories;
     this.name = name;
@@ -200,7 +207,7 @@ public class BulletJournal {
    * @return map of the days of the week to the entries registered under them
    */
   public Map<DayOfWeek, Collection<Entry>> getEntryMap() {
-    return this.week.getEntries();
+    return this.week.getEntries(organizers.toArray(new EntryOrganizer[0]));
   }
 
   /**
@@ -234,6 +241,28 @@ public class BulletJournal {
     entries.remove(entry);
     week.removeEntry(entry);
   }
+
+  /**
+   * Sets the currently applied to the bullet journal to the given organizers.
+   *
+   * @param organizers organizers to apply
+   */
+  @JsonSetter("organizers")
+  public void setOrganizers (Collection<EntryOrganizer> organizers) {
+    this.organizers.clear();
+    this.organizers.addAll(organizers);
+  }
+
+  /**
+   * Gets the currently applied to the bullet journal to the given organizers.
+   *
+   * @return applied organizers
+   */
+  @JsonGetter("organizers")
+  public Collection<EntryOrganizer> getOrganizers () {
+    return new ArrayList<>(organizers);
+  }
+
 
   /**
    * Clears the bullet journal of entries.

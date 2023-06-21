@@ -5,10 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cs3500.pa05.model.BulletJournal;
 import cs3500.pa05.model.DayOfWeek;
 import cs3500.pa05.model.Entry;
+import cs3500.pa05.model.EntryOrganizer;
+import cs3500.pa05.model.FilterByCategory;
 import cs3500.pa05.model.FilterByCompletion;
 import cs3500.pa05.model.FilterEvent;
 import cs3500.pa05.model.FilterTask;
 import cs3500.pa05.model.SortByDay;
+import cs3500.pa05.model.SortByDuration;
+import cs3500.pa05.model.SortByName;
 import cs3500.pa05.model.Task;
 import cs3500.pa05.model.TaskStatus;
 import java.io.File;
@@ -16,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +41,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -86,6 +92,10 @@ public class JournalComponent extends BorderPane {
     @FXML
     private VBox options; // TODO: figure this out. prob need separate class
     @FXML
+    private ComboBox<String> filterCategory;
+    @FXML
+    private ComboBox<String> sortOrganizer;
+    @FXML
     private ListView<String> stats;
     @FXML
     private GridPane days;
@@ -130,6 +140,7 @@ public class JournalComponent extends BorderPane {
         initTaskQueue();
         initStats();
         initDays();
+        initOrganizationChoices();
     }
 
     /**
@@ -230,6 +241,70 @@ public class JournalComponent extends BorderPane {
     }
 
     /**
+     * Initializes the dropdown combo boxes for organization.
+     */
+    private void initOrganizationChoices() {
+        String filterSelected = filterCategory.getValue();
+        String sortedSelected = sortOrganizer.getValue();
+        filterCategory.getItems().clear();
+        filterCategory.getItems().add("N/A");
+        filterCategory.getItems().addAll(journal.getCategories());
+        sortOrganizer.getItems().clear();
+        sortOrganizer.getItems().addAll(
+            "N/A", "Name", "Duration"
+        );
+        try {
+            filterCategory.getSelectionModel().select(filterSelected);
+            sortOrganizer.getSelectionModel().select(sortedSelected);
+        } catch (NullPointerException ignored) {
+            // An empty catch block
+        }
+        filterCategory.valueProperty().addListener((observable -> updateOrganization()));
+        sortOrganizer.valueProperty().addListener((observable -> updateOrganization()));
+    }
+
+    /**
+     * Updates the days in the journal component.
+     */
+    private void updateDays() {
+        Map<DayOfWeek, Collection<Entry>> entryMap = journal.getEntryMap(
+            journal.getOrganizers().toArray(new EntryOrganizer[0])
+        );
+        for (DayOfWeek day : DayOfWeek.values()) {
+            this.content.get(day).getChildren().forEach(node ->
+                node.setVisible(entryMap.get(day).contains(((EntryComponent) node).entry()))
+            );
+            ObservableList<Node> temp = FXCollections
+                .observableArrayList(this.content.get(day).getChildren());
+            for (EntryOrganizer organizer : journal.getOrganizers().stream()
+                .filter(organizer -> organizer instanceof Comparator<?>).toList()) {
+                temp.sort((node1, node2) -> {
+                    Entry entry1 = ((EntryComponent) node1).entry();
+                    Entry entry2 = ((EntryComponent) node2).entry();
+                    return ((Comparator<Entry>) organizer).compare(entry1, entry2);
+                });
+            }
+            this.content.get(day).getChildren().setAll(temp);
+        }
+    }
+
+    private void updateOrganization() {
+        Collection<EntryOrganizer> organizers = new ArrayList<>();
+        if (filterCategory.getValue() != null && !filterCategory.getValue().equals("N/A")) {
+            organizers.add(new FilterByCategory(filterCategory.getValue()));
+        }
+        if (sortOrganizer.getValue() != null && !sortOrganizer.getValue().equals("N/A")) {
+            switch(sortOrganizer.getValue()) {
+                case "Name" -> organizers.add(new SortByName());
+                case "Duration" -> organizers.add(new SortByDuration());
+            }
+        }
+        this.journal.setOrganizers(organizers);
+        System.out.println(organizers);
+        updateDays();
+    }
+
+    /**
      * Gets the bullet journal this journal component is displaying.
      *
      * @return displayed bullet journal
@@ -242,6 +317,8 @@ public class JournalComponent extends BorderPane {
      * Updates the queue and stats.
      */
     private void update() {
+        initOrganizationChoices();
+        updateOrganization();
         initTaskQueue();
         initStats();
     }

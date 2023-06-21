@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -11,6 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 
 <Group xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -106,6 +108,28 @@
          <left>
             <VBox fx:id="options" prefWidth="150.0" BorderPane.alignment="CENTER">
                <children>
+                  <Group>
+                     <children>
+                        <VBox prefHeight="55.0" prefWidth="150.0">
+                           <children>
+                              <Group>
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#628eb5" height="32.0" stroke="BLACK" strokeType="INSIDE" width="150.0" />
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutY="8.0" prefHeight="18.0" prefWidth="150.0" text="Filter By Category:" />
+                                 </children>
+                              </Group>
+                              <ComboBox fx:id="filterCategory" prefWidth="150.0" promptText="choose category" />
+                              <Group>
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#628eb5" height="32.0" stroke="BLACK" strokeType="INSIDE" width="150.0" />
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutY="8.0" prefHeight="18.0" prefWidth="150.0" text="Sorted By:" />
+                                 </children>
+                              </Group>
+                              <ComboBox fx:id="sortOrganizer" prefWidth="150.0" promptText="choose sorter:" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </Group>
                   <ListView fx:id="stats" prefHeight="5000.0" prefWidth="150.0" />
                </children>
             </VBox>

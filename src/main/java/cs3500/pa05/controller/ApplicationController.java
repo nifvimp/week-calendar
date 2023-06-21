@@ -229,7 +229,7 @@ public class ApplicationController implements IApplicationController {
   /**
    * Prompts the user to selected .bujo files to load into the application.
    */
-  private synchronized void load() {
+  private void load() {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setSelectedExtensionFilter(
         new FileChooser.ExtensionFilter("BUJO File", "*.bujo")

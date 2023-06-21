@@ -1,11 +1,14 @@
 package cs3500.pa05.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collection;
 
 /**
  * Filters entries for incomplete tasks.
  */
 public class FilterByCompletion extends FilterTask {
+  @JsonProperty("status")
   private TaskStatus status;
 
   /**
@@ -13,7 +16,8 @@ public class FilterByCompletion extends FilterTask {
    *
    * @param status task status to filter for
    */
-  public FilterByCompletion(TaskStatus status) {
+  @JsonCreator
+  public FilterByCompletion(@JsonProperty("status") TaskStatus status) {
     this.status = status;
   }
 

@@ -1,5 +1,7 @@
 package cs3500.pa05.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collection;
 
 /**
@@ -7,6 +9,7 @@ import java.util.Collection;
  * @implNote is case-sensitive
  */
 public class FilterByCategory implements EntryOrganizer {
+  @JsonProperty("category")
   private final String category;
 
   /**
@@ -14,7 +17,8 @@ public class FilterByCategory implements EntryOrganizer {
    *
    * @param category category to filter for
    */
-  public FilterByCategory(String category) {
+  @JsonCreator
+  public FilterByCategory(@JsonProperty("category") String category) {
     this.category = category;
   }
 
@@ -26,6 +30,6 @@ public class FilterByCategory implements EntryOrganizer {
    */
   @Override
   public Collection<Entry> organize(Collection<Entry> entries) {
-      return entries.stream().filter(entry -> entry.category().equals(category)).toList();
+      return entries.stream().filter(entry -> category.equals(entry.category())).toList();
   }
 }

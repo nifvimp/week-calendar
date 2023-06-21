@@ -81,6 +81,15 @@ public class EntryComponent extends VBox {
   }
 
   /**
+   * Gets the entry this entry component displays.
+   *
+   * @return entry the component displays
+   */
+  public Entry entry() {
+    return this.entry;
+  }
+
+  /**
    * Gets the journal parent of the entry.
    *
    * @return journal parent.
