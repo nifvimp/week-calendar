@@ -102,4 +102,13 @@ public class Week {
         }
         return sb.toString();
     }
+
+    /**
+     * Clears the week of entries.
+     */
+    public void clear() {
+        for (DayOfWeek day : DayOfWeek.values()) {
+            days.put(day, new Day());
+        }
+    }
 }

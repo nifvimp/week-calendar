@@ -36,7 +36,7 @@ public class EntryComponent extends VBox {
    * @param parent journal parent
    * @param entry entry to display
    */
-  public EntryComponent(JournalComponent parent, Entry entry) { // TODO: setup text wrap
+  public EntryComponent(JournalComponent parent, Entry entry) {
     this.EntrySpecificInfo = new ArrayList<>();
     this.parent = parent;
     this.entry = entry;
@@ -59,7 +59,7 @@ public class EntryComponent extends VBox {
 
   private void initAction() {
     container.onMouseClickedProperty().set(
-        event -> new EntryViewerComponent(entry, this)
+        event -> new EntryViewerComponent(entry, this, true)
     );
   }
 
@@ -75,6 +75,7 @@ public class EntryComponent extends VBox {
     box.setPadding(new Insets(10, 0 , 0, 10));
     Label paramName = new Label(name + ": ");
     Label paramValue = new Label(value);
+    paramValue.setPadding(new Insets(0, 0, 0, 5));
     box.getChildren().addAll(paramName, paramValue);
     container.getChildren().add(box);
   }

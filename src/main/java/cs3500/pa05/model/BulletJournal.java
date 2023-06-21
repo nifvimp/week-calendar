@@ -234,4 +234,12 @@ public class BulletJournal {
     entries.remove(entry);
     week.removeEntry(entry);
   }
+
+  /**
+   * Clears the bullet journal of entries.
+   */
+  public void clear() {
+    entries.clear();
+    week.clear();
+  }
 }

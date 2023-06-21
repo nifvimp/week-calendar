@@ -9,6 +9,7 @@ import cs3500.pa05.model.Event;
 import cs3500.pa05.model.Task;
 import cs3500.pa05.model.TimeInterval;
 import cs3500.pa05.model.Timestamp;
+import cs3500.pa05.model.Week;
 import cs3500.pa05.view.SplashView;
 import java.io.File;
 import java.io.IOException;
@@ -21,10 +22,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -63,10 +66,13 @@ public class ApplicationController implements IApplicationController {
   @Override
   public void run() {
     showSplash();
-    load();
+    startupPopup();
     initMenuBar();
   }
 
+  /**
+   * Shows the splash screen.
+   */
   private void showSplash() {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getClassLoader().getResource("Splash.fxml"));
@@ -84,6 +90,74 @@ public class ApplicationController implements IApplicationController {
       stage.showAndWait();
     } catch (IOException e) {
       throw new RuntimeException("Failed to load splash screen." + e);
+    }
+  }
+
+  /**
+   * Prompts the use to choose the method to start the application.
+   *  - load: choose a .bujo to load into the application.
+   *  - new: starts the application in a new week bullet journal.
+   *  - template: choose .bujo to load as a template for a new week bullet.
+   */
+  private void startupPopup() {
+    ButtonType load = new ButtonType("load");
+    ButtonType newWeek = new ButtonType("new");
+    ButtonType template = new ButtonType("template");
+    Alert alert = new Alert(Alert.AlertType.NONE, "select: ");
+    alert.getButtonTypes().addAll(load, newWeek, template);
+    alert.showAndWait().ifPresent(response -> {
+      if (response == load) {
+        load();
+      } else if (response == template) {
+        template();
+      }
+      else if (response == newWeek) {
+        Tab tab = new Tab();
+        tab.setContent(new JournalComponent(new BulletJournal(""), tabs));
+        applyWarning(tab);
+        tabs.getTabs().add(tab);
+      }
+    });
+  }
+
+  /**
+   * Prompts the user to select a .bujo file to use as a template for a new week bullet journal.
+   */
+  private void template() {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setSelectedExtensionFilter(
+        new FileChooser.ExtensionFilter("BUJO File", "*.bujo")
+    );
+    fileChooser.setInitialDirectory(
+        // TODO: replace
+//        new File(System.getProperty("user.home") + System.getProperty("file.separator"))
+        new File("src/main/resources")
+    );
+    fileChooser.setTitle("Open .bujo File");
+    File file = fileChooser.showOpenDialog(null);
+    try {
+      JsonNode journalNode = mapper.readTree(file);
+      BulletJournal journal = mapper.convertValue(journalNode, BulletJournal.class);
+      TextInputDialog dialog = new TextInputDialog("name");
+      dialog.setTitle("Enter Name");
+      dialog.setHeaderText("Name the new bullet journal.");
+      dialog.setContentText("name: ");
+      journal.clear();
+      dialog.showAndWait();
+      String name = dialog.getResult();
+      if (name == null) {
+        throw new RuntimeException("User exited dialog unexpectedly.");
+      }
+      journal.setName(name);
+      Tab tab = new Tab();
+      tab.setContent(new JournalComponent(journal, tabs));
+      tab.setText(dialog.getResult());
+      applyWarning(tab);
+      tabs.getTabs().add(tab);
+    } catch (IOException e) {
+      throw new RuntimeException(
+          String.format("Could not read the chosen file '%s'.", file), e
+      );
     }
   }
 
@@ -149,7 +223,7 @@ public class ApplicationController implements IApplicationController {
    * Creates a new week tab.
    */
   private void newWeek() {
-    int last = tabs.getTabs().size() - 1;
+    int last = Math.max(0, tabs.getTabs().size() - 1);
     tabs.getSelectionModel().select(tabs.getTabs().get(last));
   }
 
@@ -157,8 +231,6 @@ public class ApplicationController implements IApplicationController {
    * Prompts the user to selected .bujo files to load into the application.
    */
   private void load() {
-    
-
     FileChooser fileChooser = new FileChooser();
     fileChooser.setSelectedExtensionFilter(
         new FileChooser.ExtensionFilter("BUJO File", "*.bujo")

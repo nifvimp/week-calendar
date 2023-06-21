@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
 <Group xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="1746.0" stylesheets="@StyleSheet.css">
@@ -105,9 +104,9 @@
             </GridPane>
          </center>
          <left>
-            <VBox fx:id="options" prefHeight="467.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+            <VBox fx:id="options" prefWidth="150.0" BorderPane.alignment="CENTER">
                <children>
-                  <ListView fx:id="stats" prefHeight="647.0" prefWidth="150.0" />
+                  <ListView fx:id="stats" prefHeight="5000.0" prefWidth="150.0" />
                </children>
             </VBox>
          </left>

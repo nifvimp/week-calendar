@@ -182,6 +182,7 @@ public class JournalComponent extends BorderPane {
             Task task = (Task) entry;
             items.add(String.format("%s - %s", task.name(), task.getStatus()));
         }
+        items.add("");
         taskQueue.setItems(items);
     }
 
@@ -221,36 +222,25 @@ public class JournalComponent extends BorderPane {
     }
 
     /**
-     * Prompts the user to choose a file location to save the bullet journal.
+     * Gets the bullet journal this journal component is displaying.
+     *
+     * @return displayed bullet journal
      */
-    private void save() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose save location");
-        // TODO: replace initial directory. Currently like this for convince
-        fileChooser.setInitialDirectory(new File("src/main/resources"));
-        String filePath = fileChooser.showSaveDialog(null).toString();
-        String filename = (filePath.endsWith(".bujo")) ? filePath : filePath + ".bujo";
-        File file = new File(filename);
-        try {
-            Files.write(file.toPath(), mapper.writeValueAsString(journal).getBytes());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error converting journal to json", e);
-        } catch (IOException e) {
-            throw new RuntimeException(
-                String.format("Error writing journal to choose file location '%s'", file), e
-            );
-        }
-    }
-
     public BulletJournal journal() {
         return this.journal;
     }
 
+    /**
+     * Updates the queue and stats.
+     */
     private void update() {
         initTaskQueue();
         initStats();
     }
 
+    /**
+     * JournalComponent Event Handler.
+     */
     private class JournalEventHandler implements EventHandler<JournalEvent> {
         JournalComponent component;
 
@@ -258,11 +248,10 @@ public class JournalComponent extends BorderPane {
             this.component = component;
         }
 
-        // TODO: move delegated methods into the main class.
         @Override
         public void handle(JournalEvent event) {
             switch (event.getEventType().getName()) {
-                case "SAVE" -> save();
+                case "SAVE" -> handleSave();
                 case "CREATE_ENTRY" -> handleCreateEntry(event);
                 case "ADD_ENTRY" -> handleAddEntry(event);
                 case "REMOVE_ENTRY" -> handleRemoveEntry(event);
@@ -272,6 +261,28 @@ public class JournalComponent extends BorderPane {
                 default -> throw new IllegalArgumentException("Not an event");
             }
             update();
+        }
+
+        /**
+         * Prompts the user to choose a file location to save the bullet journal.
+         */
+        private void handleSave() {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choose save location");
+            // TODO: replace initial directory. Currently like this for convince
+            fileChooser.setInitialDirectory(new File("src/main/resources"));
+            String filePath = fileChooser.showSaveDialog(null).toString();
+            String filename = (filePath.endsWith(".bujo")) ? filePath : filePath + ".bujo";
+            File file = new File(filename);
+            try {
+                Files.write(file.toPath(), mapper.writeValueAsString(journal).getBytes());
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Error converting journal to json", e);
+            } catch (IOException e) {
+                throw new RuntimeException(
+                    String.format("Error writing journal to choose file location '%s'", file), e
+                );
+            }
         }
 
         /**
@@ -291,8 +302,8 @@ public class JournalComponent extends BorderPane {
         private void handleCreateEntry(Event event) {
             EntryModificationEvent e = (EntryModificationEvent) event;
             Entry defaultEntry = e.entry();
-            EntryComponent entryComponent = new EntryComponent(component, defaultEntry);
-            EntryViewerComponent viewer = new EntryViewerComponent(defaultEntry, entryComponent);
+            EntryComponent eComp = new EntryComponent(component, defaultEntry);
+            EntryViewerComponent viewer = new EntryViewerComponent(defaultEntry, eComp, false);
             viewer.setOnHidden(result -> {
                 Entry entry = viewer.getResult();
                 if (entry != null && "create".equals(viewer.getTitle())) {
@@ -325,7 +336,11 @@ public class JournalComponent extends BorderPane {
          * Adds category to the journal.
          */
         private void handleAddCategory() {
-            new TextInputDialog().showAndWait().ifPresent(category -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Add Category");
+            dialog.setContentText("category: ");
+            dialog.setHeaderText("Enter a new Category");
+            dialog.showAndWait().ifPresent(category -> {
                 if (!category.equals("")) {
                     journal.addCategory(category);
                 }
@@ -336,9 +351,12 @@ public class JournalComponent extends BorderPane {
          * Removes the category from the journal.
          */
         private void handleRemoveCategory() {
-            ChoiceDialog<String> inputDialog = new ChoiceDialog<>();
-            inputDialog.getItems().addAll(journal.getCategories());
-            inputDialog.showAndWait().ifPresent(category -> journal.removeCategory(category));
+            ChoiceDialog<String> dialog = new ChoiceDialog<>();
+            dialog.setTitle("Remove Category");
+            dialog.setContentText("category: ");
+            dialog.setHeaderText("Choose the Category to Remove");
+            dialog.getItems().addAll(journal.getCategories());
+            dialog.showAndWait().ifPresent(category -> journal.removeCategory(category));
         }
     }
 }

@@ -44,6 +44,7 @@ import javafx.stage.Popup;
  * A controller for an entry
  */
 public class EntryViewerComponent extends Dialog<Entry> {
+  private boolean editing;
   @FXML
   private TextField nameField;
   @FXML
@@ -69,7 +70,8 @@ public class EntryViewerComponent extends Dialog<Entry> {
    * @param oldEntry the existing entry
    * @param entryComponent parent journal
    */
-  public EntryViewerComponent(Entry oldEntry, EntryComponent entryComponent) {
+  public EntryViewerComponent(Entry oldEntry, EntryComponent entryComponent, boolean editing) {
+    this.editing = editing;
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/entryEditor.fxml"));
     this.entryComponent = Objects.requireNonNull(entryComponent);
     this.initModality(Modality.NONE);
@@ -92,15 +94,6 @@ public class EntryViewerComponent extends Dialog<Entry> {
         return null;
     });
     this.show();
-  }
-
-  /**
-   * Opens a empty entry viewer component.
-   *
-   * @param entryComponent parent journal
-   */
-  public EntryViewerComponent(EntryComponent entryComponent) {
-    this(null, entryComponent);
   }
 
   /**
@@ -243,8 +236,8 @@ public class EntryViewerComponent extends Dialog<Entry> {
     save.setOnMouseClicked((event -> {
       Collection<Entry> entries = entryComponent.parent().journal()
           .getEntryMap().get(dayChoice.getValue());
-      int currTasks = new FilterTask().organize(entries).size();
-      int currEvents = new FilterEvent().organize(entries).size();
+      int currTasks = new FilterTask().organize(entries).size() - ((editing) ? 1 : 0);
+      int currEvents = new FilterEvent().organize(entries).size() - ((editing) ? 1 : 0);
       int maxTasks = entryComponent.parent().journal().getTaskMax();
       int maxEvents = entryComponent.parent().journal().getEventMax();
       if ((entryTypeChoice.getValue().equals("Task") && maxTasks > currTasks)
