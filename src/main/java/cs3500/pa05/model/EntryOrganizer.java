@@ -28,4 +28,11 @@ public interface EntryOrganizer {
    * @return organized collection of entries
    */
   Collection<Entry> organize(Collection<Entry> entries);
+
+  /**
+   * Gets the name of the organizer.
+   *
+   * @return name of organizer
+   */
+  String type();
 }

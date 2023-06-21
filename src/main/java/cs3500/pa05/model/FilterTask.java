@@ -15,4 +15,9 @@ public class FilterTask implements EntryOrganizer {
   public Collection<Entry> organize(Collection<Entry> entries) {
     return entries.stream().filter(Entry::isTask).toList();
   }
+
+  @Override
+  public String type() {
+    return "Filter Task";
+  }
 }

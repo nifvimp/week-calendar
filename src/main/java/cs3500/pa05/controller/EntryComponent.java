@@ -64,6 +64,13 @@ public class EntryComponent extends VBox {
   }
 
   /**
+   * Updates the display information.
+   */
+  public void update() {
+    initElements();
+  }
+
+  /**
    * Adds a parameter to the entries displayed info.
    *
    * @param name name of the parameter

@@ -15,4 +15,9 @@ public class FilterEvent implements EntryOrganizer {
   public Collection<Entry> organize(Collection<Entry> entries) {
     return entries.stream().filter(Entry::isEvent).toList();
   }
+
+  @Override
+  public String type() {
+    return "Filter Event";
+  }
 }

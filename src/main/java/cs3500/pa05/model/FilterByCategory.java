@@ -32,4 +32,18 @@ public class FilterByCategory implements EntryOrganizer {
   public Collection<Entry> organize(Collection<Entry> entries) {
       return entries.stream().filter(entry -> category.equals(entry.category())).toList();
   }
+
+  @Override
+  public String type() {
+    return "Filter Category";
+  }
+
+  /**
+   * Gets the category this filter is filtering for.
+   *
+   * @return category the filter is filtering for
+   */
+  public String category() {
+    return this.category;
+  }
 }

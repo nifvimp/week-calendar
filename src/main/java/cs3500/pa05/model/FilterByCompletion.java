@@ -31,4 +31,9 @@ public class FilterByCompletion extends FilterTask {
     entries = super.organize(entries);
     return entries.stream().filter(entry -> ((Task) entry).getStatus() == status).toList();
   }
+
+  @Override
+  public String type() {
+    return "Filter Completion";
+  }
 }

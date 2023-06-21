@@ -244,8 +244,25 @@ public class JournalComponent extends BorderPane {
      * Initializes the dropdown combo boxes for organization.
      */
     private void initOrganizationChoices() {
+        setupOrganizationChoices();
+        selectOrganization();
+        filterCategory.valueProperty().addListener((observable -> updateOrganization()));
+        sortOrganizer.valueProperty().addListener((observable -> updateOrganization()));
+        updateOrganization();
+    }
+
+    private void updateOrganizationChoices() {
         String filterSelected = filterCategory.getValue();
         String sortedSelected = sortOrganizer.getValue();
+        try {
+            filterCategory.getSelectionModel().select(filterSelected);
+            sortOrganizer.getSelectionModel().select(sortedSelected);
+        } catch (NullPointerException ignored) {
+            // An empty catch block
+        }
+    }
+
+    private void setupOrganizationChoices() {
         filterCategory.getItems().clear();
         filterCategory.getItems().add("N/A");
         filterCategory.getItems().addAll(journal.getCategories());
@@ -253,14 +270,23 @@ public class JournalComponent extends BorderPane {
         sortOrganizer.getItems().addAll(
             "N/A", "Name", "Duration"
         );
-        try {
-            filterCategory.getSelectionModel().select(filterSelected);
-            sortOrganizer.getSelectionModel().select(sortedSelected);
-        } catch (NullPointerException ignored) {
-            // An empty catch block
-        }
-        filterCategory.valueProperty().addListener((observable -> updateOrganization()));
-        sortOrganizer.valueProperty().addListener((observable -> updateOrganization()));
+    }
+
+    /**
+     * Select the combo box for organization from loaded journal.
+     */
+    private void selectOrganization() {
+        journal.getOrganizers().stream()
+            .filter(organizer -> organizer.type().equals("Filter Category")).findFirst()
+            .ifPresent(filter -> {
+                filterCategory.getSelectionModel().select(((FilterByCategory) filter).category());
+            });
+        journal.getOrganizers().stream()
+            .filter(organizer -> organizer.type().startsWith("Sort")).findFirst()
+            .ifPresent(sorter -> {
+                String label = sorter.type().replace("Sort ", "");
+                sortOrganizer.getSelectionModel().select(label);
+            });
     }
 
     /**
@@ -271,9 +297,11 @@ public class JournalComponent extends BorderPane {
             journal.getOrganizers().toArray(new EntryOrganizer[0])
         );
         for (DayOfWeek day : DayOfWeek.values()) {
-            this.content.get(day).getChildren().forEach(node ->
-                node.setVisible(entryMap.get(day).contains(((EntryComponent) node).entry()))
-            );
+            this.content.get(day).getChildren().forEach(node -> {
+                boolean keep = entryMap.get(day).contains(((EntryComponent) node).entry());
+                node.setVisible(keep);
+                node.setManaged(keep);
+            });
             ObservableList<Node> temp = FXCollections
                 .observableArrayList(this.content.get(day).getChildren());
             for (EntryOrganizer organizer : journal.getOrganizers().stream()
@@ -300,7 +328,6 @@ public class JournalComponent extends BorderPane {
             }
         }
         this.journal.setOrganizers(organizers);
-        System.out.println(organizers);
         updateDays();
     }
 
@@ -317,7 +344,7 @@ public class JournalComponent extends BorderPane {
      * Updates the queue and stats.
      */
     private void update() {
-        initOrganizationChoices();
+        updateOrganizationChoices();
         updateOrganization();
         initTaskQueue();
         initStats();
@@ -443,6 +470,17 @@ public class JournalComponent extends BorderPane {
             dialog.setHeaderText("Choose the Category to Remove");
             dialog.getItems().addAll(journal.getCategories());
             dialog.showAndWait().ifPresent(category -> journal.removeCategory(category));
+            Collection<String> categories = journal.getCategories();
+            for (DayOfWeek day : DayOfWeek.values()) {
+                VBox box = content.get(day);
+                for (Node node : box.getChildren()) {
+                    EntryComponent entry = (EntryComponent) node;
+                    if (!categories.contains(entry.entry().category())) {
+                        entry.entry().removeCategory();
+                        entry.update();
+                    }
+                }
+            }
         }
     }
 }

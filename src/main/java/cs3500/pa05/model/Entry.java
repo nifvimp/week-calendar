@@ -27,11 +27,6 @@ import java.util.Objects;
 @JsonPropertyOrder({"name", "day", "description", "category"})
 public abstract class Entry implements VisitableEntry {
     /**
-     * Category the bullet journal entry falls under. (Optional)
-     */
-    @JsonProperty(value = "category")
-    private final String category;
-    /**
      * Description of the bullet journal entry. (Optional)
      */
     @JsonProperty(value = "description")
@@ -46,6 +41,11 @@ public abstract class Entry implements VisitableEntry {
      */
     @JsonProperty(value = "name", required = true)
     private final String name;
+    /**
+     * Category the bullet journal entry falls under. (Optional)
+     */
+    @JsonProperty(value = "category")
+    private String category;
 
     /**
      * Constructor for subclasses.
@@ -106,6 +106,13 @@ public abstract class Entry implements VisitableEntry {
     @JsonGetter("category")
     public String category() {
         return this.category;
+    }
+
+    /**
+     * Removes the entry from the category it currently falls under.
+     */
+    public void removeCategory() {
+        this.category = null;
     }
 
     /**

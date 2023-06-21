@@ -29,4 +29,9 @@ public class SortByDuration implements EntryOrganizer, Comparator<Entry> {
     int secondVal = (entry2.isEvent()) ? ((Event) entry2).interval().duration() : 0;
     return firstVal - secondVal;
   }
+
+  @Override
+  public String type() {
+    return "Sort Duration";
+  }
 }

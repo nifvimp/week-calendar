@@ -207,7 +207,7 @@ public class BulletJournal {
    * @return map of the days of the week to the entries registered under them
    */
   public Map<DayOfWeek, Collection<Entry>> getEntryMap() {
-    return this.week.getEntries(organizers.toArray(new EntryOrganizer[0]));
+    return this.week.getEntries();
   }
 
   /**

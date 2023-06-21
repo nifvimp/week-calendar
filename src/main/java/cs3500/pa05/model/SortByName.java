@@ -27,4 +27,9 @@ public class SortByName implements EntryOrganizer, Comparator<Entry> {
   public int compare(Entry entry1, Entry entry2) {
     return entry1.name().compareTo(entry2.name());
   }
+
+  @Override
+  public String type() {
+    return "Sort Name";
+  }
 }

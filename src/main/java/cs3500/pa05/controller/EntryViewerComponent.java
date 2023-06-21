@@ -297,8 +297,9 @@ public class EntryViewerComponent extends Dialog<Entry> {
     });
   }
 
+  // TODO: handle errors
   private Entry updatedEntry() {
-    String name = nameField.getText();
+    String name = (nameField.getText().equals("")) ? null : nameField.getText();
     String category = categoryChoice.getValue();
     String description = descriptionField.getText();
     DayOfWeek day = dayChoice.getValue();

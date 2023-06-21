@@ -25,4 +25,9 @@ public class SortByDay implements EntryOrganizer, Comparator<Entry> {
   public int compare(Entry entry1, Entry entry2) {
     return entry1.day().ordinal() - entry2.day().ordinal();
   }
+
+  @Override
+  public String type() {
+    return "Sort Day";
+  }
 }
