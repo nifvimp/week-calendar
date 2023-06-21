@@ -11,6 +11,7 @@
 
 .text-field:hover {
     -fx-background-color: lightblue;
+    -fx-text-fill: black;
 }
 
 .text-area .content {
@@ -20,6 +21,7 @@
 
 .text-area .content:hover {
     -fx-background-color: lightblue;
+    -fx-text-fill: black;
 }
 
 .text-area {
@@ -37,10 +39,12 @@
 }
 .choice-box:hover {
     -fx-background-color: lightblue;
+    -fx-text-fill: black;
 }
 
 .combo-box:hover {
     -fx-background-color: lightblue;
+    -fx-text-fill: black;
 }
 
 .label {
@@ -54,6 +58,7 @@
 }
 .button:hover {
     -fx-background-color: lightblue;
+    -fx-text-fill: black;
 }
 
 .tab-pane {
@@ -70,6 +75,7 @@
 }
 .menu:hover {
     -fx-background-color: lightblue;
+    -fx-text-fill: black;
 }
 
 .grid-pane {
@@ -93,6 +99,7 @@
 
 .menu-item:focused {
     -fx-background-color: lightblue;
+    -fx-text-fill: black;
 }
 
 .tab {
@@ -145,4 +152,3 @@
 #entrySpotSaturday .label{
     -fx-text-fill: indigo;
 }
-

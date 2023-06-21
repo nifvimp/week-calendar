@@ -17,6 +17,8 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -146,6 +148,7 @@ public class EntryViewerComponent extends Dialog<Entry> {
       } else if (selection.equals("Event")) {
         HBox start = new HBox();
         HBox duration = new HBox();
+        start.getStylesheets().add("src/main/resources/StyleSheet.css");
         start.setPadding(new Insets(10));
         duration.setPadding(new Insets(10));
         start.setAlignment(Pos.TOP_CENTER);
@@ -196,8 +199,23 @@ public class EntryViewerComponent extends Dialog<Entry> {
         }
         entrySpecificValues.add(4, durationMinute);
         duration.getChildren().add(durationMinute);
+
+        addStyleToComboBox(startMinute);
+        addStyleToComboBox(startHour);
+        addStyleToComboBox(halfOfDay);
+        addStyleToComboBox(durationMinute);
+        addStyleToComboBox(durationHour);
       }
     });
+  }
+
+  private void addStyleToComboBox(ComboBox<?> box){
+    String normal = "-fx-background-color: dimGrey; -fx-text-fill: white;";
+    String hovering = "-fx-background-color: lightblue; -fx-text-fill: black;";
+    box.styleProperty().bind(Bindings.when(box.hoverProperty()).then(
+        new SimpleStringProperty(hovering))
+        .otherwise(new SimpleStringProperty(normal))
+    );
   }
 
   /**
