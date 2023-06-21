@@ -196,9 +196,9 @@ public class ApplicationController implements IApplicationController {
   private void applyWarning(Tab tab) {
     tab.setOnCloseRequest(e -> {
       Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-      alert.setTitle("Warning");
+      alert.setTitle("Warning!");
       alert.setHeaderText("The bullet journal tab being closed might not have been saved.");
-      alert.setContentText("Do you want to continue");
+      alert.setContentText("Do you want to continue?");
       alert.showAndWait().ifPresent( buttonType -> {
         if (buttonType != ButtonType.OK) {
           e.consume();

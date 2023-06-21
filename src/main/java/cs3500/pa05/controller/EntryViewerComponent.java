@@ -163,7 +163,11 @@ public class EntryViewerComponent extends Dialog<Entry> {
           ComboBox<Integer> startHour = new ComboBox<>();
           startHour.setPromptText("Hour");
           for (int hour = 0; hour < 12; hour++) {
-            startHour.getItems().add(hour);
+            if (hour == 0) {
+              startHour.getItems().add(12);
+            } else {
+              startHour.getItems().add(hour);
+            }
           }
           entrySpecificValues.add(0, startHour);
           start.getChildren().add(startHour);

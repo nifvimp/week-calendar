@@ -21,7 +21,7 @@ public class GuiDriver extends Application {
       Scene scene = view.load();
       scene.getStylesheets().add("src/main/resources/StyleSheet.css");
       primaryStage.setScene(scene);
-      primaryStage.setTitle("Journal Entry");
+      primaryStage.setTitle("Bullet Journal");
       controller.run();
       primaryStage.show();
     } catch (IllegalStateException e) {

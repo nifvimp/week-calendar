@@ -1,6 +1,6 @@
 .root {
     -fx-background-color: grey;
-    -fx-font-family: "Comic Sans MS";
+    -fx-font-family: "Lucida Calligraphy";
 }
 
 .text-field {
@@ -9,12 +9,25 @@
     -fx-text-fill: white;
 }
 
+.text-field:hover {
+    -fx-background-color: lightblue;
+}
+
 .text-area .content {
     -fx-border-color: white;
     -fx-background-color: dimGrey;
 }
 
+.text-area .content:hover {
+    -fx-background-color: lightblue;
+}
+
 .text-area {
+    -fx-text-fill: white;
+}
+
+.combo-box {
+    -fx-background-color: dimGrey;
     -fx-text-fill: white;
 }
 
@@ -22,10 +35,12 @@
     -fx-background-color: dimGrey;
     -fx-text-fill: white;
 }
+.choice-box:hover {
+    -fx-background-color: lightblue;
+}
 
-.combo-box {
-    -fx-background-color: dimGrey;
-    -fx-text-fill: white;
+.combo-box:hover {
+    -fx-background-color: lightblue;
 }
 
 .label {
@@ -37,18 +52,24 @@
     -fx-background-color: dimgrey;
     -fx-text-fill: white;
 }
+.button:hover {
+    -fx-background-color: lightblue;
+}
 
 .tab-pane {
     -fx-background-color: transparent;
     -fx-text-fill: white;
 }
 
-.scroll-pane {
+.scroll-pane  > .viewport{
     -fx-background-color: dimGrey;
 }
 
 .menu-bar {
     -fx-background-color: dimGrey;
+}
+.menu:hover {
+    -fx-background-color: lightblue;
 }
 
 .grid-pane {
@@ -71,11 +92,11 @@
 }
 
 .menu-item:focused {
-    -fx-background-color: blue;
+    -fx-background-color: lightblue;
 }
 
 .tab {
-    -fx-background-color: blue;
+    -fx-background-color: darkgrey;
 }
 
 .tab-label {
@@ -103,3 +124,25 @@
 .list-view {
     -fx-background-color: black;
 }
+#entrySpotSunday .label {
+    -fx-text-fill: red;
+}
+#entrySpotMonday .label{
+    -fx-text-fill: orange;
+}
+#entrySpotTuesday .label{
+    -fx-text-fill: yellow;
+}
+#entrySpotWednesday .label{
+    -fx-text-fill: lime;
+}
+#entrySpotThursday .label{
+    -fx-text-fill: blue;
+}
+#entrySpotFriday .label{
+    -fx-text-fill: magenta;
+}
+#entrySpotSaturday .label{
+    -fx-text-fill: indigo;
+}
+

@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -32,14 +34,49 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Button fx:id="save" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Save" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                        <Button fx:id="load" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Load" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                        <Button fx:id="createEntry" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text=" Create Entry" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+                        <Button fx:id="save" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Save" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@save.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                        <Button fx:id="load" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Load" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@save.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                        <Button fx:id="createEntry" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text=" Create Entry" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@create.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                         <TextField fx:id="maxEvents" prefHeight="25.0" prefWidth="150.0" promptText="Number of daily events" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
                         <TextField fx:id="maxTasks" prefHeight="25.0" prefWidth="150.0" promptText="Number of daily tasks" GridPane.columnIndex="5" GridPane.halignment="CENTER" />
                         <TextField fx:id="name" promptText="Week Name" />
-                        <Button fx:id="addCategory" alignment="CENTER" mnemonicParsing="false" text="Add Category" GridPane.columnIndex="6" />
-                        <Button fx:id="removeCategory" alignment="CENTER" mnemonicParsing="false" text="Remove Category" GridPane.columnIndex="7" />
+                        <Button fx:id="addCategory" alignment="CENTER" mnemonicParsing="false" text="Add Category" GridPane.columnIndex="6">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@create.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                        <Button fx:id="removeCategory" alignment="CENTER" mnemonicParsing="false" text="Remove Category" GridPane.columnIndex="7">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@delete.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                      </children>
                   </GridPane>
                </children>
