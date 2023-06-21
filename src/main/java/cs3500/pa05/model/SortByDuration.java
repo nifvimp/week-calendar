@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Sorts entries by duration.
+ *
  * @implNote assumes that tasks have a duration of 0
  */
 public class SortByDuration implements EntryOrganizer, Comparator<Entry> {

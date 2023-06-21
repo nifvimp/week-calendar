@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 /**
  * Represents a GUI view for the application.
  */
-public interface IApplicationView {
+public interface InterfaceApplicationView {
   /**
    * Loads a scene from GUI layout of the application.
    *

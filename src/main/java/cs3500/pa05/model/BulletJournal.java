@@ -1,6 +1,5 @@
 package cs3500.pa05.model;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,10 +17,10 @@ import java.util.Set;
 /**
  * Representation of a bullet journal.
  */
- @JsonIncludeProperties({"name", "event-max", "task-max", "categories", "organizers",
-     "password", "week"})
- @JsonPropertyOrder({"name", "event-max", "task-max", "categories", "organizers",
-     "password", "week"})
+@JsonIncludeProperties({"name", "event-max", "task-max", "categories", "organizers",
+    "password", "week"})
+@JsonPropertyOrder({"name", "event-max", "task-max", "categories", "organizers",
+    "password", "week"})
 public class BulletJournal {
   /**
    * The name of the journal.
@@ -76,8 +75,8 @@ public class BulletJournal {
   /**
    * Creates a bullet journal.
    *
-   * @param name name of the bullet journal
-   * @param week information of the week in a bullet journal
+   * @param name       name of the bullet journal
+   * @param week       information of the week in a bullet journal
    * @param categories categories in the bullet journal
    */
   @JsonCreator
@@ -222,8 +221,8 @@ public class BulletJournal {
    * the organizers passed in.
    *
    * @param organizers organizers to organize the entries by
-   * @return map of the days of the week to the entries registered under them organized by
-   *         the organizers passed in
+   * @return map of the days of the week to the entries registered under them organized by the
+   *      organizers passed in.
    */
   public Map<DayOfWeek, Collection<Entry>> getEntryMap(EntryOrganizer... organizers) {
     return this.week.getEntries(organizers);
@@ -255,7 +254,7 @@ public class BulletJournal {
    * @param organizers organizers to apply
    */
   @JsonSetter("organizers")
-  public void setOrganizers (Collection<EntryOrganizer> organizers) {
+  public void setOrganizers(Collection<EntryOrganizer> organizers) {
     this.organizers.clear();
     this.organizers.addAll(organizers);
   }
@@ -266,15 +265,23 @@ public class BulletJournal {
    * @return applied organizers
    */
   @JsonGetter("organizers")
-  public Collection<EntryOrganizer> getOrganizers () {
+  public Collection<EntryOrganizer> getOrganizers() {
     return new ArrayList<>(organizers);
   }
 
+  /**
+   * Sets a new password to the bujo file for the Journal
+   *
+   * @param password password to journal
+   */
   @JsonSetter("password")
   public void setPassword(String password) {
     this.password = password;
   }
 
+  /**
+   * @return Gets the password within the bujo file
+   */
   public String getPassword() {
     return this.password;
   }

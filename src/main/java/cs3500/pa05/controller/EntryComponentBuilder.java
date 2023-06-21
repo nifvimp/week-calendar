@@ -15,7 +15,7 @@ public class EntryComponentBuilder implements EntryVisitor {
   private EntryComponent component;
 
   /**
-   * Creates a entry component builder for the passed in journal component.
+   * Creates an entry component builder for the passed in journal component.
    *
    * @param parent journal parent
    */

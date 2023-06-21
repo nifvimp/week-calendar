@@ -4,18 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cs3500.pa05.model.BulletJournal;
 import cs3500.pa05.model.DayOfWeek;
-import cs3500.pa05.model.Entry;
 import cs3500.pa05.model.Event;
 import cs3500.pa05.model.Task;
 import cs3500.pa05.model.TimeInterval;
 import cs3500.pa05.model.Timestamp;
-import cs3500.pa05.model.Week;
-import cs3500.pa05.view.SplashView;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -24,13 +19,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -43,13 +35,11 @@ import javafx.util.Duration;
 /**
  * Represents a controller for the application.
  */
-public class ApplicationController implements IApplicationController {
+public class ApplicationController implements InterfaceApplicationController {
   private final ObjectMapper mapper = new ObjectMapper();
-  private Event defaultEvent = new Event("", DayOfWeek.SUNDAY, new TimeInterval(
+  private final Event defaultEvent = new Event("", DayOfWeek.SUNDAY, new TimeInterval(
       new Timestamp(DayOfWeek.SUNDAY, 0), 60), null, null);
-  private Task defaultTask = new Task("", DayOfWeek.SUNDAY, null, null);
-  @FXML
-  private Scene scene;
+  private final Task defaultTask = new Task("", DayOfWeek.SUNDAY, null, null);
   @FXML
   private TabPane tabs;
   @FXML
@@ -97,7 +87,6 @@ public class ApplicationController implements IApplicationController {
   }
 
   private boolean loginScreen(String actualPasscode) {
-//  private void loginScreen() {
     TextInputDialog dialog = new TextInputDialog();
     dialog.setTitle("Login Screen");
     dialog.setContentText("Enter Password: ");
@@ -133,8 +122,7 @@ public class ApplicationController implements IApplicationController {
         load();
       } else if (response == template) {
         template();
-      }
-      else if (response == newWeek) {
+      } else if (response == newWeek) {
         Tab tab = new Tab();
         tab.setContent(new JournalComponent(new BulletJournal("new journal"), tabs, tab));
         applyWarning(tab);
@@ -225,15 +213,15 @@ public class ApplicationController implements IApplicationController {
    * @return tab that acts as a new tab button
    */
   private Tab newTabButton(TabPane tabPane) {
-    Tab addTab = new Tab("+");
     BulletJournal journal = new BulletJournal("new journal");
     Tab newJournal = new Tab();
     newJournal.setContent(new JournalComponent(journal, tabs, newJournal));
     newJournal.setText(journal.getName());
     applyWarning(newJournal);
+    Tab addTab = new Tab("+");
     addTab.setClosable(false);
     tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
-      if(newTab == addTab) {
+      if (newTab == addTab) {
         tabPane.getTabs().add(tabPane.getTabs().size() - 1, newJournal);
         tabPane.getSelectionModel().select(Math.max(0, tabPane.getTabs().size() - 2));
       }
@@ -273,7 +261,7 @@ public class ApplicationController implements IApplicationController {
           applyWarning(tab);
           int last = Math.max(0, tabs.getTabs().size() - 1);
           tabs.getTabs().add(last, tab);
-       }
+        }
       } catch (IOException e) {
         throw new RuntimeException(
             String.format("Could not read the chosen file '%s'.", file), e
@@ -293,7 +281,7 @@ public class ApplicationController implements IApplicationController {
       alert.setTitle("Warning!");
       alert.setHeaderText("The bullet journal tab being closed might not have been saved.");
       alert.setContentText("Do you want to continue?");
-      alert.showAndWait().ifPresent( buttonType -> {
+      alert.showAndWait().ifPresent(buttonType -> {
         if (buttonType != ButtonType.OK) {
           e.consume();
         }

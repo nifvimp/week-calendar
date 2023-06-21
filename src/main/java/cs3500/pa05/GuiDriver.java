@@ -2,11 +2,10 @@ package cs3500.pa05;
 
 import cs3500.pa05.controller.ApplicationController;
 import cs3500.pa05.view.ApplicationView;
-import cs3500.pa05.view.IApplicationView;
+import cs3500.pa05.view.InterfaceApplicationView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * Entry point of the GUI.
@@ -16,7 +15,7 @@ public class GuiDriver extends Application {
   @Override
   public void start(Stage primaryStage) {
     ApplicationController controller = new ApplicationController();
-    IApplicationView view = new ApplicationView(controller);
+    InterfaceApplicationView view = new ApplicationView(controller);
     try {
       Scene scene = view.load();
       scene.getStylesheets().add("src/main/resources/StyleSheet.css");

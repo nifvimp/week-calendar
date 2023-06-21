@@ -6,6 +6,7 @@ import java.util.Collection;
 
 /**
  * Filters entries for a specific category.
+ *
  * @implNote is case-sensitive
  */
 public class FilterByCategory implements EntryOrganizer {
@@ -30,7 +31,7 @@ public class FilterByCategory implements EntryOrganizer {
    */
   @Override
   public Collection<Entry> organize(Collection<Entry> entries) {
-      return entries.stream().filter(entry -> category.equals(entry.category())).toList();
+    return entries.stream().filter(entry -> category.equals(entry.category())).toList();
   }
 
   @Override

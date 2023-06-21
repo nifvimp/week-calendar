@@ -10,11 +10,17 @@ import javafx.scene.Scene;
 public class SplashView {
   private final FXMLLoader loader;
 
+  /**
+   * Creates the SplashView to the user
+   */
   public SplashView() {
     this.loader = new FXMLLoader();
     this.loader.setLocation(getClass().getClassLoader().getResource("Splash.fxml"));
   }
 
+  /**
+   * @return Loads the fxml file given
+   */
   public Scene load() {
     try {
       return this.loader.load();

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A Timestamp in a bullet journal.
  *
- * @param day day the timestamp is on
+ * @param day  day the timestamp is on
  * @param time minutes from 00:00 of the specified day
  */
 public record Timestamp(@JsonProperty("day") DayOfWeek day,
@@ -28,8 +28,8 @@ public record Timestamp(@JsonProperty("day") DayOfWeek day,
 
   @Override
   public String toString() {
-      int hour = time / 60;
-      String meridiem = (hour < 12) ? "AM" : "PM";
-      return String.format("%d:%02d %s", hour % 12, time % 60, meridiem);
+    int hour = time / 60;
+    String meridiem = (hour < 12) ? "AM" : "PM";
+    return String.format("%d:%02d %s", hour % 12, time % 60, meridiem);
   }
 }

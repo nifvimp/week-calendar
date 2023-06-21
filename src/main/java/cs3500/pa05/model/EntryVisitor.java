@@ -1,9 +1,5 @@
 package cs3500.pa05.model;
 
-import cs3500.pa05.model.Event;
-import cs3500.pa05.model.Task;
-import cs3500.pa05.model.VisitableEntry;
-
 /**
  * An interface that allows the implementor to visit stable entries.
  */
