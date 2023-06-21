@@ -10,30 +10,45 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class BulletJournalTest {
+/**
+ * Tests bullet journal functionality.
+ */
+public class BulletJournalTest {
   BulletJournal journal;
 
+  /**
+   * Sets up empty journal.
+   */
   @BeforeEach
-  void setup() {
+  public void setup() {
     journal = new BulletJournal("test");
   }
 
+  /**
+   * Tests getting and setting password.
+   */
   @Test
-  void passwordTest() {
+  public void passwordTest() {
     assertNull(journal.getPassword());
     journal.setPassword("coconut");
     assertEquals("coconut", journal.getPassword());
   }
 
+  /**
+   * Tests adding categories.
+   */
   @Test
-  void addCategoryTest() {
+  public void addCategoryTest() {
     assertFalse(journal.getCategories().contains("testCategory"));
     journal.addCategory("testCategory");
     assertTrue(journal.getCategories().contains("testCategory"));
   }
 
+  /**
+   * Tests removing categories.
+   */
   @Test
-  void removeCategoryTest() {
+  public void removeCategoryTest() {
     assertFalse(journal.getCategories().contains("testCategory"));
     journal.addCategory("testCategory");
     assertTrue(journal.getCategories().contains("testCategory"));
@@ -41,16 +56,22 @@ class BulletJournalTest {
     assertFalse(journal.getCategories().contains("testCategory"));
   }
 
+  /**
+   * Tests adding entries.
+   */
   @Test
-  void addEntryTest() {
+  public void addEntryTest() {
     Entry newEntry = new Task("test", DayOfWeek.SUNDAY, "boring", null);
     assertFalse(journal.getAllEntries().contains(newEntry));
     journal.addEntry(newEntry);
     assertTrue(journal.getAllEntries().contains(newEntry));
   }
 
+  /**
+   * Tests removing entire.
+   */
   @Test
-  void removeEntryTest() {
+  public void removeEntryTest() {
     Entry newEntry = new Task("test", DayOfWeek.SUNDAY, "boring", null);
     assertFalse(journal.getAllEntries().contains(newEntry));
     journal.addEntry(newEntry);
@@ -59,31 +80,43 @@ class BulletJournalTest {
     assertFalse(journal.getAllEntries().contains(newEntry));
   }
 
+  /**
+   * Tests getting and setting max tasks.
+   */
   @Test
-  void taskMaxTest() {
+  public void taskMaxTest() {
     assertEquals(0, journal.getTaskMax());
     journal.setTaskMax(5);
     assertEquals(5, journal.getTaskMax());
   }
 
+  /**
+   * Tests getting and setting max events.
+   */
   @Test
-  void eventMaxTest() {
+  public void eventMaxTest() {
     assertEquals(0, journal.getEventMax());
     journal.setEventMax(5);
     assertEquals(5, journal.getEventMax());
   }
 
+  /**
+   * Tests getting and setting the name.
+   */
   @Test
-  void nameTest() {
+  public void nameTest() {
     assertEquals("test", journal.getName());
     journal.setName("sup");
     assertEquals("sup", journal.getName());
   }
 
+  /**
+   * Tests getting entries from the journal.
+   */
   @Test
-  void getAllEntriesTest() {
-    ArrayList<Entry> expected = new ArrayList<>();
-    ArrayList<Entry> expected2 = new ArrayList<>();
+  public void getAllEntriesTest() {
+    final ArrayList<Entry> expected = new ArrayList<>();
+    final ArrayList<Entry> expected2 = new ArrayList<>();
     assertEquals(expected, journal.getAllEntries());
     Entry task1 = new Event("1", DayOfWeek.SUNDAY, new TimeInterval(
         new Timestamp(DayOfWeek.SUNDAY, 0), 10), null, null);
@@ -97,8 +130,11 @@ class BulletJournalTest {
     assertEquals(expected2, journal.getAllEntries(new FilterTask()));
   }
 
+  /**
+   * Tests getting the entries map.
+   */
   @Test
-  void getEntryMapTest() {
+  public void getEntryMapTest() {
     assertEquals(0, journal.getEntryMap().get(DayOfWeek.SUNDAY).size());
     ArrayList<Entry> expected = new ArrayList<>();
     assertEquals(expected, journal.getAllEntries());
@@ -114,8 +150,11 @@ class BulletJournalTest {
     assertFalse(journal.getEntryMap(new FilterEvent()).get(DayOfWeek.SUNDAY).contains(task));
   }
 
+  /**
+   * Tests clearing the journal.
+   */
   @Test
-  void clearTest() {
+  public void clearTest() {
     assertEquals(0, journal.getAllEntries().size());
     journal.addEntry(new Task("1", DayOfWeek.SUNDAY, null, null));
     journal.addEntry(new Task("2", DayOfWeek.SUNDAY, null, null));
@@ -125,10 +164,14 @@ class BulletJournalTest {
     assertEquals(0, journal.getAllEntries().size());
   }
 
+  /**
+   * Tests getting the currently applied organizers.
+   */
   @Test
-  void organizersTest() {
+  public void organizersTest() {
     assertEquals("[]", journal.getOrganizers().toString());
     journal.setOrganizers(List.of(new FilterTask(), new SortByDay()));
-    assertEquals(List.of("Filter Task", "Sort Day"), journal.getOrganizers().stream().map(EntryOrganizer::type).toList());
+    assertEquals(List.of("Filter Task", "Sort Day"), journal.getOrganizers().stream()
+        .map(EntryOrganizer::type).toList());
   }
 }

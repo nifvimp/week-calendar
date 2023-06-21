@@ -9,17 +9,35 @@ import java.util.Collection;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class FilterByCompletionTest {
+/**
+ * Tests filtering by completion.
+ */
+public class FilterByCompletionTest {
+  /**
+   * Tests getting type.
+   */
   @Test
-  void typeTest() {
+  public void typeTest() {
     FilterByCompletion filter = new FilterByCompletion(TaskStatus.COMPLETE);
     assertEquals("Filter Completion", filter.type());
   }
 
+  /**
+   * Tests status getter.
+   */
   @Test
-  void organizeTest() {
-    FilterByCompletion filter = new FilterByCompletion(TaskStatus.COMPLETE);
-    Collection<Entry> entries = new ArrayList<>();
+  public void statusTest() {
+    assertEquals(new FilterByCompletion(TaskStatus.COMPLETE).status(), TaskStatus.COMPLETE);
+    assertEquals(new FilterByCompletion(TaskStatus.INCOMPLETE).status(), TaskStatus.INCOMPLETE);
+  }
+
+  /**
+   * Tests organize.
+   */
+  @Test
+  public void organizeTest() {
+    final FilterByCompletion filter = new FilterByCompletion(TaskStatus.COMPLETE);
+    final Collection<Entry> entries = new ArrayList<>();
     Task task1 = new Task("1", DayOfWeek.SUNDAY, null, null);
     task1.setStatus(TaskStatus.COMPLETE);
     Task task2 = new Task("2", DayOfWeek.MONDAY, null, null);

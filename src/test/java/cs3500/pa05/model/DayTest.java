@@ -7,16 +7,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class DayTest {
+/**
+ * Tests Day functionality.
+ */
+public class DayTest {
   Day day;
 
+  /**
+   * Sets up a new day.
+   */
   @BeforeEach
-  void setup() {
+  public void setup() {
     day = new Day();
   }
 
+  /**
+   * Tests adding entries to a day.
+   */
   @Test
-  void addEntryTest() {
+  public void addEntryTest() {
     assertEquals(0, day.entries().size());
     Task newTask = new Task("test", DayOfWeek.SUNDAY, null, null);
     day.addEntry(newTask);
@@ -24,8 +33,11 @@ class DayTest {
     assertFalse(day.entries(new FilterEvent()).contains(newTask));
   }
 
+  /**
+   * Tests removing entries from a day.
+   */
   @Test
-  void removeEntry() {
+  public void removeEntry() {
     assertEquals(0, day.entries().size());
     Task newTask = new Task("test", DayOfWeek.SUNDAY, null, null);
     day.addEntry(newTask);
@@ -35,8 +47,11 @@ class DayTest {
     assertEquals(0, day.entries().size());
   }
 
+  /**
+   * Tests the toString method.
+   */
   @Test
-  void testToString() {
+  public void testToString() {
     assertEquals("Day:\n", day.toString());
     day.addEntry(new Task("test", DayOfWeek.SUNDAY, null, null));
     assertEquals("Day:\nEntry:\nName: test\nDay: SUNDAY\n\nINCOMPLETE\n", day.toString());

@@ -8,16 +8,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests task functionality.
+ */
 class TaskTest {
   Task task;
   Task task2;
 
+  /**
+   * Sets up test tasks.
+   */
   @BeforeEach
   void setup() {
     task = new Task("test", DayOfWeek.WEDNESDAY, null, null);
     task2 = new Task("test2", DayOfWeek.FRIDAY, "bruh", "potato");
   }
 
+  /**
+   * Tests task getters.
+   */
   @Test
   void gettersTest() {
     assertEquals(TaskStatus.INCOMPLETE, task.getStatus());
@@ -29,21 +38,30 @@ class TaskTest {
     assertNull(task.category());
   }
 
+  /**
+   * Tests isTask.
+   */
   @Test
   void isTaskTest() {
     assertTrue(task.isTask());
     assertFalse(task.isEvent());
   }
 
+  /**
+   * Tests visitable functionality.
+   */
   @Test
   void acceptTest() {
-    mockVisitor visitor = new mockVisitor();
+    MockVisitor visitor = new MockVisitor();
     Entry task = new Task("", DayOfWeek.SUNDAY, null, null);
     visitor.visit(task);
     assertEquals("[Entry:\nName: \nDay: SUNDAY\n\nINCOMPLETE]",
         visitor.getTasksVisited().toString());
   }
 
+  /**
+   * Tests toString method.
+   */
   @Test
   void toStringTest() {
     assertEquals("Entry:\nName: test\nDay: WEDNESDAY\n\nINCOMPLETE", task.toString());

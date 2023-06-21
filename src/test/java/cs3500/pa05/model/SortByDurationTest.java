@@ -10,7 +10,10 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class SortByDurationTest {
+/**
+ * Tests sorting by duration.
+ */
+public class SortByDurationTest {
   SortByDuration sortByDuration;
   Collection<Entry> entries;
   TimeInterval interval1;
@@ -26,8 +29,11 @@ class SortByDurationTest {
   Task task1;
   Task task2;
 
+  /**
+   * Sets up list of entries to sort.
+   */
   @BeforeEach
-  void setup() {
+  public void setup() {
     sortByDuration = new SortByDuration();
     entries = new ArrayList<>();
     interval1 = new TimeInterval(new Timestamp(DayOfWeek.THURSDAY, 10), 10);
@@ -47,8 +53,11 @@ class SortByDurationTest {
     entries.addAll(List.of(event1, event2, event3, event4, event5, task1, task2));
   }
 
+  /**
+   * Tests organize.
+   */
   @Test
-  void organizeTest() {
+  public void organizeTest() {
     Collection<Entry> expectedEntries =
         new ArrayList<>(List.of(task1, task2, event1, event2, event3, event4, event5));
 
@@ -59,15 +68,24 @@ class SortByDurationTest {
     assertEquals(expected, actualEntries);
   }
 
+  /**
+   * Tests compareTo.
+   */
   @Test
-  void compareTest() {
-    assertEquals(-10, sortByDuration.compare((Entry) entries.toArray()[0], (Entry) entries.toArray()[1]));
-    assertEquals(20, sortByDuration.compare((Entry) entries.toArray()[1], (Entry) entries.toArray()[6]));
-    assertEquals(-20, sortByDuration.compare((Entry) entries.toArray()[6], (Entry) entries.toArray()[1]));
+  public void compareTest() {
+    assertEquals(-10, sortByDuration.compare((Entry) entries.toArray()[0],
+        (Entry) entries.toArray()[1]));
+    assertEquals(20, sortByDuration.compare((Entry) entries.toArray()[1],
+        (Entry) entries.toArray()[6]));
+    assertEquals(-20, sortByDuration.compare((Entry) entries.toArray()[6],
+        (Entry) entries.toArray()[1]));
   }
 
+  /**
+   * Test getting type.
+   */
   @Test
-  void typeTest() {
-    assertEquals("Sort Duration",sortByDuration.type());
+  public void typeTest() {
+    assertEquals("Sort Duration", sortByDuration.type());
   }
 }

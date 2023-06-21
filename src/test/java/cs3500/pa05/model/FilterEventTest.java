@@ -8,13 +8,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.junit.jupiter.api.Test;
 
-class FilterEventTest {
+/**
+ * Tests filtering for event.
+ */
+public class FilterEventTest {
+  /**
+   * Tests organize.
+   */
   @Test
-  void organize() {
-    FilterEvent filter = new FilterEvent();
-    Collection<Entry> entries = new ArrayList<>();
-    Collection<Entry> expectedEntries = new ArrayList<>();
-    TimeInterval interval = new TimeInterval(new Timestamp(DayOfWeek.THURSDAY, 10), 10);
+  public void organize() {
+    final FilterEvent filter = new FilterEvent();
+    final Collection<Entry> entries = new ArrayList<>();
+    final Collection<Entry> expectedEntries = new ArrayList<>();
+    final TimeInterval interval = new TimeInterval(new Timestamp(DayOfWeek.THURSDAY, 10), 10);
     entries.add(new Task("1", DayOfWeek.SUNDAY, null, null));
     entries.add(new Task("2", DayOfWeek.MONDAY, null, null));
     entries.add(new Task("3", DayOfWeek.TUESDAY, null, null));
@@ -35,8 +41,11 @@ class FilterEventTest {
     assertEquals(expected, actualEntries);
   }
 
+  /**
+   * Tests getting type.
+   */
   @Test
-  void typeTest() {
+  public void typeTest() {
     FilterEvent filter = new FilterEvent();
     assertEquals("Filter Event", filter.type());
   }

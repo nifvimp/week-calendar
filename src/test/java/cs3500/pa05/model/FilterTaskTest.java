@@ -8,13 +8,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.junit.jupiter.api.Test;
 
-class FilterTaskTest {
+/**
+ * Tests filtering for task.
+ */
+public class FilterTaskTest {
+  /**
+   * Tests organize.
+   */
   @Test
-  void organizeTest() {
-    FilterTask filter = new FilterTask();
-    Collection<Entry> entries = new ArrayList<>();
-    Collection<Entry> expectedEntries = new ArrayList<>();
-    TimeInterval interval = new TimeInterval(new Timestamp(DayOfWeek.THURSDAY, 10), 10);
+  public void organizeTest() {
+    final FilterTask filter = new FilterTask();
+    final Collection<Entry> entries = new ArrayList<>();
+    final Collection<Entry> expectedEntries = new ArrayList<>();
+    final TimeInterval interval = new TimeInterval(new Timestamp(DayOfWeek.THURSDAY, 10), 10);
     entries.add(new Task("1", DayOfWeek.SUNDAY, null, null));
     entries.add(new Task("2", DayOfWeek.MONDAY, null, null));
     entries.add(new Task("3", DayOfWeek.TUESDAY, null, null));
@@ -34,5 +40,14 @@ class FilterTaskTest {
     JsonNode actualEntries = mapper.convertValue(actual, JsonNode.class);
     JsonNode expected = mapper.convertValue(expectedEntries, JsonNode.class);
     assertEquals(expected, actualEntries);
+  }
+
+  /**
+   * Tests getting type.
+   */
+  @Test
+  public void typeTest() {
+    FilterTask filter = new FilterTask();
+    assertEquals("Filter Task", filter.type());
   }
 }

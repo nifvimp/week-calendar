@@ -8,19 +8,36 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.junit.jupiter.api.Test;
 
-class FilterByCategoryTest {
+/**
+ * Tests filtering by category.
+ */
+public class FilterByCategoryTest {
+  /**
+   * Tests category getter.
+   */
   @Test
-  void getterTest() {
+  public void getterTest() {
     FilterByCategory filter = new FilterByCategory("bruh");
     assertEquals("bruh", filter.category());
     assertEquals("Filter Category", filter.type());
   }
 
+  /**
+   * Test getting type.
+   */
   @Test
-  void organizeTest() {
-    FilterByCategory filter = new FilterByCategory("nerd");
-    Collection<Entry> entries = new ArrayList<>();
-    Collection<Entry> expectedEntries = new ArrayList<>();
+  public void typeTest() {
+    assertEquals("Filter Category", new FilterByCategory("bruh").type());
+  }
+
+  /**
+   * Tests organize.
+   */
+  @Test
+  public void organizeTest() {
+    final FilterByCategory filter = new FilterByCategory("nerd");
+    final Collection<Entry> entries = new ArrayList<>();
+    final Collection<Entry> expectedEntries = new ArrayList<>();
     entries.add(new Task("1", DayOfWeek.SUNDAY, null, "nerd"));
     entries.add(new Task("2", DayOfWeek.MONDAY, null, "nerd"));
     entries.add(new Task("3", DayOfWeek.TUESDAY, null, "nerd"));

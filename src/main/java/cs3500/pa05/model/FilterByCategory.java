@@ -7,8 +7,6 @@ import java.util.Objects;
 
 /**
  * Filters entries for a specific category.
- *
- * @implNote is case-sensitive
  */
 public class FilterByCategory implements EntryOrganizer {
   @JsonProperty("category")
@@ -26,9 +24,8 @@ public class FilterByCategory implements EntryOrganizer {
 
   /**
    * Filters a collection of entries for a specific category.
-   *w
+   *
    * @param entries entries to filter
-   * @implNote is case-sensitive
    */
   @Override
   public Collection<Entry> organize(Collection<Entry> entries) {

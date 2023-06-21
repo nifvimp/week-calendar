@@ -36,4 +36,13 @@ public class FilterByCompletion extends FilterTask {
   public String type() {
     return "Filter Completion";
   }
+
+  /**
+   * Gets the status this filter is filtering for.
+   *
+   * @return status this filter is filtering for
+   */
+  public TaskStatus status() {
+    return this.status;
+  }
 }

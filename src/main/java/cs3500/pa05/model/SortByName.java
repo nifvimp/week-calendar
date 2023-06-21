@@ -15,7 +15,6 @@ public class SortByName implements EntryOrganizer, Comparator<Entry> {
    * Sorts a collection of entries by name.
    *
    * @param entries entries to filter
-   * @implNote is case-sensitive
    */
   @Override
   public Collection<Entry> organize(Collection<Entry> entries) {

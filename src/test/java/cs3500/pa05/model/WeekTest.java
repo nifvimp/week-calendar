@@ -6,11 +6,17 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class WeekTest {
+/**
+ * Tests week functionality.
+ */
+public class WeekTest {
   Week week;
   Week week2;
   Task task3;
 
+  /**
+   * Sets up test week.
+   */
   @BeforeEach
   void setup() {
     week = new Week();
@@ -22,6 +28,9 @@ class WeekTest {
     week2.addEntry(task3);
   }
 
+  /**
+   * Tests bulk adding entries to week.
+   */
   @Test
   void addEntriesToTest() {
     ArrayList<Entry> entryList = new ArrayList<>();
@@ -30,6 +39,9 @@ class WeekTest {
     assertEquals("Entry:\nName: 1\nDay: SUNDAY\n\nINCOMPLETE", entryList.get(1).toString());
   }
 
+  /**
+   * Tests getting entries from week.
+   */
   @Test
   void getEntriesTest() {
     assertEquals("Entry:\nName: 2\nDay: SUNDAY\n\nINCOMPLETE",
@@ -45,6 +57,9 @@ class WeekTest {
     assertEquals(2, week.getEntries().get(DayOfWeek.SUNDAY).toArray().length);
   }
 
+  /**
+   * Tests adding entries to week.
+   */
   @Test
   void addEntryTest() {
     assertEquals(2, week.getEntries().get(DayOfWeek.SUNDAY).toArray().length);
@@ -56,6 +71,9 @@ class WeekTest {
     assertEquals(1, week.getEntries().get(DayOfWeek.MONDAY).toArray().length);
   }
 
+  /**
+   * Tests removing entries from week.
+   */
   @Test
   void removeEntryTest() {
     assertEquals(2, week.getEntries().get(DayOfWeek.SUNDAY).toArray().length);
@@ -65,6 +83,9 @@ class WeekTest {
     assertEquals(0, week.getEntries().get(DayOfWeek.MONDAY).toArray().length);
   }
 
+  /**
+   * Tests toString method.
+   */
   @Test
   void toStringTest() {
     assertEquals("""
@@ -123,6 +144,9 @@ class WeekTest {
         """, week2.toString());
   }
 
+  /**
+   * Tests clearing the week.
+   */
   @Test
   void clear() {
     assertEquals(2, week.getEntries().get(DayOfWeek.SUNDAY).toArray().length);

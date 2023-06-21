@@ -9,13 +9,19 @@ import java.util.Collection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class SortByDayTest {
+/**
+ * Tests sorting by day of the week.
+ */
+public class SortByDayTest {
   SortByDay sortByDay;
   Collection<Entry> entries;
   TimeInterval interval;
 
+  /**
+   * Sets up list of entries to sort.
+   */
   @BeforeEach
-  void setup() {
+  public void setup() {
     sortByDay = new SortByDay();
     entries = new ArrayList<>();
     interval = new TimeInterval(new Timestamp(DayOfWeek.THURSDAY, 10), 10);
@@ -28,8 +34,11 @@ class SortByDayTest {
     entries.add(new Task("7", DayOfWeek.SUNDAY, null, null));
   }
 
+  /**
+   * Tests organize.
+   */
   @Test
-  void organizeTest() {
+  public void organizeTest() {
     Collection<Entry> expectedEntries = new ArrayList<>();
     expectedEntries.add(new Task("7", DayOfWeek.SUNDAY, null, null));
     expectedEntries.add(new Event("6", DayOfWeek.MONDAY, interval, null, null));
@@ -46,10 +55,21 @@ class SortByDayTest {
     assertEquals(expected, actualEntries);
   }
 
+  /**
+   * Tests compareTo.
+   */
   @Test
-  void compareTest() {
+  public void compareTest() {
     assertEquals(-1, sortByDay.compare((Entry) entries.toArray()[0], (Entry) entries.toArray()[1]));
     assertEquals(0, sortByDay.compare((Entry) entries.toArray()[0], (Entry) entries.toArray()[0]));
     assertEquals(6, sortByDay.compare((Entry) entries.toArray()[1], (Entry) entries.toArray()[6]));
+  }
+
+  /**
+   * Tests getting type
+   */
+  @Test
+  public void typeTest() {
+    assertEquals("Sort Day", sortByDay.type());
   }
 }

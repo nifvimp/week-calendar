@@ -9,13 +9,19 @@ import java.util.Collection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class SortByNameTest {
+/**
+ * Tests sorting by name.
+ */
+public class SortByNameTest {
   SortByName sortByName;
   Collection<Entry> entries;
   TimeInterval interval;
 
+  /**
+   * Sets up list of entries to sort.
+   */
   @BeforeEach
-  void setup() {
+  public void setup() {
     sortByName = new SortByName();
     entries = new ArrayList<>();
     interval = new TimeInterval(new Timestamp(DayOfWeek.THURSDAY, 10), 10);
@@ -28,13 +34,11 @@ class SortByNameTest {
     entries.add(new Task("1", DayOfWeek.SUNDAY, null, null));
   }
 
+  /**
+   * Tests organize.
+   */
   @Test
-  void typeTest() {
-    assertEquals("Sort Name", sortByName.type());
-  }
-
-  @Test
-  void organizeTest() {
+  public void organizeTest() {
     Collection<Entry> expectedEntries = new ArrayList<>();
     expectedEntries.add(new Event("/", DayOfWeek.MONDAY, interval, null, null));
     expectedEntries.add(new Task("1", DayOfWeek.SUNDAY, null, null));
@@ -51,11 +55,26 @@ class SortByNameTest {
     assertEquals(expected, actualEntries);
   }
 
+  /**
+   * Tests compareTo.
+   */
   @Test
-  void compareTest() {
-    assertEquals(-1, sortByName.compare((Entry) entries.toArray()[0], (Entry) entries.toArray()[1]));
-    assertEquals(0, sortByName.compare((Entry) entries.toArray()[0], (Entry) entries.toArray()[0]));
-    assertEquals(49, sortByName.compare((Entry) entries.toArray()[1], (Entry) entries.toArray()[6]));
-    assertEquals(51, sortByName.compare((Entry) entries.toArray()[1], (Entry) entries.toArray()[5]));
+  public void compareTest() {
+    assertEquals(-1, sortByName.compare((Entry) entries.toArray()[0],
+        (Entry) entries.toArray()[1]));
+    assertEquals(0, sortByName.compare((Entry) entries.toArray()[0],
+        (Entry) entries.toArray()[0]));
+    assertEquals(49, sortByName.compare((Entry) entries.toArray()[1],
+        (Entry) entries.toArray()[6]));
+    assertEquals(51, sortByName.compare((Entry) entries.toArray()[1],
+        (Entry) entries.toArray()[5]));
+  }
+
+  /**
+   * Tests getting type.
+   */
+  @Test
+  public void typeTest() {
+    assertEquals("Sort Name", sortByName.type());
   }
 }

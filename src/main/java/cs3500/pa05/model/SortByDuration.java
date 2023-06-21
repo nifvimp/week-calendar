@@ -7,15 +7,13 @@ import java.util.List;
 
 /**
  * Sorts entries by duration.
- *
- * @implNote assumes that tasks have a duration of 0
  */
 public class SortByDuration implements EntryOrganizer, Comparator<Entry> {
   /**
-   * Sorts a collection of entries by duration.
+   * Sorts a collection of entries by duration. Assumes tasks have a duration
+   * of 0 minutes.
    *
    * @param entries entries to sort
-   * @implNote assumes that tasks have a duration of 0
    */
   @Override
   public Collection<Entry> organize(Collection<Entry> entries) {

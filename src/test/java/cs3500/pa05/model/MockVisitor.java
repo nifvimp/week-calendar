@@ -6,12 +6,13 @@ import java.util.List;
 /**
  * A mock visitor for testing.
  */
-public class mockVisitor implements EntryVisitor {
+public class MockVisitor implements EntryVisitor {
   List<Event> eventsVisited = new ArrayList<>();
   List<Task> tasksVisited = new ArrayList<>();
 
   /**
    * Gets the visited events.
+   *
    * @return List of events visited
    */
   public List<Event> getEventsVisited() {
@@ -20,6 +21,7 @@ public class mockVisitor implements EntryVisitor {
 
   /**
    * Gets the visited tasks.
+   *
    * @return List of tasks visited
    */
   public List<Task> getTasksVisited() {

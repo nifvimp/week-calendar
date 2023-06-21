@@ -208,7 +208,7 @@ public class EntryViewerComponent extends Dialog<Entry> {
     });
   }
 
-  private void addStyleToComboBox(ComboBox<?> box){
+  private void addStyleToComboBox(ComboBox<?> box) {
     String normal = "-fx-background-color: dimGrey; -fx-text-fill: white;";
     String hovering = "-fx-background-color: lightblue; -fx-text-fill: black;";
     box.styleProperty().bind(Bindings.when(box.hoverProperty()).then(
