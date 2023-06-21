@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="container" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="container" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="250.0" stylesheets="@StyleSheet.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="250.0">
          <children>
@@ -14,7 +14,7 @@
                <padding>
                   <Insets left="10.0" />
                </padding></Label>
-            <Label fx:id="name" contentDisplay="TOP">
+            <Label fx:id="name" contentDisplay="TOP" wrapText="true">
                <padding>
                   <Insets left="10.0" />
                </padding></Label>
@@ -33,7 +33,7 @@
                   <Insets left="10.0" />
                </padding>
             </Label>
-            <Label fx:id="category" alignment="TOP_LEFT">
+            <Label fx:id="category" alignment="TOP_LEFT" wrapText="true">
                <padding>
                   <Insets left="10.0" />
                </padding>
@@ -56,7 +56,7 @@
                   <Insets bottom="10.0" />
                </opaqueInsets>
             </Label>
-            <Label fx:id="description">
+            <Label fx:id="description" wrapText="true">
                <font>
                   <Font size="10.0" />
                </font>

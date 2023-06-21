@@ -1,0 +1,105 @@
+.root {
+    -fx-background-color: grey;
+    -fx-font-family: "Comic Sans MS";
+}
+
+.text-field {
+    -fx-border-color: white;
+    -fx-background-color: dimGrey;
+    -fx-text-fill: white;
+}
+
+.text-area .content {
+    -fx-border-color: white;
+    -fx-background-color: dimGrey;
+}
+
+.text-area {
+    -fx-text-fill: white;
+}
+
+.choice-box {
+    -fx-background-color: dimGrey;
+    -fx-text-fill: white;
+}
+
+.combo-box {
+    -fx-background-color: dimGrey;
+    -fx-text-fill: white;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-border-color: white;
+    -fx-background-color: dimgrey;
+    -fx-text-fill: white;
+}
+
+.tab-pane {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.scroll-pane {
+    -fx-background-color: dimGrey;
+}
+
+.menu-bar {
+    -fx-background-color: dimGrey;
+}
+
+.grid-pane {
+    -fx-background-color: dimGrey;
+}
+
+.list-cell {
+    -fx-background-color: dimgrey;
+    -fx-text-fill: white;
+}
+
+.check-box {
+    -fx-border-color: white;
+    -fx-background-color: dimGrey;
+}
+
+.menu-item {
+    -fx-text-fill: white;
+    -fx-background-color: dimgrey;
+}
+
+.menu-item:focused {
+    -fx-background-color: blue;
+}
+
+.tab {
+    -fx-background-color: blue;
+}
+
+.tab-label {
+    -fx-text-fill: white;
+}
+
+#tabs {
+    -fx-background-color: dimGrey;
+    -fx-text-fill: white;
+}
+
+#container {
+    -fx-background-color: dimgrey;
+    -fx-border-color: white;
+}
+
+#window {
+    -fx-background-color: grey;
+}
+
+#days {
+    -fx-background-color: grey;
+}
+
+.list-view {
+    -fx-background-color: black;
+}

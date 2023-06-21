@@ -13,6 +13,9 @@ import cs3500.pa05.view.SplashView;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -27,6 +30,8 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 /**
  * Represents a controller for the application.
@@ -70,11 +75,15 @@ public class ApplicationController implements IApplicationController {
       Scene scene = loader.load();
       stage.setScene(scene);
       stage.setTitle("Bullet Journal");
-      stage.show();
+      stage.initStyle(StageStyle.UNDECORATED);
+      stage.setOnShowing(e -> {
+        PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+        delay.setOnFinished(event -> stage.close());
+        delay.play();
+      });
+      stage.showAndWait();
     } catch (IOException e) {
       throw new RuntimeException("Failed to load splash screen." + e);
-    //} catch (InterruptedException e) {
-      //Cannot happen since we aren't multi threading
     }
   }
 

@@ -209,7 +209,6 @@ public class JournalComponent extends BorderPane {
         Map<DayOfWeek, Collection<Entry>> entryMap = journal.getEntryMap();
         for (DayOfWeek day : entryMap.keySet()) {
             ScrollPane scrollPane = new ScrollPane();
-            scrollPane.setVmin(Double.MAX_VALUE);
             VBox content = new VBox();
             content.setAlignment(Pos.TOP_CENTER);
             scrollPane.setContent(content);
