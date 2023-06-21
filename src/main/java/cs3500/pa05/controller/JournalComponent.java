@@ -78,8 +78,6 @@ public class JournalComponent extends BorderPane {
     @FXML
     private TextField maxTasks;
     @FXML
-    private GridPane week;
-    @FXML
     private ListView<String> taskQueue;
     @FXML
     private VBox options; // TODO: figure this out. prob need separate class
@@ -100,7 +98,7 @@ public class JournalComponent extends BorderPane {
         fxmlLoader.setController(this);
         this.content = new HashMap<>();
         this.journal = journal;
-        Node loaded;
+        Group loaded;
         try {
             loaded = fxmlLoader.load();
             this.getChildren().add(loaded);
@@ -109,11 +107,9 @@ public class JournalComponent extends BorderPane {
         }
         this.addEventFilter(JournalEvent.ANY, new JournalEventHandler(this));
         initComponents();
-
-
-        // TODO: fix height and width alignment with box
-        ((BorderPane) loaded).prefHeightProperty().bind(parent.getScene().heightProperty());
-        ((BorderPane) loaded).prefWidthProperty().bind(parent.getScene().widthProperty());
+        BorderPane pane = (BorderPane) loaded.getChildren().get(0);
+        pane.prefHeightProperty().bind(parent.getScene().heightProperty());
+        pane.prefWidthProperty().bind(parent.getScene().widthProperty());
     }
 
     /**
