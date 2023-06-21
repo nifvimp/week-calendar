@@ -4,7 +4,7 @@
 # 3500 PA05 Project Repo
 ## Running the Executable
 1. run gradle build
-2. run the [built jar](build/libs/pa05-waht-all.jar)
+2. run the [built jar](build/fatJar/pa05-waht.jar)
 ## GUI Preview
 ![](currentGUI.png)
 
