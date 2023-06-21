@@ -1,8 +1,12 @@
 package cs3500.pa05.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +16,13 @@ class BulletJournalTest {
   @BeforeEach
   void setup() {
     journal = new BulletJournal("test");
+  }
+
+  @Test
+  void passwordTest() {
+    assertNull(journal.getPassword());
+    journal.setPassword("coconut");
+    assertEquals("coconut", journal.getPassword());
   }
 
   @Test
@@ -90,18 +101,34 @@ class BulletJournalTest {
   void getEntryMapTest() {
     assertEquals(0, journal.getEntryMap().get(DayOfWeek.SUNDAY).size());
     ArrayList<Entry> expected = new ArrayList<>();
-    ArrayList<Entry> expected2 = new ArrayList<>();
     assertEquals(expected, journal.getAllEntries());
     Entry event = new Event("1", DayOfWeek.SUNDAY, new TimeInterval(
         new Timestamp(DayOfWeek.SUNDAY, 0), 10), null, null);
     Entry task = new Task("2", DayOfWeek.SUNDAY, null, null);
     expected.add(event);
     expected.add(task);
-    expected2.add(task);
     journal.addEntry(event);
     journal.addEntry(task);
     assertEquals(2, journal.getEntryMap().get(DayOfWeek.SUNDAY).size());
     assertTrue(journal.getEntryMap().get(DayOfWeek.SUNDAY).contains(task));
     assertFalse(journal.getEntryMap(new FilterEvent()).get(DayOfWeek.SUNDAY).contains(task));
+  }
+
+  @Test
+  void clearTest() {
+    assertEquals(0, journal.getAllEntries().size());
+    journal.addEntry(new Task("1", DayOfWeek.SUNDAY, null, null));
+    journal.addEntry(new Task("2", DayOfWeek.SUNDAY, null, null));
+    journal.addEntry(new Task("3", DayOfWeek.SUNDAY, null, null));
+    assertEquals(3, journal.getAllEntries().size());
+    journal.clear();
+    assertEquals(0, journal.getAllEntries().size());
+  }
+
+  @Test
+  void organizersTest() {
+    assertEquals("[]", journal.getOrganizers().toString());
+    journal.setOrganizers(List.of(new FilterTask(), new SortByDay()));
+    assertEquals(List.of("Filter Task", "Sort Day"), journal.getOrganizers().stream().map(EntryOrganizer::type).toList());
   }
 }

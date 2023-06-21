@@ -3,6 +3,7 @@ package cs3500.pa05.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Filters entries for a specific category.
@@ -20,12 +21,12 @@ public class FilterByCategory implements EntryOrganizer {
    */
   @JsonCreator
   public FilterByCategory(@JsonProperty("category") String category) {
-    this.category = category;
+    this.category = Objects.requireNonNull(category);
   }
 
   /**
    * Filters a collection of entries for a specific category.
-   *
+   *w
    * @param entries entries to filter
    * @implNote is case-sensitive
    */
