@@ -21,5 +21,11 @@ within so go ahead and give it a download to keep track of your coding tasks in 
 ## GUI Preview
 ![](currentGUI.png)
 
+## GUI Splash
+![](Splash.png)
+
+## GUI PopUP
+![](Popup.png)
+
 ## GUI Final
 ![](FinalGUI.png)
