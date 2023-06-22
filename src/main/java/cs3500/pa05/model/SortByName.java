@@ -6,9 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Sorts entries by name.
- *
- * @implNote is case-sensitive
+ * Sorts entries by name. Is case-sensitive.
  */
 public class SortByName implements EntryOrganizer, Comparator<Entry> {
   /**

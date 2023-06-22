@@ -23,6 +23,9 @@ public class EntryModificationEvent extends JournalEvent {
    */
   public static final EventType<EntryModificationEvent> CREATE_ENTRY =
       new EventType<>(ANY, "CREATE_ENTRY");
+  /**
+   * Entry to modify.
+   */
   private final Entry entry;
 
   /**
