@@ -8,13 +8,13 @@ import cs3500.pa05.model.Event;
 import cs3500.pa05.model.Task;
 import cs3500.pa05.model.TimeInterval;
 import cs3500.pa05.model.Timestamp;
+import cs3500.pa05.view.SplashView;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -68,22 +68,17 @@ public class ApplicationController implements InterfaceApplicationController {
    * Shows the splash screen.
    */
   private void showSplash() {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getClassLoader().getResource("Splash.fxml"));
-    try {
-      Stage stage = new Stage();
-      Scene scene = loader.load();
-      stage.setScene(scene);
-      stage.initStyle(StageStyle.UNDECORATED);
-      stage.setOnShowing(e -> {
-        PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
-        delay.setOnFinished(event -> stage.close());
-        delay.play();
-      });
-      stage.showAndWait();
-    } catch (IOException e) {
-      throw new RuntimeException("Failed to load splash screen." + e);
-    }
+    SplashView splashView = new SplashView();
+    Stage stage = new Stage();
+    Scene scene = splashView.load();
+    stage.setScene(scene);
+    stage.initStyle(StageStyle.UNDECORATED);
+    stage.setOnShowing(e -> {
+      PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+      delay.setOnFinished(event -> stage.close());
+      delay.play();
+    });
+    stage.showAndWait();
   }
 
   private boolean loginScreen(String actualPasscode) {

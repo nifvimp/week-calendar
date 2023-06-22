@@ -12,10 +12,41 @@ event, and you can change its properties, plus you can save or load different bu
 within so go ahead and give it a download to keep track of your coding tasks in a nice, convenient planner!
 ## Example of Solid Principle
 ### Single Responsibility
+As we wrote our code, we did our best to adhere to the Single Responsibility Principle by making our classes and our
+methods in a way such that they have one purpose. A good example of where we did this in our code is our view classes.
+Our view classes ApplicationView and SplashView both exist for the single purpose of showing loading their respective
+scenes/views. They do not handle the logic of the stage and the scene in the view, but simply load what needs to be.
+
 ### Open / Closed
+We have a lot of examples of our code being open to extension and closed to modification in our model. We have
+interfaces and abstract classes that leave our code to be easily extendable, without changing those classes. One
+example of this is our EntryOrganizer interface. The interface provides a foundation that we build upon in our other
+classes that implement it. Some examples of this are FilterByCategory, FilterEvent, FilterTask,
+SortByDay, SortByDuration, and SortByName. We have already expanded upon the interface a fair bit, and still have room
+to add more in the future.
+
 ### Liskov Substitution
+The main place we applied the Liskov Substitution Principle is regarding our Entry class and the classes that implement
+it. For our Entry class, any type extending it should be able to be passed in to any method expecting an Entry.
+One example of this can be seen in our BulletJournal class, which have both an addEntry and an removeEntry method that
+take in an Entry. We can pass in either a Task or an Event into the methods, or any future Entry we may create.
+Some other examples of classes that have methods that work the same way include Day and Week.
+
 ### Interface Segregation
+We made sure to apply the Interface Segregation Principle as we made our interfaces in our application. A good example
+of the principle in our code is with our EntryOrganizer. The interface only has the base functionality that any class
+implementing EntryOrganizer should certainly do. These two methods are organize and type. These methods are needed
+since all classes implementing EntryOrganizer are doing so with the purpose of organizing, and the type is always
+needed for identifying the type(s) of sort being done. Other methods more specific to the sorters implementing 
+EntryOrganizer such as category, status, and compare are not in the interface as they are not methods that all the
+classes will need.
+
 ### Dependency Inversion
+In order to follow the Dependency Inversion Principle, we made sure we made good use of interfaces and abstract classes.
+This can be seen through interfaces such as EntryOrganizer, and abstract classes such as Entry. We follow the principle
+by having our lower level classes such as Task, Event, and the filters rely on the interfaces and abstract classes which
+are then in turn are used by the higher level classes. 
+
 ## Extensibility
 The display of entries inside the main week view of the application, and the sorting and filtering
 functionality of the application is very extensible. 
