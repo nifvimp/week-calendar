@@ -18,7 +18,7 @@
 ## GUI Final
 ![](FinalGUI.png)
 
-## Project Explanation (in App Store)
+## Project Explanation (in App/Play Store)
 Take a look at the night agenda, the useful agenda that helps Computer Science coders keep track of goals. With the
 agenda, users have the abilities to open multiple tabs to represent different weeks, create task and events and assign
 completion or time duration status to them. It also comes with a list on both sides one to keep track of the number of
