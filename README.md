@@ -48,3 +48,9 @@ a few other minor changes if you want to include filtering:
 
 ## GUI Beta Release
 ![](FinalGUI.png)
+
+## Link to images used in application
+- Save Icon: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeOuuO0-M6rG7Ay_S3-3uyYyn6fzVKW3T4LQ4JpmDPag&s
+- Delete Icon: https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.iconsdb.com%2Fwhite-icons%2Fdelete-icon.html&psig=AOvVaw08vgTolURWpeRNV_9uyhqa&ust=1687485112020000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCMi1rYfi1f8CFQAAAAAdAAAAABAE
+- Create Icon: https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vectorstock.com%2Froyalty-free-vector%2Fcreate-flat-white-color-icon-vector-6076421&psig=AOvVaw10jfv-7ZHVTzE2Zcx-AaMF&ust=1687484999770000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCLix49Hh1f8CFQAAAAAdAAAAABAE
+- Cancel Icon: https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.iconsdb.com%2Fwhite-icons%2Fcancel-icon.html&psig=AOvVaw16VRl2nb1-TqmqlfFR70pK&ust=1687485141372000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCJDEoJXi1f8CFQAAAAAdAAAAABAE
