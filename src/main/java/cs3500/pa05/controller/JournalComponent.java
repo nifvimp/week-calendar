@@ -142,8 +142,8 @@ public class JournalComponent extends BorderPane {
   private void initEventMax() {
     this.maxEvents.textProperty().set(String.valueOf(this.journal.getEventMax()));
     this.maxEvents.textProperty().addListener((observable, oldValue, newValue) -> {
-      if (!newValue.matches("\\D*")) {
-        this.maxEvents.setText(newValue.replaceAll("\\D", ""));
+      if (!newValue.matches("\\d*")) {
+        this.maxEvents.setText(newValue.replaceAll("[^\\d]", ""));
       } else if (!newValue.equals("")) {
         journal.setEventMax(Integer.parseInt(newValue));
       }
@@ -156,8 +156,8 @@ public class JournalComponent extends BorderPane {
   private void initTaskMax() {
     this.maxTasks.textProperty().set(String.valueOf(this.journal.getTaskMax()));
     this.maxTasks.textProperty().addListener((observable, oldValue, newValue) -> {
-      if (!newValue.matches("\\D*")) {
-        this.maxTasks.setText(newValue.replaceAll("\\D", ""));
+      if (!newValue.matches("\\d*")) {
+        this.maxTasks.setText(newValue.replaceAll("[^\\d]", ""));
       } else if (!newValue.equals("")) {
         journal.setTaskMax(Integer.parseInt(newValue));
       }

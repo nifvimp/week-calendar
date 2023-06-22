@@ -98,4 +98,3 @@ tasks.register('fatJar', Jar) {
 tasks.named("build") {
     finalizedBy("fatJar")
 }
-
