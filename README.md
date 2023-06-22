@@ -13,13 +13,34 @@ event, and you can change its properties, plus you can save or load different bu
 within so go ahead and give it a download to keep track of your coding tasks in a nice, convenient planner!
 ## Example of Solid Principle
 
-## Extensibility
 
+
+
+## Extensibility
+The display of entries inside the main week view of the application, and the sorting and filtering
+functionality of the application is very extensible. 
+
+Through the use of the visitor pattern we have enabled the addition and display of new types of 
+entries that extend the abstract entry class by modifying the EntryVisitor interface to support 
+the new subclass (adding a visit(subclass) method) and implementing the new interface method with 
+code that can optionally add parameters to the display specific to the new subclass.
+
+![code example](extensionExample1.png)
+The mini-view window and new entry creation dialog, however, does not support this sort extension.
+
+We also have the EntryOrganizer interface that is available for extension to easily implement new
+filtering and sorting options. The model supports getting the list and map of entries organized 
+by the EntryOrganizer implementations passed into the getter function. The view controller also
+supports new implementations of EntryOrganizer in it's 'sort by:' dropdown when paired along with
+some slight modifications to the function that handles that sorting in the view.
+To fully support the new EntryOrganizer in the GUI application you have to add a bit here as well
+a few other minor changes if you want to include filtering:
+
+![place to add name of entry organizer](extensionExample2.png)
 ## Running Executable Jar
 1. run gradle build
 2. run the [built fatJar](build/fatJar/pa05-waht.jar)
-## GUI Preview
+## GUI Alpha Release
 ![](currentGUI.png)
-
-## GUI Final
+## GUI Beta Release
 ![](FinalGUI.png)
